@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.SongActivity">
+    tools:context=".Activity.SongActivity"
+    android:background="@drawable/background">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:src="@drawable/back"/>
+    <ImageView
+        android:id="@+id/ellipse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ellipse"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-260dp"
+        android:layout_marginStart="-50dp"
+        android:layout_marginEnd="-50dp"/>
+    <com.triggertrap.seekarc.SeekArc
+        android:layout_above="@+id/ellipse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:startAngle="0"
+        app:sweepAngle="70"
+        app:rotation="325"
+        android:padding="10dp"
+        android:layout_marginStart="-130dp"
+        android:layout_marginEnd="-130dp"
+        app:arcWidth="5dp"
+        app:progressColor="@color/pinkOp"
+        app:thumb="@drawable/thumb"
+        android:layout_marginBottom="-1225dp"
+        app:roundEdges="true"
+
+         />
+</RelativeLayout>
