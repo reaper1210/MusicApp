@@ -1,8 +1,9 @@
-package com.reaper.myapplication
+package com.reaper.myapplication.Activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
+import com.reaper.myapplication.R
 
 class MainActivity : AppCompatActivity() {
 
