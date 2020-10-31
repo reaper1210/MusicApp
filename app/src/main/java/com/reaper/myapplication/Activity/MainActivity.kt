@@ -1,5 +1,6 @@
 package com.reaper.myapplication.Activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
@@ -11,7 +12,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Toast.makeText(this,"Hello",Toast.LENGTH_SHORT).show()
+        val intent = Intent(this@MainActivity,SongActivity::class.java)
+        startActivity(intent)
 
     }
 
