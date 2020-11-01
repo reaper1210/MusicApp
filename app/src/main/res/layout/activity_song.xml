@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,10 +12,7 @@
         android:layout_height="50dp"
         android:layout_margin="10dp"
         android:padding="10dp"
-        android:src="@drawable/back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:src="@drawable/back"/>
     <com.marcinmoskala.arcseekbar.ArcSeekBar
         android:id="@+id/arcSeekBar"
         android:layout_width="match_parent"
@@ -30,5 +26,30 @@
         app:progressWidth="8dp"
         app:roundEdges="true"
         app:thumb="@drawable/thumb" />
+    <ImageView
+        android:id="@+id/play"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/play"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="650dp"
+        />
 
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_toLeftOf="@+id/play"
+        android:src="@drawable/previous"
+        android:layout_marginTop="650dp"
+        android:layout_marginRight="15dp"
+        />
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/next"
+        android:layout_toRightOf="@id/play"
+        android:layout_marginTop="650dp"
+        android:layout_marginLeft="15dp"
+        />
 </RelativeLayout>
