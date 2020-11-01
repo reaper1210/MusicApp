@@ -59,12 +59,12 @@ class SongActivity : AppCompatActivity() {
         }
 
         play.setOnClickListener {
-            play.visibility=View.GONE
+            play.visibility=View.INVISIBLE
             pause.visibility=View.VISIBLE
         }
 
         pause.setOnClickListener {
-            pause.visibility=View.GONE
+            pause.visibility=View.INVISIBLE
             play.visibility=View.VISIBLE
         }
 
