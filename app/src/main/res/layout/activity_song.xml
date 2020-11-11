@@ -8,11 +8,13 @@
     android:background="@drawable/background">
 
     <ImageView
+        android:id="@+id/btnBackSong"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="10dp"
         android:padding="10dp"
         android:src="@drawable/back"/>
+
     <com.marcinmoskala.arcseekbar.ArcSeekBar
         android:id="@+id/arcSeekBar"
         android:layout_width="match_parent"
@@ -26,30 +28,28 @@
         app:progressWidth="8dp"
         app:roundEdges="true"
         app:thumb="@drawable/thumb" />
+
     <ImageView
         android:id="@+id/play"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:src="@drawable/play"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="650dp"
-        />
+        android:layout_marginTop="650dp"/>
 
     <ImageView
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_toLeftOf="@+id/play"
+        android:layout_toStartOf="@+id/play"
         android:src="@drawable/previous"
         android:layout_marginTop="650dp"
-        android:layout_marginRight="15dp"
-        />
+        android:layout_marginEnd="15dp"/>
 
     <ImageView
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:src="@drawable/next"
-        android:layout_toRightOf="@id/play"
+        android:layout_toEndOf="@id/play"
         android:layout_marginTop="650dp"
-        android:layout_marginLeft="15dp"
-        />
+        android:layout_marginStart="15dp" />
 </RelativeLayout>

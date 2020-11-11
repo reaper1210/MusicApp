@@ -4,12 +4,15 @@ import android.content.Intent
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.reaper.myapplication.R
+import com.reaper.myapplication.databinding.ActivitySongBinding
 
 class SongActivity : AppCompatActivity() {
+
     lateinit var favourites:ImageView
     lateinit var favourites_selected:ImageView
     lateinit var addToPlaylists:ImageView
@@ -17,27 +20,32 @@ class SongActivity : AppCompatActivity() {
     lateinit var back:ImageView
     lateinit var play:ImageView
     lateinit var pause:ImageView
+    lateinit var binding: ActivitySongBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_song)
-        back=findViewById(R.id.back)
+        binding = ActivitySongBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        favourites=findViewById(R.id.favourites)
-        favourites_selected=findViewById(R.id.favourites_selected)
+        back= binding.btnBackSong!!
+        favourites= binding.favourites!!
+        favourites_selected=binding.favouritesSelected!!
         favourites_selected.visibility=View.GONE
 
-        addToPlaylists=findViewById(R.id.addtoplaylists)
-        addToPlaylistsSelected=findViewById(R.id.addtoplaylistsselected)
+        addToPlaylists=binding.addtoplaylists!!
+        addToPlaylistsSelected=binding.addtoplaylistsselected!!
         addToPlaylistsSelected.visibility=View.GONE
 
-        play=findViewById(R.id.play)
-        pause=findViewById(R.id.pause)
+        play=binding.play
+        pause=binding.pause!!
         pause.visibility=View.GONE
+
 
         back.setOnClickListener {
 //            val intent=Intent(this@SongActivity,MainActivity::class.java)
 //            startActivity(intent)
         }
+
         favourites.setOnClickListener {
             favourites.visibility=View.GONE
             favourites_selected.visibility=View.VISIBLE
