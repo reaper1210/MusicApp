@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background2"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -32,14 +34,19 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/mainTabLayout"
-        android:layout_width="match_parent"
+        android:layout_below="@+id/toolbarMain"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        app:tabBackground="@drawable/tab_background"/>
+        android:layout_centerInParent="true"
+        android:background="#656565"
+        app:tabBackground="@drawable/tab_background"
+        app:tabIndicator="@android:color/transparent"
+        app:tabIconTint="@color/pinkOp"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/mainViewPager"
+        android:layout_below="@+id/mainTabLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</LinearLayout>
+</RelativeLayout>
