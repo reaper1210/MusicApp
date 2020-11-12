@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.reaper.myapplication.R
 
 class online_adapter(val items:ArrayList<String>): RecyclerView.Adapter<online_viewholder>() {
-
+    val itemSize=items.size
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): online_viewholder {
         val view=LayoutInflater.from(parent.context).inflate(R.layout.online_single_row,parent,false)
         return online_viewholder(view)
@@ -21,11 +21,12 @@ class online_adapter(val items:ArrayList<String>): RecyclerView.Adapter<online_v
     }
 
     override fun onBindViewHolder(holder: online_viewholder, position: Int) {
-        if(position<items.size){
+        if(position<itemSize){
             val currentSong=items[position]
             holder.TitleSongName.text=currentSong
         }
-        else{
+         else
+           {
             println("Hello $position")
             holder.cardView.alpha= 0F
         }
