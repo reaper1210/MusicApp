@@ -190,6 +190,7 @@
         android:layout_centerHorizontal="true"
         android:textSize="16sp"
         android:layout_marginTop="5dp"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -199,4 +200,5 @@
         android:textSize="14sp"
         android:textColor="@color/white"
         android:text="2:50/5:00"/>
+
 </RelativeLayout>

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.reaper.myapplication.R
-import com.reaper.myapplication.ViewPagerAdapter
+import com.reaper.myapplication.Adapter.ViewPagerAdapter
 import com.reaper.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

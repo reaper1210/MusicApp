@@ -27,6 +27,7 @@
         app:progressWidth="8dp"
         app:roundEdges="true"
         app:thumb="@drawable/thumb"/>
+
      <ImageView
         android:id="@+id/play"
         android:layout_width="32dp"
@@ -128,7 +129,7 @@
         <ImageView
             android:layout_width="256dp"
             android:layout_height="256dp"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/musicimage"
             android:scaleType="centerCrop"
             />
     </androidx.cardview.widget.CardView>
