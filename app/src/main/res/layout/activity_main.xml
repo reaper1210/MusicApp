@@ -27,20 +27,26 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/online_songs"
-            android:textSize="30sp" />
+            android:text="online_songs"
+            android:textSize="25sp" />
 
     </RelativeLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/mainTabLayout"
         android:layout_below="@+id/toolbarMain"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#656565"
+        app:tabPaddingStart="30dp"
+        app:tabPaddingEnd="30dp"
+        app:tabPaddingTop="20dp"
+        app:tabPaddingBottom="20dp"
+        android:layout_centerInParent="true"
+        android:background="@color/transparent"
         app:tabBackground="@drawable/tab_background"
-        app:tabIndicator="@android:color/transparent"
-        app:tabIconTint="@color/pinkOp"/>
+        app:tabIconTint="@color/transparent"
+        app:tabIconTintMode="screen"
+        app:tabIndicator="@android:color/transparent" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/mainViewPager"
@@ -53,6 +59,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/pathellipse1"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-5dp"/>
+
+    <ImageView
+        android:id="@+id/onlinePlay"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/play"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="65dp" />
+
+    <TextView
+        android:id="@+id/txtSongName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="song name"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textSize="16dp"
+        android:text="3:15/5:00"
+        android:textColor="@color/white"
+        android:layout_marginBottom="5dp" />
 
 </RelativeLayout>

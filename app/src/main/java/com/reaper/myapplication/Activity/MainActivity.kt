@@ -33,9 +33,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpTabIcons(){
-        for(i in 0..3){
-            tablayout.getTabAt(i)?.setIcon(R.drawable.play)
-        }
+        tablayout.getTabAt(0)?.setIcon(R.drawable.mysongs)
+        tablayout.getTabAt(1)?.setIcon(R.drawable.allsongs)
+        tablayout.getTabAt(2)?.setIcon(R.drawable.favourites)
+        tablayout.getTabAt(3)?.setIcon(R.drawable.addtoplaylist)
     }
 
 }
