@@ -22,8 +22,6 @@ class ViewPagerAdapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {
 
             1->{
                 OnlineSongs()
-
-
             }
             2->{
                 MySongs()

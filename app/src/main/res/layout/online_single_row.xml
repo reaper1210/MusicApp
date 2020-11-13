@@ -49,7 +49,6 @@
             android:layout_toRightOf="@+id/imgSongImage"
             android:textColor="@color/pinkOp" />
 
-
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
