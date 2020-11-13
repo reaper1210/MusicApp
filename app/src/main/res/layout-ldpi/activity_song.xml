@@ -8,6 +8,7 @@
     android:background="@drawable/background">
 
     <ImageView
+        android:id="@+id/btnBackSong"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_margin="10dp"
@@ -81,6 +82,7 @@
         />
 
     <ImageView
+        android:id="@+id/minus"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/volumedown"
@@ -89,6 +91,7 @@
         android:layout_marginBottom="20dp"/>
 
     <ImageView
+        android:id="@+id/plus"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/plus"
@@ -148,7 +151,7 @@
         android:layout_marginRight="20dp" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/imgSongImage"
+        android:id="@+id/imgSongCardview"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
@@ -156,6 +159,7 @@
         android:layout_marginTop="20dp"
         app:cardCornerRadius="128dp">
         <ImageView
+            android:id="@+id/imgSongImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/musicimage"
@@ -167,7 +171,7 @@
         android:id="@+id/txtSongName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imgSongImage"
+        android:layout_below="@+id/imgSongCardview"
         android:text="Song Name"
         android:textSize="20sp"
         android:textColor="@color/white"
@@ -175,6 +179,7 @@
         android:layout_marginTop="5dp"/>
 
     <TextView
+        android:id="@+id/txtSingerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtSongName"
@@ -183,7 +188,9 @@
         android:layout_centerHorizontal="true"
         android:textSize="12sp"
         android:layout_marginTop="5dp"/>
+
     <TextView
+        android:id="@+id/txtDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -192,4 +199,5 @@
         android:textSize="12sp"
         android:textColor="@color/white"
         android:text="2:50/5:00"/>
+
 </RelativeLayout>

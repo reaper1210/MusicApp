@@ -27,17 +27,17 @@ class SongActivity : AppCompatActivity() {
         binding = ActivitySongBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        back= binding.btnBackSong!!
-        favourites= binding.favourites!!
-        favourites_selected=binding.favouritesSelected!!
+        back= binding.btnBackSong
+        favourites= binding.favourites
+        favourites_selected=binding.favouritesSelected
         favourites_selected.visibility=View.GONE
 
-        addToPlaylists=binding.addtoplaylists!!
-        addToPlaylistsSelected=binding.addtoplaylistsselected!!
+        addToPlaylists=binding.addtoplaylists
+        addToPlaylistsSelected=binding.addtoplaylistsselected
         addToPlaylistsSelected.visibility=View.GONE
 
         play=binding.play
-        pause=binding.pause!!
+        pause= binding.pause
         pause.visibility=View.GONE
 
 

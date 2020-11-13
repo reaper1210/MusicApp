@@ -8,6 +8,7 @@
     android:background="@drawable/background">
 
     <ImageView
+        android:id="@+id/btnBackSong"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="10dp"
@@ -34,8 +35,7 @@
         android:layout_height="36dp"
         android:src="@drawable/play"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="635dp"
-        />
+        android:layout_marginTop="635dp" />
 
     <ImageView
         android:id="@+id/pause"
@@ -43,26 +43,25 @@
         android:layout_height="36dp"
         android:src="@drawable/pause"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="635dp"
-        />
+        android:layout_marginTop="635dp" />
 
     <ImageView
+        android:id="@+id/previous"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_toLeftOf="@+id/play"
         android:src="@drawable/previous"
         android:layout_marginTop="635dp"
-        android:layout_marginRight="15dp"
-        />
+        android:layout_marginRight="15dp" />
 
     <ImageView
+        android:id="@+id/next"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:src="@drawable/next"
         android:layout_toRightOf="@id/play"
         android:layout_marginTop="635dp"
-        android:layout_marginLeft="15dp"
-        />
+        android:layout_marginLeft="15dp" />
 
     <TextView
         android:id="@+id/txtNowplaying"
@@ -71,8 +70,8 @@
         android:text="Now Playing"
         android:textSize="32sp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        />
+        android:layout_marginTop="10dp" />
+
     <SeekBar
         android:id="@+id/volumeseekbar"
         android:layout_width="250dp"
@@ -85,10 +84,10 @@
         android:max="100"
         android:thumb="@drawable/thumb"
         android:padding="50dp"
-        android:progress="50"
-        />
+        android:progress="50" />
 
     <ImageView
+        android:id="@+id/minus"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/volumedown"
@@ -97,6 +96,7 @@
         android:layout_marginBottom="20dp"/>
 
     <ImageView
+        android:id="@+id/plus"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/plus"
@@ -149,33 +149,36 @@
         android:layout_marginRight="20dp" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/imgSongImage"
+        android:id="@+id/imgSongCardview"
         android:layout_width="256dp"
         android:layout_height="256dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/txtNowplaying"
         android:layout_marginTop="50dp"
         app:cardCornerRadius="128dp">
+
         <ImageView
+            android:id="@+id/imgSongImage"
             android:layout_width="256dp"
             android:layout_height="256dp"
             android:src="@drawable/musicimage"
-            android:scaleType="centerCrop"
-            />
+            android:scaleType="centerCrop" />
+
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/txtSongName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imgSongImage"
+        android:layout_below="@+id/imgSongCardview"
         android:text="Song Name"
         android:textSize="32sp"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
     <TextView
+        android:id="@+id/txtSingerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtSongName"
@@ -183,8 +186,10 @@
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:textSize="16sp"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp" />
+
     <TextView
+        android:id="@+id/txtDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -193,4 +198,5 @@
         android:textSize="14sp"
         android:textColor="@color/white"
         android:text="2:50/5:00"/>
+
 </RelativeLayout>

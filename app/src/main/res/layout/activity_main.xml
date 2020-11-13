@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/relateiveGroup"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -27,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
-            android:text="online_songs"
+            android:text="Online Songs"
             android:textSize="25sp" />
 
     </RelativeLayout>
@@ -52,9 +53,22 @@
         android:id="@+id/mainViewPager"
         android:layout_below="@+id/mainTabLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true" />
 
     <ImageView
+        android:id="@+id/dragUpButton"
+        android:layout_width="50dp"
+        android:layout_height="65dp"
+        android:baselineAlignBottom="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:padding="5dp"
+        android:src="@drawable/tab_selected"
+        android:rotation="-90"/>
+
+    <ImageView
+        android:animateLayoutChanges="true"
         android:id="@+id/onlineEllipse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,6 +85,19 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="65dp" />
 
+    <ImageView
+        android:id="@+id/dragDownButton"
+        android:layout_width="50dp"
+        android:layout_height="65dp"
+        android:src="@drawable/tab_selected"
+        android:rotation="90"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/txtSongName"
+        android:layout_marginRight="10dp"
+        android:padding="5dp"
+        android:layout_margin="5dp" />
+
+
     <TextView
         android:id="@+id/txtSongName"
         android:layout_width="wrap_content"
@@ -84,6 +111,7 @@
         android:textColor="@color/white" />
 
     <TextView
+        android:id="@+id/txtDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
