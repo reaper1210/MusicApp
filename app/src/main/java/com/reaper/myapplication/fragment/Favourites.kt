@@ -1,4 +1,4 @@
-package com.reaper.myapplication.Fragment
+package com.reaper.myapplication.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

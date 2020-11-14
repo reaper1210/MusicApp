@@ -1,6 +1,5 @@
-package com.reaper.myapplication.Activity
+package com.reaper.myapplication.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -8,13 +7,12 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import com.reaper.myapplication.Adapter.ViewPagerAdapter
+import com.reaper.myapplication.adapter.ViewPagerAdapter
 import com.reaper.myapplication.R
 import com.reaper.myapplication.databinding.ActivityMainBinding
 

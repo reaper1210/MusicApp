@@ -1,4 +1,4 @@
-package com.reaper.myapplication.Fragment
+package com.reaper.myapplication.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.reaper.myapplication.Adapter.online_adapter
+import com.reaper.myapplication.adapter.online_adapter
 import com.reaper.myapplication.R
 
 class OnlineSongs : Fragment() {

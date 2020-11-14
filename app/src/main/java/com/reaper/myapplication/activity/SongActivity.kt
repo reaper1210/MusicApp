@@ -1,14 +1,11 @@
-package com.reaper.myapplication.Activity
+package com.reaper.myapplication.activity
 
 import android.content.Intent
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
-import com.reaper.myapplication.R
 import com.reaper.myapplication.databinding.ActivitySongBinding
 
 class SongActivity : AppCompatActivity() {

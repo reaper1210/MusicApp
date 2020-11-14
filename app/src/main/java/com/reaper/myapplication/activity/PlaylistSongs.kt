@@ -1,4 +1,4 @@
-package com.reaper.myapplication.Activity
+package com.reaper.myapplication.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
