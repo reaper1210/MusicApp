@@ -64,11 +64,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:padding="5dp"
-        android:src="@drawable/tab_selected"
-        android:rotation="-90"/>
+        android:src="@drawable/dragupbutton" />
 
     <ImageView
-        android:animateLayoutChanges="true"
         android:id="@+id/onlineEllipse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,8 +87,7 @@
         android:id="@+id/dragDownButton"
         android:layout_width="50dp"
         android:layout_height="65dp"
-        android:src="@drawable/tab_selected"
-        android:rotation="90"
+        android:src="@drawable/dragdownbutton"
         android:layout_alignParentRight="true"
         android:layout_above="@+id/txtSongName"
         android:layout_marginRight="10dp"

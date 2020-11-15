@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.reaper.myapplication.R
-import com.reaper.myapplication.adapter.online_adapter
+import com.reaper.myapplication.adapter.MySongs
 
 class Playlists : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: online_adapter
+    private lateinit var adapter: MySongs
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,7 +24,7 @@ class Playlists : Fragment() {
         val itemsList= fetchData()
 
         recyclerView = view.findViewById(R.id.playlistRecyclerView)
-        adapter = online_adapter(itemsList,this.context)
+        adapter = MySongs(itemsList,context)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context)
 

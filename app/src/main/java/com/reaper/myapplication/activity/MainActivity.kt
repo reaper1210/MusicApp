@@ -12,8 +12,8 @@ import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import com.reaper.myapplication.adapter.ViewPagerAdapter
 import com.reaper.myapplication.R
+import com.reaper.myapplication.adapter.ViewPagerAdapter
 import com.reaper.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -29,11 +29,14 @@ class MainActivity : AppCompatActivity() {
     lateinit var txtDuration:TextView
     lateinit var dragDownButton:ImageView
     lateinit var relativeGroup:RelativeLayout
+    lateinit var title:TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        title=binding.titleMain
 
         onlineEllipse=binding.onlineEllipse
         onlineEllipse.visibility=View.GONE
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         dragDownButton.visibility=View.INVISIBLE
 
         viewPager=binding.mainViewPager
-        viewPagerAdapter= ViewPagerAdapter(supportFragmentManager)
+        viewPagerAdapter= ViewPagerAdapter(supportFragmentManager,title)
 
         viewPager.adapter=viewPagerAdapter
         tablayout=binding.mainTabLayout
@@ -104,7 +107,6 @@ class MainActivity : AppCompatActivity() {
                 dragDownButton.visibility=View.INVISIBLE
             }
         }
-
 
         setUpTabIcons()
 

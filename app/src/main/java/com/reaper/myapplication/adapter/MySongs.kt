@@ -11,8 +11,9 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.reaper.myapplication.activity.SongActivity
 import com.reaper.myapplication.R
+import com.reaper.myapplication.utils.SongInfo
 
-class online_adapter(private val items:ArrayList<String>, val context: Context?): RecyclerView.Adapter<online_viewholder>() {
+class MySongs(val items: ArrayList<String>, val context: Context?): RecyclerView.Adapter<online_viewholder>() {
     val itemSize=items.size
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): online_viewholder {
         val view=LayoutInflater.from(parent.context).inflate(R.layout.online_single_row,parent,false)
