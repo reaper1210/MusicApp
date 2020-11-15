@@ -5,16 +5,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.reaper.myapplication.R
+import com.reaper.myapplication.adapter.online_adapter
 
 class Favourites : Fragment() {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter:online_adapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favourites, container, false)
+        val view = inflater.inflate(R.layout.fragment_favourites, container, false)
+
+        val itemsList= fetchData()
+
+        recyclerView = view.findViewById(R.id.favouritesRecyclerView)
+        adapter = online_adapter(itemsList,this.context)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this.context)
+
+        return view
     }
 
 }

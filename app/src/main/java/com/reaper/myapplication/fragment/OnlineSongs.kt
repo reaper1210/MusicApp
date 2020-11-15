@@ -17,16 +17,18 @@ class OnlineSongs : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view=inflater.inflate(R.layout.fragment_online_songs, container, false)
-        recyclerView= view.findViewById(R.id.recyclerView)
+        recyclerView= view.findViewById(R.id.onlineRecyclerView)
         recyclerView.layoutManager=LinearLayoutManager(this.context)
+
         val items= fetchData()
         val adapter:online_adapter= online_adapter(items,this.context)
         recyclerView.adapter=adapter
+
         return view
     }
 }
 
-private fun fetchData():ArrayList<String>{
+fun fetchData():ArrayList<String>{
     val list=ArrayList<String>()
     for(i in 1 until 50){
         list.add("Song $i")
