@@ -5,16 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.reaper.myapplication.adapter.MySongs
+import com.reaper.myapplication.adapter.MySongsAdapter
 import com.reaper.myapplication.R
-import com.reaper.myapplication.utils.SongInfo
+import com.reaper.myapplication.utils.MySongInfo
 
 class OnlineSongs : Fragment() {
     lateinit var OnlinerecyclerView:RecyclerView
-    val songs= ArrayList<SongInfo>()
+    val songs= ArrayList<MySongInfo>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,7 +22,7 @@ class OnlineSongs : Fragment() {
         OnlinerecyclerView= view.findViewById(R.id.onlineRecyclerView)
         OnlinerecyclerView.layoutManager=LinearLayoutManager(this.context)
         val items= fetchData()
-        val adapter: MySongs = MySongs(items,this.context)
+        val adapter: MySongsAdapter = MySongsAdapter(items,this.context)
         OnlinerecyclerView.adapter=adapter
 
         return view

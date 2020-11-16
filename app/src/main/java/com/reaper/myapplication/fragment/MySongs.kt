@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.reaper.myapplication.R
-import com.reaper.myapplication.adapter.MySongs
+import com.reaper.myapplication.adapter.MySongsAdapter
 
 class MySongs : Fragment() {
 
     private lateinit var recyclerView:RecyclerView
-    private lateinit var adapter: MySongs
+    private lateinit var adapter: MySongsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,7 +24,7 @@ class MySongs : Fragment() {
         val itemsList= fetchData()
 
         recyclerView = view.findViewById(R.id.mySongsRecyclerView)
-        adapter = MySongs(itemsList,context)
+        adapter = MySongsAdapter(itemsList,context)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context)
 

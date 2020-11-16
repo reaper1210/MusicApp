@@ -162,7 +162,7 @@
             android:id="@+id/imgSongImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/musicimage"
+            android:src="@drawable/music_image"
             android:scaleType="centerCrop"
             />
     </androidx.cardview.widget.CardView>

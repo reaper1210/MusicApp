@@ -11,23 +11,24 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.reaper.myapplication.activity.SongActivity
 import com.reaper.myapplication.R
-import com.reaper.myapplication.utils.SongInfo
 
-class MySongs(val items: ArrayList<String>, val context: Context?): RecyclerView.Adapter<online_viewholder>() {
+class MySongsAdapter(val items: ArrayList<String>, val context: Context?): RecyclerView.Adapter<MySongsViewHolder>() {
+
     val itemSize=items.size
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): online_viewholder {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MySongsViewHolder {
         val view=LayoutInflater.from(parent.context).inflate(R.layout.online_single_row,parent,false)
-        return online_viewholder(view)
+        return MySongsViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    override fun onBindViewHolder(holder: online_viewholder, position: Int) {
+    override fun onBindViewHolder(holder: MySongsViewHolder, position: Int) {
         if(position<items.size){
             val currentSong=items[position]
-            holder.TitleSongName.text=currentSong
+            holder.titleSongName.text=currentSong
             holder.cardView.setOnClickListener {
                 Toast.makeText(context,"Theek hai bhai",Toast.LENGTH_LONG).show()
                 val intent=Intent(context,SongActivity::class.java)
@@ -37,7 +38,7 @@ class MySongs(val items: ArrayList<String>, val context: Context?): RecyclerView
     }
 }
 
-class online_viewholder(view:View):RecyclerView.ViewHolder(view){
-    val TitleSongName:TextView=view.findViewById(R.id.TitleSongName)
+class MySongsViewHolder(view:View):RecyclerView.ViewHolder(view){
+    val titleSongName:TextView=view.findViewById(R.id.txtSongName)
     val cardView=view.findViewById<CardView>(R.id.onlineCardView)
 }
