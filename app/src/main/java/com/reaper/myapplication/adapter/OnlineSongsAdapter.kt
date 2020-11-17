@@ -15,6 +15,7 @@ import com.reaper.myapplication.activity.SongActivity
 import com.reaper.myapplication.utils.OnlineSongsInfo
 
 class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val context: Context?):RecyclerView.Adapter<OnlineSongsAdapter.OnlineSongsViewHolder>() {
+     var onItemClickListener: OnItemClickListener? = null
 
     class OnlineSongsViewHolder(view:View): RecyclerView.ViewHolder(view){
         val songName: TextView = view.findViewById(R.id.txtSongName)
@@ -28,12 +29,22 @@ class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val c
         return OnlineSongsViewHolder(view)
     }
 
+    public interface OnItemClickListener{
+        fun onItemClick(view: View,songsInfo: OnlineSongsInfo,position: Int)
+    }
+    public fun SetOnItemClickListener(onItemClickListener: OnItemClickListener){
+        this.onItemClickListener=onItemClickListener
+    }
+
     override fun onBindViewHolder(holder: OnlineSongsViewHolder, position: Int) {
-        holder.songName.text = itemList[position].name
-        holder.duration.text = itemList[position].duration.toString()
+        val songInfo=itemList[position]
+        holder.songName.text = songInfo.name
+        holder.duration.text = songInfo.duration.toString()
         holder.image.setImageResource(R.drawable.music_image)
         holder.cardView.setOnClickListener {
-            Toast.makeText(context,"Theek hai bhai", Toast.LENGTH_LONG).show()
+            if(onItemClickListener!=null){
+                onItemClickListener?.onItemClick(it,songInfo,position)
+            }
             val intent= Intent(context, SongActivity::class.java)
             context?.startActivity(intent)
         }
