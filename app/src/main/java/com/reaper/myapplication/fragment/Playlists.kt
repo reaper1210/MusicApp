@@ -21,10 +21,8 @@ class Playlists : Fragment() {
     ): View? {
         val view =  inflater.inflate(R.layout.fragment_playlists, container, false)
 
-        val itemsList= fetchData()
 
         recyclerView = view.findViewById(R.id.playlistRecyclerView)
-        adapter = MySongsAdapter(itemsList,context)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context)
 

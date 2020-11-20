@@ -16,8 +16,8 @@ class MySongs : Fragment() {
     private lateinit var adapter: MySongsAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_my_songs, container, false)
 
@@ -31,4 +31,11 @@ class MySongs : Fragment() {
         return view
     }
 
+}
+fun fetchData():ArrayList<String>{
+    val list=ArrayList<String>()
+    for(i in 1 until 50){
+        list.add("Song $i")
+    }
+    return list
 }

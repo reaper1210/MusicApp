@@ -1,12 +1,14 @@
 package com.reaper.myapplication.activity
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.reaper.myapplication.databinding.ActivitySongBinding
+import java.time.Duration
 
 class SongActivity : AppCompatActivity() {
 
@@ -18,6 +20,7 @@ class SongActivity : AppCompatActivity() {
     lateinit var play:ImageView
     lateinit var pause:ImageView
     lateinit var binding: ActivitySongBinding
+    lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +28,7 @@ class SongActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         back= binding.btnBackSong
+
         favourites= binding.favourites
         favourites_selected=binding.favouritesSelected
         favourites_selected.visibility=View.GONE
@@ -36,6 +40,8 @@ class SongActivity : AppCompatActivity() {
         play=binding.play
         pause= binding.pause
         pause.visibility=View.GONE
+
+        mediaPlayer= MediaPlayer()
 
 
         back.setOnClickListener {
@@ -66,6 +72,7 @@ class SongActivity : AppCompatActivity() {
         play.setOnClickListener {
             play.visibility=View.INVISIBLE
             pause.visibility=View.VISIBLE
+
         }
 
         pause.setOnClickListener {

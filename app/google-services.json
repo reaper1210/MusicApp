@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "826869174710",
+    "firebase_url": "https://music-app-8423a.firebaseio.com",
+    "project_id": "music-app-8423a",
+    "storage_bucket": "music-app-8423a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826869174710:android:bc1cfca98b78d172ebb117",
+        "android_client_info": {
+          "package_name": "com.reaper.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "826869174710-egoj3gecu29lb59frqrsvdo0pvg39psj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKsw7uKoNcME94gUNSoJmCZ8w_ZnTOspk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "826869174710-egoj3gecu29lb59frqrsvdo0pvg39psj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

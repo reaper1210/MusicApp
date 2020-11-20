@@ -19,7 +19,7 @@ class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val c
 
     class OnlineSongsViewHolder(view:View): RecyclerView.ViewHolder(view){
         val songName: TextView = view.findViewById(R.id.txtSongName)
-        val duration: TextView = view.findViewById(R.id.txtDuration)
+        val artist: TextView = view.findViewById(R.id.txtDuration)
         val cardView: CardView = view.findViewById(R.id.onlineCardView)
         val image: ImageView = view.findViewById(R.id.imgSongOnline)
     }
@@ -39,7 +39,8 @@ class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val c
     override fun onBindViewHolder(holder: OnlineSongsViewHolder, position: Int) {
         val songInfo=itemList[position]
         holder.songName.text = songInfo.name
-        holder.duration.text = songInfo.duration.toString()
+        holder.artist.text=songInfo.artist
+//        holder.duration.text = songInfo.duration.toString()
         holder.image.setImageResource(R.drawable.music_image)
         holder.cardView.setOnClickListener {
             if(onItemClickListener!=null){

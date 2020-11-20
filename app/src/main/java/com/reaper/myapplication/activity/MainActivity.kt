@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         dragUpButton.setOnClickListener {
                 dragUpButton.animate().apply {
-                    duration = 500
+                    duration = 300
                     rotationXBy(360f)
                 }.withEndAction {
                     val transition: Transition = Slide(Gravity.BOTTOM)
@@ -80,15 +80,15 @@ class MainActivity : AppCompatActivity() {
                     dragUpButton.visibility=View.GONE
                     onlineEllipse.visibility = View.VISIBLE
                     onlinePlay.visibility = View.VISIBLE
+                    dragDownButton.visibility = View.VISIBLE
                     txtSongName.visibility = View.VISIBLE
                     txtDuration.visibility = View.VISIBLE
-                    dragDownButton.visibility = View.VISIBLE
                 }
         }
 
         dragDownButton.setOnClickListener {
             dragDownButton.animate().apply {
-                duration=500
+                duration=300
                 rotationXBy(360f)
             }.withEndAction {
                 val transition: Transition = Slide(Gravity.BOTTOM)
@@ -100,11 +100,11 @@ class MainActivity : AppCompatActivity() {
                 transition.addTarget(R.id.dragDownButton)
                 TransitionManager.beginDelayedTransition(relativeGroup, transition)
                 dragUpButton.visibility=View.VISIBLE
-                onlineEllipse.visibility=View.INVISIBLE
-                onlinePlay.visibility=View.INVISIBLE
-                txtSongName.visibility=View.INVISIBLE
-                txtDuration.visibility=View.INVISIBLE
-                dragDownButton.visibility=View.INVISIBLE
+                onlineEllipse.visibility=View.GONE
+                onlinePlay.visibility=View.GONE
+                txtSongName.visibility=View.GONE
+                txtDuration.visibility=View.GONE
+                dragDownButton.visibility=View.GONE
             }
         }
 

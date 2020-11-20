@@ -1,11 +1,13 @@
 package com.reaper.myapplication.utils
 
+import android.net.Uri
+import java.net.URL
+import java.time.Duration
+
 data class OnlineSongsInfo(
 
     val name:String,
-    val duration:Int,
     val artist:String,
-    val image:String,
     val url: String
 
 )
