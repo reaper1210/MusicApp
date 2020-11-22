@@ -7,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.reaper.myapplication.R
 import com.reaper.myapplication.activity.SongActivity
+import com.reaper.myapplication.utils.MySongInfo
 import com.reaper.myapplication.utils.OnlineSongsInfo
 
 class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val context: Context?):RecyclerView.Adapter<OnlineSongsAdapter.OnlineSongsViewHolder>() {
-     var onItemClickListener: OnItemClickListener? = null
+
+    var onItemClickListener: OnItemClickListener? = null
 
     class OnlineSongsViewHolder(view:View): RecyclerView.ViewHolder(view){
         val songName: TextView = view.findViewById(R.id.txtSongName)
@@ -30,8 +31,9 @@ class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val c
     }
 
     public interface OnItemClickListener{
-        fun onItemClick(view: View,songsInfo: OnlineSongsInfo,position: Int)
+        fun onItemClick(view: View, songsInfo: OnlineSongsInfo, position: Int)
     }
+
     public fun SetOnItemClickListener(onItemClickListener: OnItemClickListener){
         this.onItemClickListener=onItemClickListener
     }
@@ -40,7 +42,6 @@ class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val c
         val songInfo=itemList[position]
         holder.songName.text = songInfo.name
         holder.artist.text=songInfo.artist
-//        holder.duration.text = songInfo.duration.toString()
         holder.image.setImageResource(R.drawable.music_image)
         holder.cardView.setOnClickListener {
             if(onItemClickListener!=null){

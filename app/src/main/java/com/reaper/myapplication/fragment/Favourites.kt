@@ -21,11 +21,6 @@ class Favourites : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_favourites, container, false)
 
-
-        recyclerView = view.findViewById(R.id.favouritesRecyclerView)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this.context)
-
         return view
     }
 

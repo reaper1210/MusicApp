@@ -6,15 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.reaper.myapplication.activity.SongActivity
 import com.reaper.myapplication.R
+import com.reaper.myapplication.utils.MySongInfo
+import com.reaper.myapplication.utils.OnlineSongsInfo
 
-class MySongsAdapter(val items: ArrayList<String>, val context: Context?): RecyclerView.Adapter<MySongsViewHolder>() {
+class MySongsAdapter(val items: ArrayList<MySongInfo>, val context: Context?): RecyclerView.Adapter<MySongsViewHolder>() {
 
-    val itemSize=items.size
+    var onItemClickListener: MySongsAdapter.OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MySongsViewHolder {
         val view=LayoutInflater.from(parent.context).inflate(R.layout.online_single_row,parent,false)
@@ -25,13 +26,24 @@ class MySongsAdapter(val items: ArrayList<String>, val context: Context?): Recyc
         return items.size
     }
 
+    public interface OnItemClickListener {
+        fun onItemClick(view: View, songInfo: MySongInfo, position: Int)
+    }
+
+    public fun SetOnItemClickListener(onItemClickListener: OnItemClickListener){
+        this.onItemClickListener=onItemClickListener
+    }
+
     override fun onBindViewHolder(holder: MySongsViewHolder, position: Int) {
         if(position<items.size){
             val currentSong=items[position]
-            holder.titleSongName.text=currentSong
+            holder.titleSongName.text=currentSong.name
+            holder.duration.text=currentSong.artist
             holder.cardView.setOnClickListener {
-                Toast.makeText(context,"Theek hai bhai",Toast.LENGTH_LONG).show()
-                val intent=Intent(context,SongActivity::class.java)
+                if(onItemClickListener!=null){
+                    this.onItemClickListener?.onItemClick(it,currentSong,position)
+                }
+                val intent= Intent(context, SongActivity::class.java)
                 context?.startActivity(intent)
             }
         }
@@ -40,5 +52,6 @@ class MySongsAdapter(val items: ArrayList<String>, val context: Context?): Recyc
 
 class MySongsViewHolder(view:View):RecyclerView.ViewHolder(view){
     val titleSongName:TextView=view.findViewById(R.id.txtSongName)
+    val duration:TextView=view.findViewById(R.id.txtDuration)
     val cardView=view.findViewById<CardView>(R.id.onlineCardView)
 }

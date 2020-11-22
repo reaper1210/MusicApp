@@ -1,10 +1,6 @@
 package com.reaper.myapplication.fragment
 
-import android.app.Activity
 import android.content.pm.PackageManager
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.media.Image
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -14,24 +10,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Switch
 import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentResolverCompat
-import androidx.core.content.ContentResolverCompat.query
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import com.reaper.myapplication.R
+import com.reaper.myapplication.adapter.MySongsAdapter
 import com.reaper.myapplication.adapter.OnlineSongsAdapter
+import com.reaper.myapplication.utils.MySongInfo
 import com.reaper.myapplication.utils.OnlineSongsInfo
-import java.util.jar.Manifest
-import android.content.ContentResolver as ContentResolver
-import android.content.Context as Context
 
 
 class OnlineSongs : Fragment() {
@@ -41,8 +31,6 @@ class OnlineSongs : Fragment() {
     lateinit var mediaPlayer: MediaPlayer
     lateinit var databaseReference:DatabaseReference
     val songs= ArrayList<OnlineSongsInfo>()
-    val pontext=this.context
-
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -57,29 +45,25 @@ class OnlineSongs : Fragment() {
                 }
             }
             override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
             }
         })
 
         val view=inflater.inflate(R.layout.fragment_online_songs, container, false)
         OnlinerecyclerView= view.findViewById(R.id.onlineRecyclerView)
         OnlinerecyclerView.layoutManager=LinearLayoutManager(this.context)
-        val adapter: OnlineSongsAdapter = OnlineSongsAdapter(songs, this.context)
-
         checkPermission()
 
         return view
     }
     private fun checkPermission() {
         if(Build.VERSION.SDK_INT >= 23){
-        if(pontext?.let { ContextCompat.checkSelfPermission(it,android.Manifest.permission.READ_EXTERNAL_STORAGE) } !=
-                PackageManager.PERMISSION_GRANTED) {
-            val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-            this.requestPermissions(permissions, 5)
-        }
+            if(requireActivity().let { ContextCompat.checkSelfPermission(it,android.Manifest.permission.READ_EXTERNAL_STORAGE) } != PackageManager.PERMISSION_GRANTED) {
+                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                this.requestPermissions(permissions, 5)
+            }
             else{
-            Toast.makeText(this.context,"Error bahenchod",Toast.LENGTH_LONG)
-        }
+                Toast.makeText(this.context,"Error bahenchod",Toast.LENGTH_LONG).show()
+            }
         }
         else{
             loadSongs()
@@ -92,11 +76,11 @@ class OnlineSongs : Fragment() {
                loadSongs()
            }
            else{
-               Toast.makeText(this.context,"Permission Denied",Toast.LENGTH_LONG)
+               Toast.makeText(this.context,"Permission Denied",Toast.LENGTH_LONG).show()
            }
        }
         else{
-           Toast.makeText(this.context,"Permission Leni chahiye na",Toast.LENGTH_LONG)
+           Toast.makeText(this.context,"Permission Leni chahiye na",Toast.LENGTH_LONG).show()
        }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
@@ -112,24 +96,20 @@ class OnlineSongs : Fragment() {
                 val artist: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
                 val url: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))
 
-                val s:OnlineSongsInfo= OnlineSongsInfo(name,artist,url)
+                val s= OnlineSongsInfo(name,artist,url)
                 songs.add(s)
 
             }while (cursor.moveToNext())
         }
         cursor.close()
-        val songAdapter:OnlineSongsAdapter=OnlineSongsAdapter(songs,this.context)
+        val songAdapter=OnlineSongsAdapter(songs,this.context)
         OnlinerecyclerView.adapter=songAdapter
         songAdapter.SetOnItemClickListener(object : OnlineSongsAdapter.OnItemClickListener {
-            override fun onItemClick(view: View, songsInfo: OnlineSongsInfo, position: Int) {
-                mediaPlayer = MediaPlayer()
-                mediaPlayer.setDataSource(songsInfo.url)
+            override fun onItemClick(view: View, songInfo: OnlineSongsInfo, position: Int) {
+                mediaPlayer=MediaPlayer()
+                mediaPlayer.setDataSource(songInfo.url)
                 mediaPlayer.prepareAsync()
-                mediaPlayer.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
-                    override fun onPrepared(p0: MediaPlayer?) {
-                        mediaPlayer.start()
-                    }
-                })
+                mediaPlayer.setOnPreparedListener { mediaPlayer.start() }
             }
         })
     }
