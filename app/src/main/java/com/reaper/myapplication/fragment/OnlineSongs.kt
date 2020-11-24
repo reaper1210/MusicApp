@@ -1,10 +1,14 @@
 package com.reaper.myapplication.fragment
 
+import android.content.Context
 import android.media.MediaPlayer
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
@@ -21,6 +25,8 @@ class OnlineSongs : Fragment() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var progressbar: ProgressBar
     private lateinit var progressLayout: RelativeLayout
+    lateinit var noInternetImage:ImageView
+    lateinit var noInternetLayout:RelativeLayout
     private val songs= ArrayList<OnlineSongsInfo>()
     private val pontext = this.context
 
@@ -28,14 +34,34 @@ class OnlineSongs : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        val connectivityManager:ConnectivityManager
         val view=inflater.inflate(R.layout.fragment_online_songs, container, false)
         onlinerecyclerView= view.findViewById(R.id.onlineRecyclerView)
         onlinerecyclerView.layoutManager=LinearLayoutManager(this.context)
 
         progressLayout = view.findViewById(R.id.progressLayoutOnlineSongs)
         progressbar = view.findViewById(R.id.progressBarOnlineSongs)
-        progressLayout.visibility = View.VISIBLE
-        LoadSongs()
+        noInternetLayout=view.findViewById(R.id.noInternetLayout)
+        noInternetImage=view.findViewById(R.id.imgNoInternetImage)
+        if(checkConnectivity(activity as Context)){
+
+            noInternetImage.visibility=View.GONE
+            noInternetLayout.visibility=View.GONE
+            progressLayout.visibility=View.VISIBLE
+            progressbar.visibility=View.VISIBLE
+
+            LoadSongs()
+
+        }
+
+        else{
+
+            progressLayout.visibility=View.GONE
+            progressbar.visibility=View.GONE
+            noInternetImage.visibility=View.VISIBLE
+            noInternetImage.visibility=View.VISIBLE
+
+        }
 
         return view
     }
@@ -47,9 +73,17 @@ class OnlineSongs : Fragment() {
         val getData = object: ValueEventListener{
 
             override fun onCancelled(error: DatabaseError) {
+                progressLayout.visibility=View.VISIBLE
+                progressbar.visibility=View.VISIBLE
+//                noInternetLayout.visibility=View.GONE
+//                noInternetImage.visibility=View.GONE
+
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
+
+                progressLayout.visibility=View.GONE
+                progressbar.visibility=View.GONE
 
                 songs.clear()
 
@@ -81,8 +115,20 @@ class OnlineSongs : Fragment() {
 
         database.addValueEventListener(getData)
         database.addListenerForSingleValueEvent(getData)
-        progressLayout.visibility = View.GONE
 
     }
+    fun checkConnectivity(context: Context?):Boolean{
+        val connectivityManager= context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+        val activeNetwork: NetworkInfo?=connectivityManager.activeNetworkInfo
+
+        if(activeNetwork?.isConnected!=null){
+            progressLayout.visibility=View.GONE
+            progressbar.visibility=View.GONE
+            return activeNetwork.isConnected
+        }
+        else{
+            return false
+        }
+    }
 }

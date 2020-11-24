@@ -11,6 +11,31 @@
         android:layout_height="match_parent" />
 
     <RelativeLayout
+        android:id="@+id/noInternetLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#80656565"
+        android:layout_centerInParent="true" >
+
+        <ImageView
+            android:id="@+id/imgNoInternetImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/nointernet"
+            android:padding="50dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-150dp"
+            android:textSize="28dp"
+            android:layout_centerInParent="true"
+            android:text="You are Offline"
+            android:layout_below="@+id/imgNoInternetImage" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/progressLayoutOnlineSongs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,6 +43,8 @@
 
         <ProgressBar
             android:id="@+id/progressBarOnlineSongs"
+            android:progressTint="@color/pinkOp"
+            android:progressDrawable="@drawable/pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

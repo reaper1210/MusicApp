@@ -11,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -28,6 +30,10 @@ class MySongs : Fragment() {
     lateinit var OnlinerecyclerView:RecyclerView
     lateinit var cardView: CardView
     lateinit var songImage: ImageView
+    lateinit var progressBar: ProgressBar
+    lateinit var progressLayout:RelativeLayout
+    private lateinit var noInternetImage:ImageView
+    private lateinit var noInternetLayout:RelativeLayout
     lateinit var mediaPlayer: MediaPlayer
     val songs= ArrayList<MySongInfo>()
     val pontext=this.context
@@ -36,7 +42,14 @@ class MySongs : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view=inflater.inflate(R.layout.fragment_online_songs, container, false)
+        noInternetLayout= view.findViewById(R.id.noInternetLayout)
+        noInternetImage=view.findViewById(R.id.imgNoInternetImage)
+        noInternetLayout.visibility=View.GONE
+        noInternetImage.visibility=View.GONE
+        progressBar=view.findViewById(R.id.progressBarOnlineSongs)
+        progressLayout=view.findViewById(R.id.progressLayoutOnlineSongs)
         OnlinerecyclerView= view.findViewById(R.id.onlineRecyclerView)
         OnlinerecyclerView.layoutManager=LinearLayoutManager(this.context)
 
@@ -63,6 +76,8 @@ class MySongs : Fragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if(requestCode==5){
             if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                progressLayout.visibility=View.GONE
+                progressBar.visibility=View.GONE
                 loadSongs()
             }
             else{

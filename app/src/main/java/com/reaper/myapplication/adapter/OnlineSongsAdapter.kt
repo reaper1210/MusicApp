@@ -47,6 +47,8 @@ class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val c
             if(onItemClickListener!=null){
                 onItemClickListener?.onItemClick(it,songInfo,position)
             }
+//            val intent= Intent(context, SongActivity::class.java)
+//            context!!.startActivity(intent)
         }
     }
 
