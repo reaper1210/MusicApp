@@ -18,6 +18,7 @@ import com.google.firebase.database.*
 import com.reaper.myapplication.R
 import com.reaper.myapplication.adapter.OnlineSongsAdapter
 import com.reaper.myapplication.utils.OnlineSongsInfo
+import java.net.URL
 
 
 class OnlineSongs : Fragment() {
@@ -34,6 +35,7 @@ class OnlineSongs : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+
         val connectivityManager:ConnectivityManager
         val view=inflater.inflate(R.layout.fragment_online_songs, container, false)
         onlinerecyclerView= view.findViewById(R.id.onlineRecyclerView)
@@ -43,24 +45,21 @@ class OnlineSongs : Fragment() {
         progressbar = view.findViewById(R.id.progressBarOnlineSongs)
         noInternetLayout=view.findViewById(R.id.noInternetLayout)
         noInternetImage=view.findViewById(R.id.imgNoInternetImage)
-        if(checkConnectivity(activity as Context)){
 
+        if(checkConnectivity(activity as Context)){
             noInternetImage.visibility=View.GONE
             noInternetLayout.visibility=View.GONE
             progressLayout.visibility=View.VISIBLE
             progressbar.visibility=View.VISIBLE
 
             LoadSongs()
-
         }
 
         else{
-
             progressLayout.visibility=View.GONE
             progressbar.visibility=View.GONE
             noInternetImage.visibility=View.VISIBLE
             noInternetImage.visibility=View.VISIBLE
-
         }
 
         return view
@@ -75,9 +74,6 @@ class OnlineSongs : Fragment() {
             override fun onCancelled(error: DatabaseError) {
                 progressLayout.visibility=View.VISIBLE
                 progressbar.visibility=View.VISIBLE
-//                noInternetLayout.visibility=View.GONE
-//                noInternetImage.visibility=View.GONE
-
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -92,14 +88,14 @@ class OnlineSongs : Fragment() {
 
                     val songName = i.child("SongName").value.toString()
                     val songArtist = i.child("artist").value.toString()
+                    val songImage=i.child("image").value.toString()
                     val songUrl = i.child("url").value.toString()
-
-                    val songInfo = OnlineSongsInfo(songName,songArtist,songUrl)
+                    val songInfo = OnlineSongsInfo(songName,songArtist, songImage,songUrl)
 
                     songs.add(songInfo)
 
                 }
-                val songAdapter=OnlineSongsAdapter(songs,pontext)
+                val songAdapter=OnlineSongsAdapter(songs, context!!)
                 onlinerecyclerView.adapter=songAdapter
 
                 songAdapter.SetOnItemClickListener(object : OnlineSongsAdapter.OnItemClickListener {
@@ -107,7 +103,8 @@ class OnlineSongs : Fragment() {
                         mediaPlayer=MediaPlayer()
                         mediaPlayer.setDataSource(songInfo.url)
                         mediaPlayer.prepareAsync()
-                        mediaPlayer.setOnPreparedListener { mediaPlayer.start() }
+                        mediaPlayer.setOnPreparedListener {
+                            mediaPlayer.start() }
                     }
                 })
             }

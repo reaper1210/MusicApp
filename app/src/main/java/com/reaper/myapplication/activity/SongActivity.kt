@@ -20,7 +20,6 @@ class SongActivity : AppCompatActivity() {
     lateinit var play:ImageView
     lateinit var pause:ImageView
     lateinit var binding: ActivitySongBinding
-    lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +39,6 @@ class SongActivity : AppCompatActivity() {
         play=binding.play
         pause= binding.pause
         pause.visibility=View.GONE
-
-        mediaPlayer= MediaPlayer()
 
 
         back.setOnClickListener {

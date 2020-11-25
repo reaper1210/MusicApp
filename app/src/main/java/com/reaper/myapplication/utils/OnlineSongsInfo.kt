@@ -8,6 +8,6 @@ data class OnlineSongsInfo(
 
     val name:String,
     val artist:String,
+    val image:String,
     val url: String
-
 )

@@ -20,9 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.reaper.myapplication.R
 import com.reaper.myapplication.adapter.MySongsAdapter
-import com.reaper.myapplication.adapter.OnlineSongsAdapter
 import com.reaper.myapplication.utils.MySongInfo
-import com.reaper.myapplication.utils.OnlineSongsInfo
 import java.io.File
 
 class MySongs : Fragment() {
@@ -91,7 +89,7 @@ class MySongs : Fragment() {
     }
 
     private fun loadSongs(){
-        val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+          val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val selection:String= MediaStore.Audio.Media.IS_MUSIC
         val cursor = requireActivity().contentResolver.query(uri,null,selection,null,null,null)!!
 
@@ -110,11 +108,13 @@ class MySongs : Fragment() {
         val songAdapter = MySongsAdapter(songs,this.context)
         OnlinerecyclerView.adapter=songAdapter
         songAdapter.SetOnItemClickListener(object : MySongsAdapter.OnItemClickListener {
-            override fun onItemClick(view: View, songInfo: MySongInfo, position: Int) {
+            override fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int) {
                 mediaPlayer = MediaPlayer()
-                mediaPlayer.setDataSource(context!!,songInfo.uri!!)
+                mediaPlayer.setDataSource(context!!, songInfo.uri!!)
                 mediaPlayer.prepareAsync()
-                mediaPlayer.setOnPreparedListener { mediaPlayer.start() }
+                mediaPlayer.setOnPreparedListener {
+                        mediaPlayer.start()
+                }
             }
         })
     }

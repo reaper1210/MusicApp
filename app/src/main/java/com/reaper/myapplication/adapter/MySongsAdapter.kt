@@ -27,7 +27,7 @@ class MySongsAdapter(val items: ArrayList<MySongInfo>, val context: Context?): R
     }
 
     public interface OnItemClickListener {
-        fun onItemClick(view: View, songInfo: MySongInfo, position: Int)
+        fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int)
     }
 
     public fun SetOnItemClickListener(onItemClickListener: OnItemClickListener){
@@ -41,10 +41,10 @@ class MySongsAdapter(val items: ArrayList<MySongInfo>, val context: Context?): R
             holder.duration.text=currentSong.artist
             holder.cardView.setOnClickListener {
                 if(onItemClickListener!=null){
-                    this.onItemClickListener?.onItemClick(it,currentSong,position)
+                    this.onItemClickListener?.onItemClick(this,currentSong,position)
                 }
-                val intent= Intent(context, SongActivity::class.java)
-                context?.startActivity(intent)
+//                val intent= Intent(context, SongActivity::class.java)
+//                context?.startActivity(intent)
             }
         }
     }
