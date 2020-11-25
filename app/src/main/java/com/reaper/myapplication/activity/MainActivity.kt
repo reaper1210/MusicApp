@@ -1,5 +1,6 @@
 package com.reaper.myapplication.activity
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var dragDownButton:ImageView
     lateinit var relativeGroup:RelativeLayout
     lateinit var title:TextView
+    var mediaPlayer = MediaPlayer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

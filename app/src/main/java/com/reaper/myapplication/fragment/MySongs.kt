@@ -1,7 +1,6 @@
 package com.reaper.myapplication.fragment
 
 import android.content.pm.PackageManager
-import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,27 +13,25 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.reaper.myapplication.R
+import com.reaper.myapplication.activity.MainActivity
 import com.reaper.myapplication.adapter.MySongsAdapter
 import com.reaper.myapplication.utils.MySongInfo
 import java.io.File
 
 class MySongs : Fragment() {
 
-    lateinit var OnlinerecyclerView:RecyclerView
-    lateinit var cardView: CardView
-    lateinit var songImage: ImageView
-    lateinit var progressBar: ProgressBar
-    lateinit var progressLayout:RelativeLayout
+    private lateinit var OnlinerecyclerView:RecyclerView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var progressLayout:RelativeLayout
     private lateinit var noInternetImage:ImageView
     private lateinit var noInternetLayout:RelativeLayout
-    lateinit var mediaPlayer: MediaPlayer
-    val songs= ArrayList<MySongInfo>()
-    val pontext=this.context
+    private val songs= ArrayList<MySongInfo>()
+    private val pontext=this.context
+    private lateinit var act: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +39,7 @@ class MySongs : Fragment() {
     ): View? {
 
         val view=inflater.inflate(R.layout.fragment_online_songs, container, false)
+        act = activity as MainActivity
         noInternetLayout= view.findViewById(R.id.noInternetLayout)
         noInternetImage=view.findViewById(R.id.imgNoInternetImage)
         noInternetLayout.visibility=View.GONE
@@ -109,11 +107,12 @@ class MySongs : Fragment() {
         OnlinerecyclerView.adapter=songAdapter
         songAdapter.SetOnItemClickListener(object : MySongsAdapter.OnItemClickListener {
             override fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int) {
-                mediaPlayer = MediaPlayer()
-                mediaPlayer.setDataSource(context!!, songInfo.uri!!)
-                mediaPlayer.prepareAsync()
-                mediaPlayer.setOnPreparedListener {
-                        mediaPlayer.start()
+                act.mediaPlayer.stop()
+                act.mediaPlayer.reset()
+                act.mediaPlayer.setDataSource(context!!, songInfo.uri!!)
+                act.mediaPlayer.prepareAsync()
+                act.mediaPlayer.setOnPreparedListener {
+                    act.mediaPlayer.start()
                 }
             }
         })

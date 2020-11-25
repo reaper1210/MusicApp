@@ -1,7 +1,6 @@
 package com.reaper.myapplication.fragment
 
 import android.content.Context
-import android.media.MediaPlayer
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
@@ -16,31 +15,29 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import com.reaper.myapplication.R
+import com.reaper.myapplication.activity.MainActivity
 import com.reaper.myapplication.adapter.OnlineSongsAdapter
 import com.reaper.myapplication.utils.OnlineSongsInfo
-import java.net.URL
 
 
 class OnlineSongs : Fragment() {
     private lateinit var onlinerecyclerView:RecyclerView
-    private lateinit var mediaPlayer: MediaPlayer
     private lateinit var progressbar: ProgressBar
     private lateinit var progressLayout: RelativeLayout
-    lateinit var noInternetImage:ImageView
-    lateinit var noInternetLayout:RelativeLayout
+    private lateinit var noInternetImage:ImageView
+    private lateinit var noInternetLayout:RelativeLayout
     private val songs= ArrayList<OnlineSongsInfo>()
-    private val pontext = this.context
+    private lateinit var act: MainActivity
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-
-        val connectivityManager:ConnectivityManager
         val view=inflater.inflate(R.layout.fragment_online_songs, container, false)
         onlinerecyclerView= view.findViewById(R.id.onlineRecyclerView)
         onlinerecyclerView.layoutManager=LinearLayoutManager(this.context)
 
+        act = activity as MainActivity
         progressLayout = view.findViewById(R.id.progressLayoutOnlineSongs)
         progressbar = view.findViewById(R.id.progressBarOnlineSongs)
         noInternetLayout=view.findViewById(R.id.noInternetLayout)
@@ -99,12 +96,13 @@ class OnlineSongs : Fragment() {
                 onlinerecyclerView.adapter=songAdapter
 
                 songAdapter.SetOnItemClickListener(object : OnlineSongsAdapter.OnItemClickListener {
-                    override fun onItemClick(view: View, songInfo: OnlineSongsInfo, position: Int) {
-                        mediaPlayer=MediaPlayer()
-                        mediaPlayer.setDataSource(songInfo.url)
-                        mediaPlayer.prepareAsync()
-                        mediaPlayer.setOnPreparedListener {
-                            mediaPlayer.start() }
+                    override fun onItemClick(view: View, songsInfo: OnlineSongsInfo, position: Int) {
+                        act.mediaPlayer.stop()
+                        act.mediaPlayer.reset()
+                        act.mediaPlayer.setDataSource(songsInfo.url)
+                        act.mediaPlayer.prepareAsync()
+                        act.mediaPlayer.setOnPreparedListener {
+                            act.mediaPlayer.start() }
                     }
                 })
             }
@@ -114,7 +112,7 @@ class OnlineSongs : Fragment() {
         database.addListenerForSingleValueEvent(getData)
 
     }
-    fun checkConnectivity(context: Context?):Boolean{
+    private fun checkConnectivity(context: Context?):Boolean{
         val connectivityManager= context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         val activeNetwork: NetworkInfo?=connectivityManager.activeNetworkInfo

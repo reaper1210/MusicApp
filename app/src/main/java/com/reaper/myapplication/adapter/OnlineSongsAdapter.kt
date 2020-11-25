@@ -2,8 +2,6 @@ package com.reaper.myapplication.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.media.Image
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.reaper.myapplication.R
 import com.reaper.myapplication.activity.SongActivity
-import com.reaper.myapplication.utils.MySongInfo
 import com.reaper.myapplication.utils.OnlineSongsInfo
-import com.squareup.picasso.Picasso
-import java.net.URL
 
 class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val context: Context):RecyclerView.Adapter<OnlineSongsAdapter.OnlineSongsViewHolder>() {
 
     var onItemClickListener: OnItemClickListener? = null
-    val pontext=this.context
 
     class OnlineSongsViewHolder(view:View): RecyclerView.ViewHolder(view){
         val songName: TextView = view.findViewById(R.id.txtSongName)
@@ -55,7 +49,7 @@ class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val c
                 onItemClickListener?.onItemClick(it,songInfo,position)
             }
             val intent= Intent(context, SongActivity::class.java)
-            context!!.startActivity(intent)
+            context.startActivity(intent)
         }
     }
 
