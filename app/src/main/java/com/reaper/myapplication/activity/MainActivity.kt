@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.transition.Slide
 import androidx.transition.Transition
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var onlineEllipse:ImageView
     lateinit var dragUpButton:ImageView
     lateinit var onlinePlay:ImageView
+    lateinit var onlinePause:ImageView
     lateinit var txtSongName:TextView
     lateinit var txtDuration:TextView
     lateinit var dragDownButton:ImageView
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -45,7 +48,9 @@ class MainActivity : AppCompatActivity() {
 
         dragUpButton=binding.dragUpButton
         onlinePlay=binding.onlinePlay
-        onlinePlay.visibility=View.INVISIBLE
+        onlinePause=binding.onlinePause
+        onlinePause.visibility=View.GONE
+        onlinePlay.visibility= View.INVISIBLE
 
         txtSongName=binding.txtSongName
         txtSongName.visibility=View.INVISIBLE
@@ -79,12 +84,19 @@ class MainActivity : AppCompatActivity() {
                     transition.addTarget(R.id.txtDuration)
                     transition.addTarget(R.id.dragDownButton)
                     TransitionManager.beginDelayedTransition(relativeGroup, transition)
-                    dragUpButton.visibility=View.GONE
-                    onlineEllipse.visibility = View.VISIBLE
-                    onlinePlay.visibility = View.VISIBLE
-                    dragDownButton.visibility = View.VISIBLE
                     txtSongName.visibility = View.VISIBLE
                     txtDuration.visibility = View.VISIBLE
+                    dragUpButton.visibility=View.GONE
+                    onlineEllipse.visibility = View.VISIBLE
+                    if(mediaPlayer.isPlaying){
+                        onlinePlay.visibility=View.VISIBLE
+                        onlinePause.visibility=View.GONE
+                    }
+                    else{
+                        onlinePlay.visibility=View.GONE
+                        onlinePause.visibility=View.VISIBLE
+                    }
+                    dragDownButton.visibility = View.VISIBLE
                 }
         }
 
@@ -101,13 +113,30 @@ class MainActivity : AppCompatActivity() {
                 transition.addTarget(R.id.txtDuration)
                 transition.addTarget(R.id.dragDownButton)
                 TransitionManager.beginDelayedTransition(relativeGroup, transition)
+                txtSongName.visibility=View.GONE
+                txtDuration.visibility=View.GONE
                 dragUpButton.visibility=View.VISIBLE
                 onlineEllipse.visibility=View.GONE
                 onlinePlay.visibility=View.GONE
-                txtSongName.visibility=View.GONE
-                txtDuration.visibility=View.GONE
+                onlinePause.visibility= View.GONE
                 dragDownButton.visibility=View.GONE
             }
+        }
+
+        onlinePlay.setOnClickListener {
+            onlinePlay.visibility=View.GONE
+            onlinePause.visibility=View.VISIBLE
+            mediaPlayer.pause()
+        }
+
+        onlinePause.setOnClickListener {
+            onlinePause.visibility=View.GONE
+            onlinePlay.visibility= View.VISIBLE
+            mediaPlayer.start()
+        }
+
+        onlineEllipse.setOnClickListener {
+            Toast.makeText(this@MainActivity,"Long press to jumnp to media Controller",Toast.LENGTH_SHORT).show()
         }
 
         setUpTabIcons()

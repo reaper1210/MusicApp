@@ -1,5 +1,6 @@
 package com.reaper.myapplication.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
@@ -20,9 +21,11 @@ class SongActivity : AppCompatActivity() {
     lateinit var play:ImageView
     lateinit var pause:ImageView
     lateinit var binding: ActivitySongBinding
+    private lateinit var act: MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivitySongBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -69,12 +72,13 @@ class SongActivity : AppCompatActivity() {
         play.setOnClickListener {
             play.visibility=View.INVISIBLE
             pause.visibility=View.VISIBLE
-
+            act.mediaPlayer.pause()
         }
 
         pause.setOnClickListener {
             pause.visibility=View.INVISIBLE
             play.visibility=View.VISIBLE
+            act.mediaPlayer.start()
         }
 
 

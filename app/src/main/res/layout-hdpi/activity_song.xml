@@ -18,9 +18,9 @@
     <com.marcinmoskala.arcseekbar.ArcSeekBar
         android:id="@+id/arcSeekBar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="65dp"
         app:progress="50"
         app:progressBackgroundColor="@color/white"
         app:progressBackgroundWidth="10dp"
@@ -31,27 +31,27 @@
 
     <ImageView
         android:id="@+id/play"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/play"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="750dp" />
+        android:layout_marginTop="420dp" />
 
     <ImageView
         android:id="@+id/pause"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/pause"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="750dp" />
+        android:layout_marginTop="420dp" />
 
     <ImageView
         android:id="@+id/previous"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_toLeftOf="@+id/play"
         android:src="@drawable/previous"
-        android:layout_marginTop="750dp"
+        android:layout_marginTop="420dp"
         android:layout_marginRight="15dp" />
 
     <ImageView
@@ -60,7 +60,7 @@
         android:layout_height="36dp"
         android:src="@drawable/next"
         android:layout_toRightOf="@id/play"
-        android:layout_marginTop="750dp"
+        android:layout_marginTop="420dp"
         android:layout_marginLeft="15dp"
         />
     <SeekBar
@@ -107,57 +107,57 @@
 
     <ImageView
         android:id="@+id/favourites"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:src="@drawable/favourites"
         android:layout_above="@id/play"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="-600dp"
+        android:layout_marginBottom="-350dp"
         android:layout_marginLeft="20dp"/>
 
     <ImageView
         android:id="@+id/favourites_selected"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:src="@drawable/favourites_selected"
         android:layout_above="@id/play"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="-600dp"
+        android:layout_marginBottom="-350dp"
         android:layout_marginLeft="20dp"/>
 
     <ImageView
         android:id="@+id/addtoplaylists"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:src="@drawable/addtoplaylist"
         android:layout_above="@id/play"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="-600dp"
+        android:layout_marginBottom="-350dp"
         android:layout_marginRight="20dp" />
 
     <ImageView
         android:id="@+id/addtoplaylistsselected"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:src="@drawable/addtoplaylistsselected"
         android:layout_above="@id/play"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="-600dp"
+        android:layout_marginBottom="-350dp"
         android:layout_marginRight="20dp" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/imgSongCardview"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/txtNowplaying"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         app:cardCornerRadius="128dp">
 
         <ImageView
             android:id="@+id/imgSongImage"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:src="@drawable/music_image"
             android:scaleType="centerCrop" />
 
@@ -169,7 +169,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imgSongCardview"
         android:text="Song Name"
-        android:textSize="42sp"
+        android:textSize="30sp"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"/>
@@ -182,16 +182,16 @@
         android:text="Singer Name"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
-        android:textSize="28sp"
+        android:textSize="22sp"
         android:layout_marginTop="5dp"/>
     <TextView
         android:id="@+id/txtDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="30dp"
         android:layout_centerHorizontal="true"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textColor="@color/white"
         android:text="2:50/5:00"/>
 

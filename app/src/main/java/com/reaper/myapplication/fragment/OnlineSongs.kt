@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,9 @@ import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.google.firebase.database.*
 import com.reaper.myapplication.R
 import com.reaper.myapplication.activity.MainActivity
@@ -97,13 +101,67 @@ class OnlineSongs : Fragment() {
 
                 songAdapter.SetOnItemClickListener(object : OnlineSongsAdapter.OnItemClickListener {
                     override fun onItemClick(view: View, songsInfo: OnlineSongsInfo, position: Int) {
+                        val transition: Transition = Slide(Gravity.BOTTOM)
+                        transition.duration = 300
+                        transition.addTarget(R.id.onlineEllipse)
+                        transition.addTarget(R.id.onlinePlay)
+                        transition.addTarget(R.id.txtSongName)
+                        transition.addTarget(R.id.txtDuration)
+                        transition.addTarget(R.id.dragDownButton)
+                        TransitionManager.beginDelayedTransition(act.relativeGroup, transition)
+                        act.txtSongName.visibility=View.VISIBLE
+                        act.txtDuration.visibility=View.VISIBLE
+                        act.dragUpButton.visibility=View.VISIBLE
+                        act.onlineEllipse.visibility=View.VISIBLE
+                        act.onlinePlay.visibility=View.VISIBLE
+                        act.onlinePause.visibility= View.VISIBLE
+                        act.dragDownButton.visibility=View.VISIBLE
+                        act.dragUpButton.visibility=View.GONE
+
+                        if (act.mediaPlayer == null) {
+                            act.onlinePlay.visibility = View.GONE
+                            if(act.dragDownButton.isActivated){
+                                act.onlinePause.visibility = View.GONE
+                            }
+                            else{
+                                act.onlinePause.visibility=View.VISIBLE
+                            }
+
+                        } else {
+                            if(act.dragDownButton.isActivated){
+                                act.onlinePlay.visibility = View.GONE
+                            }
+                            else{
+                                act.onlinePlay.visibility=View.VISIBLE
+                            }
+                            act.onlinePause.visibility = View.GONE
+                        }
+                        if (act.mediaPlayer.isPlaying) {
+                            if(act.dragDownButton.isActivated){
+                                act.onlinePlay.visibility = View.GONE
+                            }
+                            else{
+                                act.onlinePlay.visibility=View.VISIBLE
+                            }
+                            act.onlinePause.visibility = View.GONE
+                        }
                         act.mediaPlayer.stop()
                         act.mediaPlayer.reset()
                         act.mediaPlayer.setDataSource(songsInfo.url)
                         act.mediaPlayer.prepareAsync()
                         act.mediaPlayer.setOnPreparedListener {
-                            act.mediaPlayer.start() }
+                            progressbar.visibility=View.VISIBLE
+                            progressLayout.visibility=View.VISIBLE
+                            act.mediaPlayer.start()
+                        }
+                        act.mediaPlayer.setOnCompletionListener {
+                            act.onlinePlay.visibility=View.GONE
+                            act.onlinePause.visibility=View.VISIBLE
+                        }
                     }
+
+
+
                 })
             }
         }

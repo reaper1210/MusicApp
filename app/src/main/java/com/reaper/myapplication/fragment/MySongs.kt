@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,9 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.reaper.myapplication.R
 import com.reaper.myapplication.activity.MainActivity
 import com.reaper.myapplication.adapter.MySongsAdapter
@@ -93,7 +97,7 @@ class MySongs : Fragment() {
 
         if(cursor.moveToFirst()){
             do {
-                val name: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME))
+                val name: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE))
                 val artist: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
                 val mediaId = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID))
                 val url = Uri.parse(uri.toString() + File.separator + mediaId)
@@ -106,13 +110,63 @@ class MySongs : Fragment() {
         val songAdapter = MySongsAdapter(songs,this.context)
         OnlinerecyclerView.adapter=songAdapter
         songAdapter.SetOnItemClickListener(object : MySongsAdapter.OnItemClickListener {
+
             override fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int) {
+                val transition: Transition = Slide(Gravity.BOTTOM)
+                transition.duration = 300
+                transition.addTarget(R.id.onlineEllipse)
+                transition.addTarget(R.id.onlinePlay)
+                transition.addTarget(R.id.txtSongName)
+                transition.addTarget(R.id.txtDuration)
+                transition.addTarget(R.id.dragDownButton)
+                TransitionManager.beginDelayedTransition(act.relativeGroup, transition)
+                act.txtSongName.visibility=View.VISIBLE
+                act.txtDuration.visibility=View.VISIBLE
+                act.dragUpButton.visibility=View.VISIBLE
+                act.onlineEllipse.visibility=View.VISIBLE
+                act.onlinePlay.visibility=View.VISIBLE
+                act.onlinePause.visibility= View.VISIBLE
+                act.dragDownButton.visibility=View.VISIBLE
+                act.dragUpButton.visibility=View.GONE
+
+                    if (act.mediaPlayer == null) {
+                        act.onlinePlay.visibility = View.GONE
+                        if(act.dragDownButton.isActivated){
+                            act.onlinePause.visibility = View.GONE
+                        }
+                        else{
+                            act.onlinePause.visibility=View.VISIBLE
+                        }
+
+                    } else {
+                        if(act.dragDownButton.isActivated){
+                        act.onlinePlay.visibility = View.GONE
+                        }
+                        else{
+                            act.onlinePlay.visibility=View.VISIBLE
+                        }
+                        act.onlinePause.visibility = View.GONE
+                    }
+                    if (act.mediaPlayer.isPlaying) {
+                        if(act.dragDownButton.isActivated){
+                            act.onlinePlay.visibility = View.GONE
+                        }
+                        else{
+                            act.onlinePlay.visibility=View.VISIBLE
+                        }
+                        act.onlinePause.visibility = View.GONE
+                    }
+
                 act.mediaPlayer.stop()
                 act.mediaPlayer.reset()
                 act.mediaPlayer.setDataSource(context!!, songInfo.uri!!)
                 act.mediaPlayer.prepareAsync()
                 act.mediaPlayer.setOnPreparedListener {
                     act.mediaPlayer.start()
+                }
+                act.mediaPlayer.setOnCompletionListener {
+                    act.onlinePlay.visibility=View.GONE
+                    act.onlinePause.visibility=View.VISIBLE
                 }
             }
         })
