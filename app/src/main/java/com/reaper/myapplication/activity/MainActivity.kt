@@ -1,5 +1,6 @@
 package com.reaper.myapplication.activity
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.Gravity
@@ -17,6 +18,10 @@ import com.google.android.material.tabs.TabLayout
 import com.reaper.myapplication.R
 import com.reaper.myapplication.adapter.ViewPagerAdapter
 import com.reaper.myapplication.databinding.ActivityMainBinding
+import com.reaper.myapplication.fragment.OnlineSongs
+import com.reaper.myapplication.utils.OnlineSongsInfo
+import kotlinx.coroutines.delay
+import kotlin.time.seconds
 
 class MainActivity : AppCompatActivity() {
 
@@ -84,9 +89,9 @@ class MainActivity : AppCompatActivity() {
                     transition.addTarget(R.id.txtDuration)
                     transition.addTarget(R.id.dragDownButton)
                     TransitionManager.beginDelayedTransition(relativeGroup, transition)
+                    dragUpButton.visibility=View.GONE
                     txtSongName.visibility = View.VISIBLE
                     txtDuration.visibility = View.VISIBLE
-                    dragUpButton.visibility=View.GONE
                     onlineEllipse.visibility = View.VISIBLE
                     if(mediaPlayer.isPlaying){
                         onlinePlay.visibility=View.VISIBLE

@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.reaper.myapplication.R
+import com.reaper.myapplication.activity.MainActivity
 import com.reaper.myapplication.activity.SongActivity
 import com.reaper.myapplication.utils.OnlineSongsInfo
 
@@ -45,11 +46,11 @@ class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val c
         holder.image.setImageResource(R.drawable.music_image)
         Glide.with(context).load(songInfo.image).into(holder.image)
         holder.cardView.setOnClickListener {
-            if(onItemClickListener!=null){
-                onItemClickListener?.onItemClick(it,songInfo,position)
+            if(onItemClickListener!=null) {
+                onItemClickListener?.onItemClick(it, songInfo, position)
             }
-            val intent= Intent(context, SongActivity::class.java)
-            context.startActivity(intent)
+            val intent= Intent(this.context, MainActivity::class.java)
+            intent.putExtra("SongName",songInfo.name)
         }
     }
 

@@ -150,8 +150,6 @@ class OnlineSongs : Fragment() {
                         act.mediaPlayer.setDataSource(songsInfo.url)
                         act.mediaPlayer.prepareAsync()
                         act.mediaPlayer.setOnPreparedListener {
-                            progressbar.visibility=View.VISIBLE
-                            progressLayout.visibility=View.VISIBLE
                             act.mediaPlayer.start()
                         }
                         act.mediaPlayer.setOnCompletionListener {
@@ -159,9 +157,6 @@ class OnlineSongs : Fragment() {
                             act.onlinePause.visibility=View.VISIBLE
                         }
                     }
-
-
-
                 })
             }
         }
@@ -170,6 +165,7 @@ class OnlineSongs : Fragment() {
         database.addListenerForSingleValueEvent(getData)
 
     }
+
     private fun checkConnectivity(context: Context?):Boolean{
         val connectivityManager= context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
