@@ -15,6 +15,7 @@ import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.adapter.ViewPagerAdapter
 import com.reaper.myapplication.databinding.ActivityMainBinding
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var dragDownButton:ImageView
     lateinit var relativeGroup:RelativeLayout
     lateinit var title:TextView
-    var mediaPlayer = MediaPlayer()
+    lateinit var applic:MusicApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        applic = this.application as MusicApplication
         title=binding.titleMain
 
         onlineEllipse=binding.onlineEllipse
@@ -93,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                     txtSongName.visibility = View.VISIBLE
                     txtDuration.visibility = View.VISIBLE
                     onlineEllipse.visibility = View.VISIBLE
-                    if(mediaPlayer.isPlaying){
+                    if(applic.mediaPlayer.isPlaying){
                         onlinePlay.visibility=View.VISIBLE
                         onlinePause.visibility=View.GONE
                     }
@@ -131,17 +133,17 @@ class MainActivity : AppCompatActivity() {
         onlinePlay.setOnClickListener {
             onlinePlay.visibility=View.GONE
             onlinePause.visibility=View.VISIBLE
-            mediaPlayer.pause()
+            applic.mediaPlayer.pause()
         }
 
         onlinePause.setOnClickListener {
             onlinePause.visibility=View.GONE
             onlinePlay.visibility= View.VISIBLE
-            mediaPlayer.start()
+            applic.mediaPlayer.start()
         }
 
         onlineEllipse.setOnClickListener {
-            Toast.makeText(this@MainActivity,"Long press to jumnp to media Controller",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity,"Long press to jump to media Controller",Toast.LENGTH_SHORT).show()
         }
 
         setUpTabIcons()

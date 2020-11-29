@@ -43,8 +43,8 @@ class MySongsAdapter(val items: ArrayList<MySongInfo>, val context: Context?): R
                 if(onItemClickListener!=null){
                     this.onItemClickListener?.onItemClick(this,currentSong,position)
                 }
-//                val intent= Intent(context, SongActivity::class.java)
-//                context?.startActivity(intent)
+                val intent= Intent(this.context, SongActivity::class.java)
+                context?.startActivity(intent)
             }
         }
     }

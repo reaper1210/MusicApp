@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
+import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.activity.MainActivity
 import com.reaper.myapplication.adapter.MySongsAdapter
@@ -36,6 +37,7 @@ class MySongs : Fragment() {
     private val songs= ArrayList<MySongInfo>()
     private val pontext=this.context
     private lateinit var act: MainActivity
+    private lateinit var applic: MusicApplication
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +45,8 @@ class MySongs : Fragment() {
     ): View? {
 
         val view=inflater.inflate(R.layout.fragment_online_songs, container, false)
+
+        applic = activity?.application as MusicApplication
         act = activity as MainActivity
         noInternetLayout= view.findViewById(R.id.noInternetLayout)
         noInternetImage=view.findViewById(R.id.imgNoInternetImage)
@@ -129,7 +133,7 @@ class MySongs : Fragment() {
                 act.dragDownButton.visibility=View.VISIBLE
                 act.dragUpButton.visibility=View.GONE
 
-                    if (act.mediaPlayer == null) {
+                    if (applic.mediaPlayer == null) {
                         act.onlinePlay.visibility = View.GONE
                         if(act.dragDownButton.isActivated){
                             act.onlinePause.visibility = View.GONE
@@ -147,7 +151,7 @@ class MySongs : Fragment() {
                         }
                         act.onlinePause.visibility = View.GONE
                     }
-                    if (act.mediaPlayer.isPlaying) {
+                    if (applic.mediaPlayer.isPlaying) {
                         if(act.dragDownButton.isActivated){
                             act.onlinePlay.visibility = View.GONE
                         }
@@ -157,14 +161,14 @@ class MySongs : Fragment() {
                         act.onlinePause.visibility = View.GONE
                     }
 
-                act.mediaPlayer.stop()
-                act.mediaPlayer.reset()
-                act.mediaPlayer.setDataSource(context!!, songInfo.uri!!)
-                act.mediaPlayer.prepareAsync()
-                act.mediaPlayer.setOnPreparedListener {
-                    act.mediaPlayer.start()
+                applic.mediaPlayer.stop()
+                applic.mediaPlayer.reset()
+                applic.mediaPlayer.setDataSource(context!!, songInfo.uri!!)
+                applic.mediaPlayer.prepareAsync()
+                applic.mediaPlayer.setOnPreparedListener {
+                    it.start()
                 }
-                act.mediaPlayer.setOnCompletionListener {
+                applic.mediaPlayer.setOnCompletionListener {
                     act.onlinePlay.visibility=View.GONE
                     act.onlinePause.visibility=View.VISIBLE
                 }

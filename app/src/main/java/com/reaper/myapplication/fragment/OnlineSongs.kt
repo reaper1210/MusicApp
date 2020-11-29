@@ -18,11 +18,11 @@ import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.google.firebase.database.*
+import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.activity.MainActivity
 import com.reaper.myapplication.adapter.OnlineSongsAdapter
 import com.reaper.myapplication.utils.OnlineSongsInfo
-
 
 class OnlineSongs : Fragment() {
     private lateinit var onlinerecyclerView:RecyclerView
@@ -31,6 +31,7 @@ class OnlineSongs : Fragment() {
     private lateinit var noInternetImage:ImageView
     private lateinit var noInternetLayout:RelativeLayout
     private val songs= ArrayList<OnlineSongsInfo>()
+    private lateinit var applic: MusicApplication
     private lateinit var act: MainActivity
 
     override fun onCreateView(
@@ -42,6 +43,7 @@ class OnlineSongs : Fragment() {
         onlinerecyclerView.layoutManager=LinearLayoutManager(this.context)
 
         act = activity as MainActivity
+        applic = activity?.application as MusicApplication
         progressLayout = view.findViewById(R.id.progressLayoutOnlineSongs)
         progressbar = view.findViewById(R.id.progressBarOnlineSongs)
         noInternetLayout=view.findViewById(R.id.noInternetLayout)
@@ -118,7 +120,7 @@ class OnlineSongs : Fragment() {
                         act.dragDownButton.visibility=View.VISIBLE
                         act.dragUpButton.visibility=View.GONE
 
-                        if (act.mediaPlayer == null) {
+                        if (applic.mediaPlayer == null) {
                             act.onlinePlay.visibility = View.GONE
                             if(act.dragDownButton.isActivated){
                                 act.onlinePause.visibility = View.GONE
@@ -136,7 +138,7 @@ class OnlineSongs : Fragment() {
                             }
                             act.onlinePause.visibility = View.GONE
                         }
-                        if (act.mediaPlayer.isPlaying) {
+                        if (applic.mediaPlayer.isPlaying) {
                             if(act.dragDownButton.isActivated){
                                 act.onlinePlay.visibility = View.GONE
                             }
@@ -145,18 +147,19 @@ class OnlineSongs : Fragment() {
                             }
                             act.onlinePause.visibility = View.GONE
                         }
-                        act.mediaPlayer.stop()
-                        act.mediaPlayer.reset()
-                        act.mediaPlayer.setDataSource(songsInfo.url)
-                        act.mediaPlayer.prepareAsync()
-                        act.mediaPlayer.setOnPreparedListener {
-                            act.mediaPlayer.start()
+                        applic.mediaPlayer.stop()
+                        applic.mediaPlayer.reset()
+                        applic.mediaPlayer.setDataSource(songsInfo.url)
+                        applic.mediaPlayer.prepareAsync()
+                        applic.mediaPlayer.setOnPreparedListener {
+                            it.start()
                         }
-                        act.mediaPlayer.setOnCompletionListener {
+                        applic.mediaPlayer.setOnCompletionListener {
                             act.onlinePlay.visibility=View.GONE
                             act.onlinePause.visibility=View.VISIBLE
                         }
                     }
+
                 })
             }
         }
@@ -165,7 +168,6 @@ class OnlineSongs : Fragment() {
         database.addListenerForSingleValueEvent(getData)
 
     }
-
     private fun checkConnectivity(context: Context?):Boolean{
         val connectivityManager= context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
