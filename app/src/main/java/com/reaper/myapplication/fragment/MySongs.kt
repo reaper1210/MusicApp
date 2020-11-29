@@ -1,5 +1,6 @@
 package com.reaper.myapplication.fragment
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -23,6 +24,7 @@ import androidx.transition.TransitionManager
 import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.activity.MainActivity
+import com.reaper.myapplication.activity.SongActivity
 import com.reaper.myapplication.adapter.MySongsAdapter
 import com.reaper.myapplication.utils.MySongInfo
 import java.io.File
@@ -165,13 +167,12 @@ class MySongs : Fragment() {
                 applic.mediaPlayer.reset()
                 applic.mediaPlayer.setDataSource(context!!, songInfo.uri!!)
                 applic.mediaPlayer.prepareAsync()
-                applic.mediaPlayer.setOnPreparedListener {
-                    it.start()
-                }
                 applic.mediaPlayer.setOnCompletionListener {
                     act.onlinePlay.visibility=View.GONE
                     act.onlinePause.visibility=View.VISIBLE
                 }
+                val intent= Intent(context, SongActivity::class.java)
+                context?.startActivity(intent)
             }
         })
     }

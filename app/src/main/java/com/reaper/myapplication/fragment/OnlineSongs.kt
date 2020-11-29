@@ -1,6 +1,7 @@
 package com.reaper.myapplication.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.google.firebase.database.*
 import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.activity.MainActivity
+import com.reaper.myapplication.activity.SongActivity
 import com.reaper.myapplication.adapter.OnlineSongsAdapter
 import com.reaper.myapplication.utils.OnlineSongsInfo
 
@@ -89,11 +91,12 @@ class OnlineSongs : Fragment() {
                 val song = snapshot.child("songs")
                 for(i in song.children){
 
+                    val songId = Integer.valueOf(i.child("id").value.toString())
                     val songName = i.child("SongName").value.toString()
                     val songArtist = i.child("artist").value.toString()
                     val songImage=i.child("image").value.toString()
                     val songUrl = i.child("url").value.toString()
-                    val songInfo = OnlineSongsInfo(songName,songArtist, songImage,songUrl)
+                    val songInfo = OnlineSongsInfo(songId,songName,songArtist, songImage,songUrl)
 
                     songs.add(songInfo)
 
@@ -151,13 +154,14 @@ class OnlineSongs : Fragment() {
                         applic.mediaPlayer.reset()
                         applic.mediaPlayer.setDataSource(songsInfo.url)
                         applic.mediaPlayer.prepareAsync()
-                        applic.mediaPlayer.setOnPreparedListener {
-                            it.start()
-                        }
                         applic.mediaPlayer.setOnCompletionListener {
                             act.onlinePlay.visibility=View.GONE
                             act.onlinePause.visibility=View.VISIBLE
                         }
+                        applic.currentOnlineSongsInfo = songsInfo
+                        val intent= Intent(context, SongActivity::class.java)
+                        intent.putExtra("SongName",songsInfo.name)
+                        context?.startActivity(intent)
                     }
 
                 })

@@ -5,21 +5,33 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.reaper.myapplication.MusicApplication
+import com.reaper.myapplication.R
 import com.reaper.myapplication.databinding.ActivitySongBinding
+import com.reaper.myapplication.utils.MySongInfo
+import com.reaper.myapplication.utils.OnlineSongsInfo
 
 class SongActivity : AppCompatActivity() {
 
-    lateinit var favourites:ImageView
-    lateinit var favourites_selected:ImageView
-    lateinit var addToPlaylists:ImageView
-    lateinit var addToPlaylistsSelected:ImageView
-    lateinit var back:ImageView
-    lateinit var play:ImageView
-    lateinit var pause:ImageView
-    lateinit var binding: ActivitySongBinding
+    private lateinit var favourites:ImageView
+    private lateinit var favourites_selected:ImageView
+    private lateinit var addToPlaylists:ImageView
+    private lateinit var addToPlaylistsSelected:ImageView
+    private lateinit var back:ImageView
+    private lateinit var play:ImageView
+    private lateinit var pause:ImageView
+    private lateinit var songName: TextView
+    private lateinit var songArtist: TextView
+    private lateinit var songImage: ImageView
+    private lateinit var progressbarSongLoading: ProgressBar
+    private lateinit var binding: ActivitySongBinding
     private lateinit var applic: MusicApplication
+    private var currentOnlineSong: OnlineSongsInfo? = null
+    private var currentMySong: MySongInfo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +42,11 @@ class SongActivity : AppCompatActivity() {
         applic = application as MusicApplication
         back= binding.btnBackSong
 
+        songName = binding.txtSongName
+        songArtist = binding.txtSingerName
+        songImage = binding.imgSongImage
+
+        progressbarSongLoading = binding.progressBarSongLoading
         favourites= binding.favourites
         favourites_selected=binding.favouritesSelected
         favourites_selected.visibility=View.GONE
@@ -42,7 +59,31 @@ class SongActivity : AppCompatActivity() {
         pause= binding.pause
         pause.visibility=View.GONE
 
+        currentOnlineSong = applic.currentOnlineSongsInfo
+
+        when {
+            currentOnlineSong != null -> {
+                songName.text = currentOnlineSong?.name
+                songArtist.text = currentOnlineSong?.artist
+                val imageUrl = currentOnlineSong?.image
+                Glide.with(this@SongActivity).load(imageUrl).error(R.drawable.music_image).into(songImage)
+            }
+            currentMySong != null -> {
+
+            }
+            else -> {
+                Toast.makeText(this@SongActivity,"No Song Playing",Toast.LENGTH_SHORT).show()
+                this.finish()
+            }
+        }
+
+        applic.mediaPlayer.setOnPreparedListener {
+            it.start()
+            progressbarSongLoading.visibility = View.GONE
+        }
+
         back.setOnClickListener {
+            onBackPressed()
         }
 
         favourites.setOnClickListener {

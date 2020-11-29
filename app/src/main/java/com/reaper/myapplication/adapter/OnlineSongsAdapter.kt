@@ -31,11 +31,11 @@ class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val c
         return OnlineSongsViewHolder(view)
     }
 
-    public interface OnItemClickListener{
+    interface OnItemClickListener{
         fun onItemClick(view: View, songsInfo: OnlineSongsInfo, position: Int)
     }
 
-    public fun SetOnItemClickListener(onItemClickListener: OnItemClickListener){
+    fun SetOnItemClickListener(onItemClickListener: OnItemClickListener){
         this.onItemClickListener=onItemClickListener
     }
 
@@ -49,9 +49,6 @@ class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val c
             if(onItemClickListener!=null) {
                 onItemClickListener?.onItemClick(it, songInfo, position)
             }
-            val intent= Intent(this.context, SongActivity::class.java)
-            intent.putExtra("SongName",songInfo.name)
-            context.startActivity(intent)
         }
     }
 

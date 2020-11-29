@@ -26,11 +26,11 @@ class MySongsAdapter(val items: ArrayList<MySongInfo>, val context: Context?): R
         return items.size
     }
 
-    public interface OnItemClickListener {
+    interface OnItemClickListener {
         fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int)
     }
 
-    public fun SetOnItemClickListener(onItemClickListener: OnItemClickListener){
+    fun SetOnItemClickListener(onItemClickListener: OnItemClickListener){
         this.onItemClickListener=onItemClickListener
     }
 
@@ -43,8 +43,6 @@ class MySongsAdapter(val items: ArrayList<MySongInfo>, val context: Context?): R
                 if(onItemClickListener!=null){
                     this.onItemClickListener?.onItemClick(this,currentSong,position)
                 }
-                val intent= Intent(this.context, SongActivity::class.java)
-                context?.startActivity(intent)
             }
         }
     }
