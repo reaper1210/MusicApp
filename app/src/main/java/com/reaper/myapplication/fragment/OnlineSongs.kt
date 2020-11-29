@@ -40,6 +40,7 @@ class OnlineSongs : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+
         val view=inflater.inflate(R.layout.fragment_online_songs, container, false)
         onlinerecyclerView= view.findViewById(R.id.onlineRecyclerView)
         onlinerecyclerView.layoutManager=LinearLayoutManager(this.context)
@@ -89,8 +90,8 @@ class OnlineSongs : Fragment() {
                 songs.clear()
 
                 val song = snapshot.child("songs")
-                for(i in song.children){
 
+                for(i in song.children){
                     val songId = Integer.valueOf(i.child("id").value.toString())
                     val songName = i.child("SongName").value.toString()
                     val songArtist = i.child("artist").value.toString()
@@ -119,37 +120,9 @@ class OnlineSongs : Fragment() {
                         act.dragUpButton.visibility=View.VISIBLE
                         act.onlineEllipse.visibility=View.VISIBLE
                         act.onlinePlay.visibility=View.VISIBLE
-                        act.onlinePause.visibility= View.VISIBLE
+                        act.onlinePause.visibility= View.GONE
                         act.dragDownButton.visibility=View.VISIBLE
                         act.dragUpButton.visibility=View.GONE
-
-                        if (applic.mediaPlayer == null) {
-                            act.onlinePlay.visibility = View.GONE
-                            if(act.dragDownButton.isActivated){
-                                act.onlinePause.visibility = View.GONE
-                            }
-                            else{
-                                act.onlinePause.visibility=View.VISIBLE
-                            }
-
-                        } else {
-                            if(act.dragDownButton.isActivated){
-                                act.onlinePlay.visibility = View.GONE
-                            }
-                            else{
-                                act.onlinePlay.visibility=View.VISIBLE
-                            }
-                            act.onlinePause.visibility = View.GONE
-                        }
-                        if (applic.mediaPlayer.isPlaying) {
-                            if(act.dragDownButton.isActivated){
-                                act.onlinePlay.visibility = View.GONE
-                            }
-                            else{
-                                act.onlinePlay.visibility=View.VISIBLE
-                            }
-                            act.onlinePause.visibility = View.GONE
-                        }
                         applic.mediaPlayer.stop()
                         applic.mediaPlayer.reset()
                         applic.mediaPlayer.setDataSource(songsInfo.url)
