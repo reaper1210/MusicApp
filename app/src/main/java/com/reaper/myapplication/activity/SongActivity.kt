@@ -60,6 +60,7 @@ class SongActivity : AppCompatActivity() {
         pause.visibility=View.GONE
 
         currentOnlineSong = applic.currentOnlineSongsInfo
+        currentMySong = applic.currentMySongInfo
 
         when {
             currentOnlineSong != null -> {
@@ -69,12 +70,17 @@ class SongActivity : AppCompatActivity() {
                 Glide.with(this@SongActivity).load(imageUrl).error(R.drawable.music_image).into(songImage)
             }
             currentMySong != null -> {
-
+                songName.text = currentMySong?.name
+                songArtist.text = currentMySong?.artist
             }
             else -> {
                 Toast.makeText(this@SongActivity,"No Song Playing",Toast.LENGTH_SHORT).show()
                 this.finish()
             }
+        }
+
+        if(applic.mediaPlayer.isPlaying){
+            progressbarSongLoading.visibility = View.GONE
         }
 
         applic.mediaPlayer.setOnPreparedListener {

@@ -135,42 +135,46 @@ class MySongs : Fragment() {
                 act.dragDownButton.visibility=View.VISIBLE
                 act.dragUpButton.visibility=View.GONE
 
-                    if (applic.mediaPlayer == null) {
-                        act.onlinePlay.visibility = View.GONE
-                        if(act.dragDownButton.isActivated){
-                            act.onlinePause.visibility = View.GONE
-                        }
-                        else{
-                            act.onlinePause.visibility=View.VISIBLE
-                        }
+                if (applic.mediaPlayer == null) {
+                    act.onlinePlay.visibility = View.GONE
+                    if(act.dragDownButton.isActivated){
+                        act.onlinePause.visibility = View.GONE
+                    }
+                    else{
+                        act.onlinePause.visibility=View.VISIBLE
+                    }
 
-                    } else {
-                        if(act.dragDownButton.isActivated){
+                } else {
+                    if(act.dragDownButton.isActivated){
+                    act.onlinePlay.visibility = View.GONE
+                    }
+                    else{
+                        act.onlinePlay.visibility=View.VISIBLE
+                    }
+                    act.onlinePause.visibility = View.GONE
+                }
+                if (applic.mediaPlayer.isPlaying) {
+                    if(act.dragDownButton.isActivated){
                         act.onlinePlay.visibility = View.GONE
-                        }
-                        else{
-                            act.onlinePlay.visibility=View.VISIBLE
-                        }
-                        act.onlinePause.visibility = View.GONE
                     }
-                    if (applic.mediaPlayer.isPlaying) {
-                        if(act.dragDownButton.isActivated){
-                            act.onlinePlay.visibility = View.GONE
-                        }
-                        else{
-                            act.onlinePlay.visibility=View.VISIBLE
-                        }
-                        act.onlinePause.visibility = View.GONE
+                    else{
+                        act.onlinePlay.visibility=View.VISIBLE
                     }
+                    act.onlinePause.visibility = View.GONE
+                }
 
                 applic.mediaPlayer.stop()
                 applic.mediaPlayer.reset()
-                applic.mediaPlayer.setDataSource(context!!, songInfo.uri!!)
+                applic.mediaPlayer.setDataSource(activity!!, songInfo.uri!!)
                 applic.mediaPlayer.prepareAsync()
+                applic.mediaPlayer.setOnPreparedListener {
+                    it.start()
+                }
                 applic.mediaPlayer.setOnCompletionListener {
                     act.onlinePlay.visibility=View.GONE
                     act.onlinePause.visibility=View.VISIBLE
                 }
+                applic.currentMySongInfo = songInfo
                 val intent= Intent(context, SongActivity::class.java)
                 context?.startActivity(intent)
             }

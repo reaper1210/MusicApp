@@ -160,7 +160,6 @@ class OnlineSongs : Fragment() {
                         }
                         applic.currentOnlineSongsInfo = songsInfo
                         val intent= Intent(context, SongActivity::class.java)
-                        intent.putExtra("SongName",songsInfo.name)
                         context?.startActivity(intent)
                     }
 
