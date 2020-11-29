@@ -20,6 +20,7 @@ import com.reaper.myapplication.R
 import com.reaper.myapplication.adapter.ViewPagerAdapter
 import com.reaper.myapplication.databinding.ActivityMainBinding
 import com.reaper.myapplication.fragment.OnlineSongs
+import com.reaper.myapplication.utils.MySongInfo
 import com.reaper.myapplication.utils.OnlineSongsInfo
 import kotlinx.coroutines.delay
 import kotlin.time.seconds
@@ -39,6 +40,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var dragDownButton:ImageView
     lateinit var relativeGroup:RelativeLayout
     lateinit var title:TextView
+    private var currentOnlineSong: OnlineSongsInfo? = null
+    private var currentMySong: MySongInfo? = null
     lateinit var applic:MusicApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +52,9 @@ class MainActivity : AppCompatActivity() {
 
         applic = this.application as MusicApplication
         title=binding.titleMain
+
+        currentMySong = applic.currentMySongInfo
+        currentOnlineSong = applic.currentOnlineSongsInfo
 
         onlineEllipse=binding.onlineEllipse
         onlineEllipse.visibility=View.GONE
@@ -77,6 +83,19 @@ class MainActivity : AppCompatActivity() {
         relativeGroup=binding.relateiveGroup
 
         tablayout.setupWithViewPager(viewPager)
+
+        when {
+            currentOnlineSong!=null -> {
+                txtSongName.text = currentOnlineSong?.name
+            }
+            currentMySong!=null -> {
+                txtSongName.text = currentMySong?.name
+            }
+            else -> {
+                txtSongName.text = " "
+                txtDuration.text = "0:00/0:00"
+            }
+        }
 
         dragUpButton.setOnClickListener {
                 dragUpButton.animate().apply {

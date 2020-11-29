@@ -173,7 +173,9 @@ class MySongs : Fragment() {
                 applic.mediaPlayer.setOnCompletionListener {
                     act.onlinePlay.visibility=View.GONE
                     act.onlinePause.visibility=View.VISIBLE
+                    applic.currentMySongInfo = null
                 }
+                act.txtSongName.text = songInfo.name
                 applic.currentMySongInfo = songInfo
                 val intent= Intent(context, SongActivity::class.java)
                 context?.startActivity(intent)
