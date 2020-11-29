@@ -41,6 +41,7 @@ class OnlineSongsAdapter(private val itemList: ArrayList<OnlineSongsInfo>, val c
 
     override fun onBindViewHolder(holder: OnlineSongsViewHolder, position: Int) {
         val songInfo=itemList[position]
+        holder.songName.isSelected = true
         holder.songName.text = songInfo.name
         holder.artist.text=songInfo.artist
         holder.image.setImageResource(R.drawable.music_image)

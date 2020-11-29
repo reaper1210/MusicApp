@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         onlinePlay.visibility= View.INVISIBLE
 
         txtSongName=binding.txtSongName
+        txtSongName.isSelected
         txtSongName.visibility=View.INVISIBLE
 
         txtDuration=binding.txtDuration
@@ -87,9 +88,11 @@ class MainActivity : AppCompatActivity() {
         when {
             currentOnlineSong!=null -> {
                 txtSongName.text = currentOnlineSong?.name
+                txtSongName.isSelected = true
             }
             currentMySong!=null -> {
                 txtSongName.text = currentMySong?.name
+                txtSongName.isSelected = true
             }
             else -> {
                 txtSongName.text = " "
@@ -112,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                     TransitionManager.beginDelayedTransition(relativeGroup, transition)
                     dragUpButton.visibility=View.GONE
                     txtSongName.visibility = View.VISIBLE
+                    txtSongName.isSelected = true
                     txtDuration.visibility = View.VISIBLE
                     onlineEllipse.visibility = View.VISIBLE
                     if(applic.mediaPlayer.isPlaying){

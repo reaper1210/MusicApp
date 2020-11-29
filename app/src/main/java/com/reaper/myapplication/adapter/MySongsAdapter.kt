@@ -14,7 +14,6 @@ import com.reaper.myapplication.utils.MySongInfo
 import com.reaper.myapplication.utils.OnlineSongsInfo
 
 class MySongsAdapter(val items: ArrayList<MySongInfo>, val context: Context?): RecyclerView.Adapter<MySongsViewHolder>() {
-
     var onItemClickListener: MySongsAdapter.OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MySongsViewHolder {
@@ -38,6 +37,7 @@ class MySongsAdapter(val items: ArrayList<MySongInfo>, val context: Context?): R
         if(position<items.size){
             val currentSong=items[position]
             holder.titleSongName.text=currentSong.name
+            holder.titleSongName.isSelected = true
             holder.duration.text=currentSong.artist
             holder.cardView.setOnClickListener {
                 if(onItemClickListener!=null){

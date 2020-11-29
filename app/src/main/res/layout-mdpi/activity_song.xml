@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.SongActivity"
-    android:background="@drawable/background">
+    android:background="@drawable/songactivitybackground">
 
     <ImageView
         android:id="@+id/btnBackSong"
@@ -165,7 +165,7 @@
         android:layout_height="125dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/txtNowplaying"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         app:cardCornerRadius="128dp">
 
         <ImageView
@@ -179,10 +179,18 @@
 
     <TextView
         android:id="@+id/txtSongName"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:padding="8dp"
+        android:scrollHorizontally="true"
         android:layout_below="@+id/imgSongCardview"
         android:text="Song Name"
+        android:textAlignment="center"
         android:textSize="20sp"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"

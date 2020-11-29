@@ -126,6 +126,7 @@ class MySongs : Fragment() {
                 transition.addTarget(R.id.txtDuration)
                 transition.addTarget(R.id.dragDownButton)
                 TransitionManager.beginDelayedTransition(act.relativeGroup, transition)
+                act.txtSongName.isSelected = true
                 act.txtSongName.visibility=View.VISIBLE
                 act.txtDuration.visibility=View.VISIBLE
                 act.dragUpButton.visibility=View.VISIBLE
@@ -176,6 +177,7 @@ class MySongs : Fragment() {
                     applic.currentMySongInfo = null
                 }
                 act.txtSongName.text = songInfo.name
+                applic.currentOnlineSongsInfo = null
                 applic.currentMySongInfo = songInfo
                 val intent= Intent(context, SongActivity::class.java)
                 context?.startActivity(intent)

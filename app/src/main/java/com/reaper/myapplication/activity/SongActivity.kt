@@ -30,8 +30,6 @@ class SongActivity : AppCompatActivity() {
     private lateinit var progressbarSongLoading: ProgressBar
     private lateinit var binding: ActivitySongBinding
     private lateinit var applic: MusicApplication
-    private var currentOnlineSong: OnlineSongsInfo? = null
-    private var currentMySong: MySongInfo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,19 +57,18 @@ class SongActivity : AppCompatActivity() {
         pause= binding.pause
         pause.visibility=View.GONE
 
-        currentOnlineSong = applic.currentOnlineSongsInfo
-        currentMySong = applic.currentMySongInfo
-
         when {
-            currentOnlineSong != null -> {
-                songName.text = currentOnlineSong?.name
-                songArtist.text = currentOnlineSong?.artist
-                val imageUrl = currentOnlineSong?.image
+            applic.currentOnlineSongsInfo != null -> {
+                songName.text = applic.currentOnlineSongsInfo?.name
+                songName.isSelected = true
+                songArtist.text = applic.currentOnlineSongsInfo?.artist
+                val imageUrl = applic.currentOnlineSongsInfo?.image
                 Glide.with(this@SongActivity).load(imageUrl).error(R.drawable.music_image).into(songImage)
             }
-            currentMySong != null -> {
-                songName.text = currentMySong?.name
-                songArtist.text = currentMySong?.artist
+            applic.currentMySongInfo != null -> {
+                songName.text = applic.currentMySongInfo?.name
+                songName.isSelected = true
+                songArtist.text = applic.currentMySongInfo?.artist
             }
             else -> {
                 Toast.makeText(this@SongActivity,"No Song Playing",Toast.LENGTH_SHORT).show()
@@ -123,7 +120,5 @@ class SongActivity : AppCompatActivity() {
             play.visibility=View.VISIBLE
             applic.mediaPlayer.start()
         }
-
-
     }
 }

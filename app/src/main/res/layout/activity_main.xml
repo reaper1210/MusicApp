@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background2"
+    android:background="@drawable/mainactivitybackground"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -97,8 +97,14 @@
 
     <TextView
         android:id="@+id/txtSongName"
-        android:layout_width="wrap_content"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:textAlignment="center"
         android:text="song name"
         android:textSize="20sp"
         android:layout_alignParentBottom="true"
