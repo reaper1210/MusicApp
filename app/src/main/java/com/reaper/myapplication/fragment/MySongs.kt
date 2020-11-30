@@ -118,24 +118,6 @@ class MySongs : Fragment() {
         songAdapter.SetOnItemClickListener(object : MySongsAdapter.OnItemClickListener {
 
             override fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int) {
-                val transition: Transition = Slide(Gravity.BOTTOM)
-                transition.duration = 300
-                transition.addTarget(R.id.onlineEllipse)
-                transition.addTarget(R.id.onlinePlay)
-                transition.addTarget(R.id.txtSongName)
-                transition.addTarget(R.id.txtDuration)
-                transition.addTarget(R.id.dragDownButton)
-                TransitionManager.beginDelayedTransition(act.relativeGroup, transition)
-                act.txtSongName.isSelected = true
-                act.txtSongName.visibility=View.VISIBLE
-                act.txtDuration.visibility=View.VISIBLE
-                act.dragUpButton.visibility=View.VISIBLE
-                act.onlineEllipse.visibility=View.VISIBLE
-                act.onlinePlay.visibility=View.VISIBLE
-                act.onlinePause.visibility= View.VISIBLE
-                act.dragDownButton.visibility=View.VISIBLE
-                act.dragUpButton.visibility=View.GONE
-
                 if (applic.mediaPlayer == null) {
                     act.onlinePlay.visibility = View.GONE
                     if(act.dragDownButton.isActivated){
@@ -144,7 +126,6 @@ class MySongs : Fragment() {
                     else{
                         act.onlinePause.visibility=View.VISIBLE
                     }
-
                 } else {
                     if(act.dragDownButton.isActivated){
                     act.onlinePlay.visibility = View.GONE

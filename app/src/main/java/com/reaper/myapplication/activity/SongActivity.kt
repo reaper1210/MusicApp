@@ -54,12 +54,18 @@ class SongActivity : AppCompatActivity() {
 
         play=binding.play
         pause= binding.pause
-        pause.visibility=View.GONE
+        pause.visibility = View.GONE
         progressbarSongLoading = binding.progressBarSongLoading
         if(intent.getBooleanExtra("isLoaded",false)){
             progressbarSongLoading.visibility = View.GONE
-            play.visibility = View.INVISIBLE
-            pause.visibility = View.VISIBLE
+            if(applic.mediaPlayer.isPlaying){
+                play.visibility = View.VISIBLE
+                pause.visibility = View.INVISIBLE
+            }
+            else{
+                play.visibility = View.INVISIBLE
+                pause.visibility = View.VISIBLE
+            }
         }
 
         when {

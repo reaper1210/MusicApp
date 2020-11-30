@@ -172,6 +172,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         onlineEllipse.setOnLongClickListener {
+            dragDownButton.callOnClick()
             val intent = Intent(this@MainActivity, SongActivity::class.java)
             intent.putExtra("isLoaded",true)
             startActivity(intent)
