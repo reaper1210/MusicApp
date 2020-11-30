@@ -36,7 +36,6 @@ class MySongs : Fragment() {
     private lateinit var progressLayout:RelativeLayout
     private lateinit var noInternetImage:ImageView
     private lateinit var noInternetLayout:RelativeLayout
-    private val songs= ArrayList<MySongInfo>()
     private val pontext=this.context
     private lateinit var act: MainActivity
     private lateinit var applic: MusicApplication
@@ -108,43 +107,16 @@ class MySongs : Fragment() {
                 val mediaId = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID))
                 val url = Uri.parse(uri.toString() + File.separator + mediaId)
                 val s = MySongInfo(name,0,artist,"",url)
-                songs.add(s)
+                applic.mySongs.add(s)
 
             }while (cursor.moveToNext())
         }
         cursor.close()
-        val songAdapter = MySongsAdapter(songs,this.context)
+        val songAdapter = MySongsAdapter(applic.mySongs,this.context)
         OnlinerecyclerView.adapter=songAdapter
         songAdapter.SetOnItemClickListener(object : MySongsAdapter.OnItemClickListener {
 
             override fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int) {
-                if (applic.mediaPlayer == null) {
-                    act.onlinePlay.visibility = View.GONE
-                    if(act.dragDownButton.isActivated){
-                        act.onlinePause.visibility = View.GONE
-                    }
-                    else{
-                        act.onlinePause.visibility=View.VISIBLE
-                    }
-                } else {
-                    if(act.dragDownButton.isActivated){
-                    act.onlinePlay.visibility = View.GONE
-                    }
-                    else{
-                        act.onlinePlay.visibility=View.VISIBLE
-                    }
-                    act.onlinePause.visibility = View.GONE
-                }
-                if (applic.mediaPlayer.isPlaying) {
-                    if(act.dragDownButton.isActivated){
-                        act.onlinePlay.visibility = View.GONE
-                    }
-                    else{
-                        act.onlinePlay.visibility=View.VISIBLE
-                    }
-                    act.onlinePause.visibility = View.GONE
-                }
-
                 applic.mediaPlayer.stop()
                 applic.mediaPlayer.reset()
                 applic.mediaPlayer.setDataSource(activity!!, songInfo.uri!!)
@@ -152,12 +124,6 @@ class MySongs : Fragment() {
                 applic.mediaPlayer.setOnPreparedListener {
                     it.start()
                     applic.musicIsPlaying = true
-                }
-                applic.mediaPlayer.setOnCompletionListener {
-                    act.onlinePlay.visibility=View.GONE
-                    act.onlinePause.visibility=View.VISIBLE
-                    applic.currentMySongInfo = null
-                    applic.musicIsPlaying = false
                 }
                 act.txtSongName.text = songInfo.name
                 applic.currentOnlineSongsInfo = null

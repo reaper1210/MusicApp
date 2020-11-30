@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/relateiveGroup"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mainactivitybackground"
-    android:orientation="vertical">
+    android:background="@drawable/mainactivitybackground">
 
     <RelativeLayout
         android:id="@+id/toolbarMain"
@@ -46,6 +44,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true" />
+
+    <RelativeLayout
+        android:id="@+id/relativeGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/dragUpButton"
@@ -123,5 +126,7 @@
         android:text="3:15/5:00"
         android:textColor="@color/white"
         android:layout_marginBottom="5dp" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

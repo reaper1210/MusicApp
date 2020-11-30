@@ -1,14 +1,12 @@
 package com.reaper.myapplication.activity
 
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.transition.Slide
 import androidx.transition.Transition
@@ -19,11 +17,8 @@ import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.adapter.ViewPagerAdapter
 import com.reaper.myapplication.databinding.ActivityMainBinding
-import com.reaper.myapplication.fragment.OnlineSongs
 import com.reaper.myapplication.utils.MySongInfo
 import com.reaper.myapplication.utils.OnlineSongsInfo
-import kotlinx.coroutines.delay
-import kotlin.time.seconds
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         applic = this.application as MusicApplication
+        applic.mainActivity = this@MainActivity
+
         title=binding.titleMain
 
         currentMySong = applic.currentMySongInfo
@@ -81,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter=viewPagerAdapter
         tablayout=binding.mainTabLayout
 
-        relativeGroup=binding.relateiveGroup
+        relativeGroup=binding.relativeGroup
 
         tablayout.setupWithViewPager(viewPager)
 
@@ -168,15 +165,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         onlineEllipse.setOnClickListener {
-            Toast.makeText(this@MainActivity,"Long press to jump to media Controller",Toast.LENGTH_SHORT).show()
-        }
-
-        onlineEllipse.setOnLongClickListener {
             dragDownButton.callOnClick()
             val intent = Intent(this@MainActivity, SongActivity::class.java)
             intent.putExtra("isLoaded",true)
             startActivity(intent)
-            true
         }
 
         setUpTabIcons()

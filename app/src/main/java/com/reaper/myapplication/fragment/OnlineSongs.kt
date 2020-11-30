@@ -32,7 +32,6 @@ class OnlineSongs : Fragment() {
     private lateinit var progressLayout: RelativeLayout
     private lateinit var noInternetImage:ImageView
     private lateinit var noInternetLayout:RelativeLayout
-    private val songs= ArrayList<OnlineSongsInfo>()
     private lateinit var applic: MusicApplication
     private lateinit var act: MainActivity
 
@@ -87,7 +86,7 @@ class OnlineSongs : Fragment() {
                 progressLayout.visibility=View.GONE
                 progressbar.visibility=View.GONE
 
-                songs.clear()
+                applic.onlineSongs.clear()
 
                 val song = snapshot.child("songs")
 
@@ -99,10 +98,10 @@ class OnlineSongs : Fragment() {
                     val songUrl = i.child("url").value.toString()
                     val songInfo = OnlineSongsInfo(songId,songName,songArtist, songImage,songUrl)
 
-                    songs.add(songInfo)
+                    applic.onlineSongs.add(songInfo)
 
                 }
-                val songAdapter=OnlineSongsAdapter(songs, context!!)
+                val songAdapter=OnlineSongsAdapter(applic.onlineSongs, context!!)
                 onlinerecyclerView.adapter=songAdapter
 
                 songAdapter.SetOnItemClickListener(object : OnlineSongsAdapter.OnItemClickListener {
@@ -111,12 +110,6 @@ class OnlineSongs : Fragment() {
                         applic.mediaPlayer.reset()
                         applic.mediaPlayer.setDataSource(songsInfo.url)
                         applic.mediaPlayer.prepareAsync()
-                        applic.mediaPlayer.setOnCompletionListener {
-                            act.onlinePlay.visibility=View.GONE
-                            act.onlinePause.visibility=View.VISIBLE
-                            applic.currentOnlineSongsInfo = null
-                            applic.musicIsPlaying = false
-                        }
                         act.txtSongName.text = songsInfo.name
                         applic.currentMySongInfo = null
                         applic.currentOnlineSongsInfo = songsInfo
@@ -138,13 +131,13 @@ class OnlineSongs : Fragment() {
 
         val activeNetwork: NetworkInfo?=connectivityManager.activeNetworkInfo
 
-        if(activeNetwork?.isConnected!=null){
+        return if(activeNetwork?.isConnected!=null){
             progressLayout.visibility=View.GONE
             progressbar.visibility=View.GONE
-            return activeNetwork.isConnected
+            activeNetwork.isConnected
         }
         else{
-            return false
+            false
         }
     }
 }
