@@ -44,7 +44,6 @@ class SongActivity : AppCompatActivity() {
         songArtist = binding.txtSingerName
         songImage = binding.imgSongImage
 
-        progressbarSongLoading = binding.progressBarSongLoading
         favourites= binding.favourites
         favourites_selected=binding.favouritesSelected
         favourites_selected.visibility=View.GONE
@@ -56,6 +55,12 @@ class SongActivity : AppCompatActivity() {
         play=binding.play
         pause= binding.pause
         pause.visibility=View.GONE
+        progressbarSongLoading = binding.progressBarSongLoading
+        if(intent.getBooleanExtra("isLoaded",false)){
+            progressbarSongLoading.visibility = View.GONE
+            play.visibility = View.INVISIBLE
+            pause.visibility = View.VISIBLE
+        }
 
         when {
             applic.currentOnlineSongsInfo != null -> {
@@ -82,6 +87,7 @@ class SongActivity : AppCompatActivity() {
 
         applic.mediaPlayer.setOnPreparedListener {
             it.start()
+            applic.musicIsPlaying = true
             progressbarSongLoading.visibility = View.GONE
         }
 
@@ -113,12 +119,14 @@ class SongActivity : AppCompatActivity() {
             play.visibility=View.INVISIBLE
             pause.visibility=View.VISIBLE
             applic.mediaPlayer.pause()
+            applic.musicIsPlaying = false
         }
 
         pause.setOnClickListener {
             pause.visibility=View.INVISIBLE
             play.visibility=View.VISIBLE
             applic.mediaPlayer.start()
+            applic.musicIsPlaying = true
         }
     }
 }

@@ -170,16 +170,19 @@ class MySongs : Fragment() {
                 applic.mediaPlayer.prepareAsync()
                 applic.mediaPlayer.setOnPreparedListener {
                     it.start()
+                    applic.musicIsPlaying = true
                 }
                 applic.mediaPlayer.setOnCompletionListener {
                     act.onlinePlay.visibility=View.GONE
                     act.onlinePause.visibility=View.VISIBLE
                     applic.currentMySongInfo = null
+                    applic.musicIsPlaying = false
                 }
                 act.txtSongName.text = songInfo.name
                 applic.currentOnlineSongsInfo = null
                 applic.currentMySongInfo = songInfo
                 val intent= Intent(context, SongActivity::class.java)
+                intent.putExtra("isLoaded",false)
                 context?.startActivity(intent)
             }
         })

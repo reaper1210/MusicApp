@@ -44,7 +44,7 @@
         <ProgressBar
             android:id="@+id/progressBarOnlineSongs"
             android:progressTint="@color/pinkOp"
-            android:progressDrawable="@drawable/pause"
+            android:progressDrawable="@drawable/play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

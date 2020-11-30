@@ -8,6 +8,7 @@ import com.reaper.myapplication.utils.OnlineSongsInfo
 class MusicApplication: Application() {
 
     val mediaPlayer = MediaPlayer()
+    var musicIsPlaying = false
     var currentOnlineSongsInfo: OnlineSongsInfo? = null
     var currentMySongInfo: MySongInfo? = null
 

@@ -69,7 +69,7 @@
         android:id="@+id/onlinePlay"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/play"
+        android:src="@drawable/pause"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="65dp" />
@@ -78,7 +78,7 @@
         android:id="@+id/onlinePause"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/pause"
+        android:src="@drawable/play"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="65dp" />

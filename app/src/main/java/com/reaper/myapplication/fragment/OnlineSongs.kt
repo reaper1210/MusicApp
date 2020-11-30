@@ -107,23 +107,6 @@ class OnlineSongs : Fragment() {
 
                 songAdapter.SetOnItemClickListener(object : OnlineSongsAdapter.OnItemClickListener {
                     override fun onItemClick(view: View, songsInfo: OnlineSongsInfo, position: Int) {
-                        val transition: Transition = Slide(Gravity.BOTTOM)
-                        transition.duration = 300
-                        transition.addTarget(R.id.onlineEllipse)
-                        transition.addTarget(R.id.onlinePlay)
-                        transition.addTarget(R.id.txtSongName)
-                        transition.addTarget(R.id.txtDuration)
-                        transition.addTarget(R.id.dragDownButton)
-                        TransitionManager.beginDelayedTransition(act.relativeGroup, transition)
-                        act.txtSongName.isSelected = true
-                        act.txtSongName.visibility=View.VISIBLE
-                        act.txtDuration.visibility=View.VISIBLE
-                        act.dragUpButton.visibility=View.VISIBLE
-                        act.onlineEllipse.visibility=View.VISIBLE
-                        act.onlinePlay.visibility=View.VISIBLE
-                        act.onlinePause.visibility= View.GONE
-                        act.dragDownButton.visibility=View.VISIBLE
-                        act.dragUpButton.visibility=View.GONE
                         applic.mediaPlayer.stop()
                         applic.mediaPlayer.reset()
                         applic.mediaPlayer.setDataSource(songsInfo.url)
@@ -132,11 +115,13 @@ class OnlineSongs : Fragment() {
                             act.onlinePlay.visibility=View.GONE
                             act.onlinePause.visibility=View.VISIBLE
                             applic.currentOnlineSongsInfo = null
+                            applic.musicIsPlaying = false
                         }
                         act.txtSongName.text = songsInfo.name
                         applic.currentMySongInfo = null
                         applic.currentOnlineSongsInfo = songsInfo
                         val intent= Intent(context, SongActivity::class.java)
+                        intent.putExtra("isLoaded",false)
                         context?.startActivity(intent)
                     }
 

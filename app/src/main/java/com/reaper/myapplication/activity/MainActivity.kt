@@ -62,8 +62,8 @@ class MainActivity : AppCompatActivity() {
         dragUpButton=binding.dragUpButton
         onlinePlay=binding.onlinePlay
         onlinePause=binding.onlinePause
+        onlinePlay.visibility=View.GONE
         onlinePause.visibility=View.GONE
-        onlinePlay.visibility= View.INVISIBLE
 
         txtSongName=binding.txtSongName
         txtSongName.isSelected
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                     txtSongName.isSelected = true
                     txtDuration.visibility = View.VISIBLE
                     onlineEllipse.visibility = View.VISIBLE
-                    if(applic.mediaPlayer.isPlaying){
+                    if(applic.musicIsPlaying){
                         onlinePlay.visibility=View.VISIBLE
                         onlinePause.visibility=View.GONE
                     }
@@ -157,16 +157,25 @@ class MainActivity : AppCompatActivity() {
             onlinePlay.visibility=View.GONE
             onlinePause.visibility=View.VISIBLE
             applic.mediaPlayer.pause()
+            applic.musicIsPlaying = false
         }
 
         onlinePause.setOnClickListener {
             onlinePause.visibility=View.GONE
             onlinePlay.visibility= View.VISIBLE
             applic.mediaPlayer.start()
+            applic.musicIsPlaying = true
         }
 
         onlineEllipse.setOnClickListener {
             Toast.makeText(this@MainActivity,"Long press to jump to media Controller",Toast.LENGTH_SHORT).show()
+        }
+
+        onlineEllipse.setOnLongClickListener {
+            val intent = Intent(this@MainActivity, SongActivity::class.java)
+            intent.putExtra("isLoaded",true)
+            startActivity(intent)
+            true
         }
 
         setUpTabIcons()
