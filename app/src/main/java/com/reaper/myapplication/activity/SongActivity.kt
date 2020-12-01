@@ -3,15 +3,18 @@ package com.reaper.myapplication.activity
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
-import android.provider.MediaStore
+import android.os.Handler
 import android.view.KeyEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.marcinmoskala.arcseekbar.ArcSeekBar
+import com.marcinmoskala.arcseekbar.ProgressListener
 import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.databinding.ActivitySongBinding
+import kotlinx.coroutines.Runnable
 
 class SongActivity : AppCompatActivity() {
 
@@ -29,16 +32,31 @@ class SongActivity : AppCompatActivity() {
     private lateinit var next: ImageView
     private lateinit var progressbarSongLoading: ProgressBar
     private lateinit var volumeSeekbar:SeekBar
+    lateinit var arcSeekbar: ArcSeekBar
     private lateinit var binding: ActivitySongBinding
     private lateinit var applic: MusicApplication
+    private lateinit var runnable: Runnable
+    private var handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySongBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         applic = application as MusicApplication
+
+        arcSeekbar = binding.arcSeekBar
+        arcSeekbar.progress = 0
+        arcSeekbar.onProgressChangedListener = null
+        arcSeekbar.onStartTrackingTouch = ProgressListener {
+            arcSeekbar.onProgressChangedListener = ProgressListener { p0 ->
+                applic.mediaPlayer.seekTo(p0)
+            }
+        }
+        arcSeekbar.onStopTrackingTouch = ProgressListener {
+            arcSeekbar.onProgressChangedListener = null
+        }
+
         back= binding.btnBackSong
 
         previous = binding.previous
@@ -46,11 +64,9 @@ class SongActivity : AppCompatActivity() {
         songName = binding.txtSongName
         songArtist = binding.txtSingerName
         songImage = binding.imgSongImage
-
         favourites= binding.favourites
         favourites_selected=binding.favouritesSelected
         favourites_selected.visibility=View.GONE
-
         addToPlaylists=binding.addtoplaylists
         addToPlaylistsSelected=binding.addtoplaylistsselected
         addToPlaylistsSelected.visibility=View.GONE
@@ -100,6 +116,9 @@ class SongActivity : AppCompatActivity() {
                 songArtist.text = applic.currentOnlineSongsInfo?.artist
                 val imageUrl = applic.currentOnlineSongsInfo?.image
                 Glide.with(this@SongActivity).load(imageUrl).error(R.drawable.music_image).into(songImage)
+
+                arcSeekbar.maxProgress = applic.currentOnlineSongsInfo?.duration!!
+                updateSeekBar()
 
                 previous.setOnClickListener {
                     play.visibility = View.INVISIBLE
@@ -167,6 +186,9 @@ class SongActivity : AppCompatActivity() {
                 songName.isSelected = true
                 songArtist.text = applic.currentMySongInfo?.artist
 
+                arcSeekbar.maxProgress = applic.mediaPlayer.duration
+                updateSeekBar()
+
                 previous.setOnClickListener {
                     play.visibility = View.INVISIBLE
                     pause.visibility = View.INVISIBLE
@@ -179,7 +201,7 @@ class SongActivity : AppCompatActivity() {
                     }
                     applic.mediaPlayer.stop()
                     applic.mediaPlayer.reset()
-                    applic.mediaPlayer.setDataSource(this@SongActivity, applic.mySongs[previousIndex].uri!!)
+                    applic.mediaPlayer.setDataSource(this,applic.mySongs[previousIndex].uri!!)
                     applic.mediaPlayer.prepareAsync()
                     applic.mediaPlayer.setOnCompletionListener {
                         applic.mainActivity?.onlinePlay?.visibility = View.GONE
@@ -209,7 +231,7 @@ class SongActivity : AppCompatActivity() {
                     }
                     applic.mediaPlayer.stop()
                     applic.mediaPlayer.reset()
-                    applic.mediaPlayer.setDataSource(this@SongActivity, applic.mySongs[nextIndex].uri!!)
+                    applic.mediaPlayer.setDataSource(this,applic.mySongs[nextIndex].uri!!)
                     applic.mediaPlayer.prepareAsync()
                     applic.mediaPlayer.setOnCompletionListener {
                         applic.mainActivity?.onlinePlay?.visibility = View.GONE
@@ -228,7 +250,6 @@ class SongActivity : AppCompatActivity() {
                 }
             }
             else -> {
-                Toast.makeText(this@SongActivity, "No Song Playing", Toast.LENGTH_SHORT).show()
                 this.finish()
             }
         }
@@ -244,6 +265,7 @@ class SongActivity : AppCompatActivity() {
             applic.musicIsPlaying = false
             next.callOnClick()
         }
+
         applic.mediaPlayer.setOnPreparedListener {
             it.start()
             applic.musicIsPlaying = true
@@ -287,7 +309,14 @@ class SongActivity : AppCompatActivity() {
             applic.mediaPlayer.start()
             applic.musicIsPlaying = true
         }
+    }
 
+    private fun updateSeekBar(){
+        arcSeekbar.progress = applic.mediaPlayer.currentPosition
+        runnable = Runnable {
+            updateSeekBar()
+        }
+        handler.postDelayed(runnable,1000)
     }
 
     override fun onBackPressed() {

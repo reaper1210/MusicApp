@@ -1,10 +1,12 @@
 package com.reaper.myapplication.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -28,6 +30,7 @@ import com.reaper.myapplication.activity.SongActivity
 import com.reaper.myapplication.adapter.MySongsAdapter
 import com.reaper.myapplication.utils.MySongInfo
 import java.io.File
+import java.io.FileInputStream
 
 class MySongs : Fragment() {
 
@@ -106,8 +109,8 @@ class MySongs : Fragment() {
                 val name: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE))
                 val artist: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
                 val mediaId = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID))
-                val url = Uri.parse(uri.toString() + File.separator + mediaId)
-                val s = MySongInfo(name,0,artist,"",url)
+                val uri = Uri.parse(uri.toString() + File.separator + mediaId)
+                val s = MySongInfo(name,artist,"",uri)
                 applic.mySongs.add(s)
 
             }while (cursor.moveToNext())
@@ -120,7 +123,7 @@ class MySongs : Fragment() {
             override fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int) {
                 applic.mediaPlayer.stop()
                 applic.mediaPlayer.reset()
-                applic.mediaPlayer.setDataSource(activity!!, songInfo.uri!!)
+                applic.mediaPlayer.setDataSource(activity!!,songInfo.uri!!)
                 applic.mediaPlayer.prepareAsync()
                 applic.mediaPlayer.setOnPreparedListener {
                     it.start()
@@ -135,4 +138,5 @@ class MySongs : Fragment() {
             }
         })
     }
+
 }

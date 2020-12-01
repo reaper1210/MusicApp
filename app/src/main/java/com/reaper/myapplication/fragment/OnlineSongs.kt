@@ -91,12 +91,12 @@ class OnlineSongs : Fragment() {
                 val song = snapshot.child("songs")
 
                 for(i in song.children){
-                    val songId = Integer.valueOf(i.child("id").value.toString())
                     val songName = i.child("SongName").value.toString()
                     val songArtist = i.child("artist").value.toString()
-                    val songImage=i.child("image").value.toString()
+                    val duration = Integer.valueOf(i.child("duration").value.toString())
+                    val songImage = i.child("image").value.toString()
                     val songUrl = i.child("url").value.toString()
-                    val songInfo = OnlineSongsInfo(songId,songName,songArtist, songImage,songUrl)
+                    val songInfo = OnlineSongsInfo(songName,duration,songArtist, songImage,songUrl)
 
                     applic.onlineSongs.add(songInfo)
 
