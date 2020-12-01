@@ -2,17 +2,16 @@ package com.reaper.myapplication.activity
 
 import android.content.Intent
 import android.media.AudioManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.KeyEvent
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.databinding.ActivitySongBinding
-import com.reaper.myapplication.utils.MySongInfo
-import com.reaper.myapplication.utils.OnlineSongsInfo
 
 class SongActivity : AppCompatActivity() {
 
@@ -66,7 +65,7 @@ class SongActivity : AppCompatActivity() {
 
         volumeSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,p1,1)
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,p1,0)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -82,7 +81,7 @@ class SongActivity : AppCompatActivity() {
         pause= binding.pause
         pause.visibility = View.GONE
         progressbarSongLoading = binding.progressBarSongLoading
-        if(intent.getBooleanExtra("isLoaded",false)){
+        if(intent.getBooleanExtra("isLoaded", false)){
             progressbarSongLoading.visibility = View.GONE
             if(applic.mediaPlayer.isPlaying){
                 play.visibility = View.VISIBLE
@@ -127,7 +126,7 @@ class SongActivity : AppCompatActivity() {
                     applic.currentMySongInfo = null
                     applic.currentOnlineSongsInfo = applic.onlineSongs[previousIndex]
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
-                    intent.putExtra("isLoaded",false)
+                    intent.putExtra("isLoaded", false)
                     startActivity(intent)
                     finish()
                 }
@@ -157,7 +156,7 @@ class SongActivity : AppCompatActivity() {
                     applic.currentMySongInfo = null
                     applic.currentOnlineSongsInfo = applic.onlineSongs[nextIndex]
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
-                    intent.putExtra("isLoaded",false)
+                    intent.putExtra("isLoaded", false)
                     startActivity(intent)
                     finish()
                 }
@@ -180,7 +179,7 @@ class SongActivity : AppCompatActivity() {
                     }
                     applic.mediaPlayer.stop()
                     applic.mediaPlayer.reset()
-                    applic.mediaPlayer.setDataSource(this@SongActivity,applic.mySongs[previousIndex].uri!!)
+                    applic.mediaPlayer.setDataSource(this@SongActivity, applic.mySongs[previousIndex].uri!!)
                     applic.mediaPlayer.prepareAsync()
                     applic.mediaPlayer.setOnCompletionListener {
                         applic.mainActivity?.onlinePlay?.visibility = View.GONE
@@ -193,7 +192,7 @@ class SongActivity : AppCompatActivity() {
                     applic.currentMySongInfo = null
                     applic.currentMySongInfo = applic.mySongs[previousIndex]
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
-                    intent.putExtra("isLoaded",false)
+                    intent.putExtra("isLoaded", false)
                     startActivity(intent)
                     finish()
                 }
@@ -210,7 +209,7 @@ class SongActivity : AppCompatActivity() {
                     }
                     applic.mediaPlayer.stop()
                     applic.mediaPlayer.reset()
-                    applic.mediaPlayer.setDataSource(this@SongActivity,applic.mySongs[nextIndex].uri!!)
+                    applic.mediaPlayer.setDataSource(this@SongActivity, applic.mySongs[nextIndex].uri!!)
                     applic.mediaPlayer.prepareAsync()
                     applic.mediaPlayer.setOnCompletionListener {
                         applic.mainActivity?.onlinePlay?.visibility = View.GONE
@@ -223,13 +222,13 @@ class SongActivity : AppCompatActivity() {
                     applic.currentMySongInfo = null
                     applic.currentMySongInfo = applic.mySongs[nextIndex]
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
-                    intent.putExtra("isLoaded",false)
+                    intent.putExtra("isLoaded", false)
                     startActivity(intent)
                     finish()
                 }
             }
             else -> {
-                Toast.makeText(this@SongActivity,"No Song Playing",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@SongActivity, "No Song Playing", Toast.LENGTH_SHORT).show()
                 this.finish()
             }
         }
@@ -271,7 +270,7 @@ class SongActivity : AppCompatActivity() {
             addToPlaylists.visibility=View.GONE
             addToPlaylistsSelected.visibility=View.VISIBLE
             Toast.makeText(this@SongActivity, "Added To playlist", Toast.LENGTH_SHORT).show()
-            val intent=Intent(this@SongActivity,PlaylistSongs::class.java)
+            val intent=Intent(this@SongActivity, PlaylistSongs::class.java)
             startActivity(intent)
         }
 
@@ -299,12 +298,20 @@ class SongActivity : AppCompatActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         val audioManager:AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP)
-        {
-            volumeSeekbar.progress = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        return when (event!!.keyCode) {
+            KeyEvent.KEYCODE_VOLUME_UP -> {
+                val currentVolume=audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,AudioManager.ADJUST_RAISE,0)
+                volumeSeekbar.progress=currentVolume
+                true
+            }
+            KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                val currentVolume=audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,AudioManager.ADJUST_LOWER,0)
+                volumeSeekbar.progress=currentVolume
+                true
+            }
+            else -> super.onKeyDown(keyCode, event)
         }
-        return super.onKeyDown(keyCode, event);
     }
-
-
 }
