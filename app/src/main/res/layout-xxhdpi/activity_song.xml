@@ -86,10 +86,8 @@
         android:layout_marginBottom="20dp"
         android:progressTint="#424242"
         android:progressBackgroundTint="@color/white"
-        android:max="100"
         android:thumb="@drawable/thumb"
-        android:padding="50dp"
-        android:progress="50" />
+        android:padding="50dp" />
 
     <ImageView
         android:id="@+id/minus"

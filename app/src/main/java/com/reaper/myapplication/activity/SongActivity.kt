@@ -1,13 +1,12 @@
 package com.reaper.myapplication.activity
 
 import android.content.Intent
+import android.media.AudioManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.bumptech.glide.Glide
 import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
@@ -30,6 +29,7 @@ class SongActivity : AppCompatActivity() {
     private lateinit var previous: ImageView
     private lateinit var next: ImageView
     private lateinit var progressbarSongLoading: ProgressBar
+    private lateinit var volumeSeekbar:SeekBar
     private lateinit var binding: ActivitySongBinding
     private lateinit var applic: MusicApplication
 
@@ -55,6 +55,28 @@ class SongActivity : AppCompatActivity() {
         addToPlaylists=binding.addtoplaylists
         addToPlaylistsSelected=binding.addtoplaylistsselected
         addToPlaylistsSelected.visibility=View.GONE
+
+        val audioManager:AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        val maxVolume=audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        val currentVolume=audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+
+        volumeSeekbar=binding.volumeseekbar
+        volumeSeekbar.max=maxVolume
+        volumeSeekbar.progress = currentVolume
+
+        volumeSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,p1,1)
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+
+        })
 
         play=binding.play
         pause= binding.pause
@@ -273,5 +295,16 @@ class SongActivity : AppCompatActivity() {
         applic.mainActivity?.dragUpButton?.callOnClick()
         super.onBackPressed()
     }
+
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        val audioManager:AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+        {
+            volumeSeekbar.progress = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
 }

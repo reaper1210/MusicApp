@@ -96,7 +96,8 @@ class MySongs : Fragment() {
     }
 
     private fun loadSongs(){
-          val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        applic.mySongs.clear()
+        val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val selection:String= MediaStore.Audio.Media.IS_MUSIC
         val cursor = requireActivity().contentResolver.query(uri,null,selection,null,null,null)!!
 
