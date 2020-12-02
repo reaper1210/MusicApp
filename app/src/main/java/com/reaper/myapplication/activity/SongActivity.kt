@@ -15,6 +15,7 @@ import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.databinding.ActivitySongBinding
 import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.delay
 
 class SongActivity : AppCompatActivity() {
 
@@ -30,6 +31,10 @@ class SongActivity : AppCompatActivity() {
     private lateinit var songImage: ImageView
     private lateinit var previous: ImageView
     private lateinit var next: ImageView
+    private lateinit var txtRunningMinutes: TextView
+    private lateinit var txtRunningSeconds: TextView
+    private lateinit var txtTotalMinutes: TextView
+    private lateinit var txtTotalSeconds: TextView
     private lateinit var progressbarSongLoading: ProgressBar
     private lateinit var volumeSeekbar:SeekBar
     lateinit var arcSeekbar: ArcSeekBar
@@ -37,6 +42,8 @@ class SongActivity : AppCompatActivity() {
     private lateinit var applic: MusicApplication
     private lateinit var runnable: Runnable
     private var handler = Handler()
+    private var seconds = 0
+    private var minutes = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +52,29 @@ class SongActivity : AppCompatActivity() {
         setContentView(binding.root)
         applic = application as MusicApplication
 
+        txtRunningMinutes=binding.txtRunningMinutes!!
+        txtRunningSeconds=binding.txtRunningSeconds!!
+        txtTotalMinutes=binding.txtTotalMinutes!!
+        txtTotalSeconds=binding.txtTotalSeconds!!
+        txtRunningMinutes.text = "0"
+        txtRunningSeconds.text = "00"
+
         arcSeekbar = binding.arcSeekBar
         arcSeekbar.progress = 0
         arcSeekbar.onProgressChangedListener = null
+
         arcSeekbar.onStartTrackingTouch = ProgressListener {
             arcSeekbar.onProgressChangedListener = ProgressListener { p0 ->
                 applic.mediaPlayer.seekTo(p0)
+                seconds = arcSeekbar.progress/1000
+                minutes = seconds/60
+                txtRunningMinutes.text = minutes.toString()
+                if(seconds>=60){
+                    seconds -= (minutes * 60)
+                }
+                txtRunningSeconds.text = seconds.toString()
             }
+
         }
         arcSeekbar.onStopTrackingTouch = ProgressListener {
             arcSeekbar.onProgressChangedListener = null
@@ -61,7 +84,7 @@ class SongActivity : AppCompatActivity() {
 
         previous = binding.previous
         next = binding.next
-        songName = binding.txtSongName
+        songName = binding.txtSongNameText!!
         songArtist = binding.txtSingerName
         songImage = binding.imgSongImage
         favourites= binding.favourites
@@ -85,7 +108,6 @@ class SongActivity : AppCompatActivity() {
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
-
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
@@ -114,8 +136,23 @@ class SongActivity : AppCompatActivity() {
                 songName.text = applic.currentOnlineSongsInfo?.name
                 songName.isSelected = true
                 songArtist.text = applic.currentOnlineSongsInfo?.artist
+                if(songArtist.text=="<unknown>"){
+                    songArtist.visibility = View.INVISIBLE
+                }
                 val imageUrl = applic.currentOnlineSongsInfo?.image
                 Glide.with(this@SongActivity).load(imageUrl).error(R.drawable.music_image).into(songImage)
+
+                var sec = applic.currentOnlineSongsInfo?.duration!! / 1000
+                val min = sec / 60
+                sec -= min*60
+                if(sec/10==0){
+                    txtTotalSeconds.text = "0$sec"
+                }
+                else{
+                    txtTotalSeconds.text = sec.toString()
+                }
+                txtTotalMinutes.text = min.toString()
+
 
                 arcSeekbar.maxProgress = applic.currentOnlineSongsInfo?.duration!!
                 updateSeekBar()
@@ -137,7 +174,6 @@ class SongActivity : AppCompatActivity() {
                     applic.mediaPlayer.setOnCompletionListener {
                         applic.mainActivity?.onlinePlay?.visibility = View.GONE
                         applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
-                        applic.currentOnlineSongsInfo = null
                         applic.musicIsPlaying = false
                         next.callOnClick()
                     }
@@ -167,9 +203,9 @@ class SongActivity : AppCompatActivity() {
                     applic.mediaPlayer.setOnCompletionListener {
                         applic.mainActivity?.onlinePlay?.visibility = View.GONE
                         applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
-                        applic.currentOnlineSongsInfo = null
                         applic.musicIsPlaying = false
                         next.callOnClick()
+
                     }
                     applic.mainActivity?.txtSongName?.text = applic.onlineSongs[nextIndex].name
                     applic.currentMySongInfo = null
@@ -185,7 +221,9 @@ class SongActivity : AppCompatActivity() {
                 songName.text = applic.currentMySongInfo?.name
                 songName.isSelected = true
                 songArtist.text = applic.currentMySongInfo?.artist
-
+                if(songArtist.text=="<unknown>"){
+                    songArtist.visibility = View.INVISIBLE
+                }
                 arcSeekbar.maxProgress = applic.mediaPlayer.duration
                 updateSeekBar()
 
@@ -206,7 +244,6 @@ class SongActivity : AppCompatActivity() {
                     applic.mediaPlayer.setOnCompletionListener {
                         applic.mainActivity?.onlinePlay?.visibility = View.GONE
                         applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
-                        applic.currentOnlineSongsInfo = null
                         applic.musicIsPlaying = false
                         next.callOnClick()
                     }
@@ -236,7 +273,6 @@ class SongActivity : AppCompatActivity() {
                     applic.mediaPlayer.setOnCompletionListener {
                         applic.mainActivity?.onlinePlay?.visibility = View.GONE
                         applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
-                        applic.currentOnlineSongsInfo = null
                         applic.musicIsPlaying = false
                         next.callOnClick()
                     }
@@ -261,7 +297,6 @@ class SongActivity : AppCompatActivity() {
         applic.mediaPlayer.setOnCompletionListener {
             applic.mainActivity?.onlinePlay?.visibility = View.GONE
             applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
-            applic.currentOnlineSongsInfo = null
             applic.musicIsPlaying = false
             next.callOnClick()
         }
@@ -312,18 +347,32 @@ class SongActivity : AppCompatActivity() {
     }
 
     private fun updateSeekBar(){
-        arcSeekbar.progress = applic.mediaPlayer.currentPosition
-        runnable = Runnable {
-            updateSeekBar()
+        if(applic.mediaPlayer.isPlaying) {
+            arcSeekbar.progress = applic.mediaPlayer.currentPosition
+            if(seconds >= 60) {
+                seconds = 0
+                minutes++
+                txtRunningMinutes.text = minutes.toString()
+            }
+            if(seconds/10==0){
+                txtRunningSeconds.text = "0$seconds"
+            }
+            else{
+                txtRunningSeconds.text = seconds.toString()
+            }
+            seconds++
         }
-        handler.postDelayed(runnable,1000)
+            runnable = Runnable {
+                updateSeekBar()
+            }
+            handler.postDelayed(runnable,1000)
+
     }
 
     override fun onBackPressed() {
         applic.mainActivity?.dragUpButton?.callOnClick()
         super.onBackPressed()
     }
-
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         val audioManager:AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
