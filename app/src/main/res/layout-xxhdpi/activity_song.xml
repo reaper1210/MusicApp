@@ -161,8 +161,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/imgSongCardview"
-        app:cardElevation="50dp"
-        android:outlineSpotShadowColor="#CCFFFFFF"
+        app:cardElevation="75dp"
+        android:outlineSpotShadowColor="#FFED3675"
         android:layout_width="256dp"
         android:layout_height="256dp"
         android:layout_centerHorizontal="true"

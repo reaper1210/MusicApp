@@ -158,6 +158,8 @@
         android:id="@+id/imgSongCardview"
         android:layout_width="128dp"
         android:layout_height="128dp"
+        app:cardElevation="75dp"
+        android:outlineSpotShadowColor="#FFED3675"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/txtNowplaying"
         android:layout_marginTop="50dp"

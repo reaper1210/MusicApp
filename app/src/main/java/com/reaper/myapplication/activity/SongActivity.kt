@@ -224,6 +224,18 @@ class SongActivity : AppCompatActivity() {
                 if(songArtist.text=="<unknown>"){
                     songArtist.visibility = View.INVISIBLE
                 }
+
+                var sec = applic.mediaPlayer.duration / 1000
+                val min = sec / 60
+                sec -= min*60
+                if(sec/10==0){
+                    txtTotalSeconds.text = "0$sec"
+                }
+                else{
+                    txtTotalSeconds.text = sec.toString()
+                }
+                txtTotalMinutes.text = min.toString()
+
                 arcSeekbar.maxProgress = applic.mediaPlayer.duration
                 updateSeekBar()
 
