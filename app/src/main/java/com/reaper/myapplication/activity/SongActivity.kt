@@ -9,6 +9,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.gauravk.audiovisualizer.visualizer.BlobVisualizer
+import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
 import com.marcinmoskala.arcseekbar.ArcSeekBar
 import com.marcinmoskala.arcseekbar.ProgressListener
 import com.reaper.myapplication.MusicApplication
@@ -38,12 +40,13 @@ class SongActivity : AppCompatActivity() {
     private lateinit var progressbarSongLoading: ProgressBar
     private lateinit var volumeSeekbar:SeekBar
     lateinit var arcSeekbar: ArcSeekBar
+    private lateinit var visualizer: CircleLineVisualizer
     private lateinit var binding: ActivitySongBinding
     private lateinit var applic: MusicApplication
     private lateinit var runnable: Runnable
     private var handler = Handler()
-    private var seconds = 0
-    private var minutes = 0
+    var seconds: Int = 0
+    var minutes: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,17 +55,16 @@ class SongActivity : AppCompatActivity() {
         setContentView(binding.root)
         applic = application as MusicApplication
 
-        txtRunningMinutes=binding.txtRunningMinutes!!
-        txtRunningSeconds=binding.txtRunningSeconds!!
-        txtTotalMinutes=binding.txtTotalMinutes!!
-        txtTotalSeconds=binding.txtTotalSeconds!!
+        txtRunningMinutes=binding.txtRunningMinutes
+        txtRunningSeconds=binding.txtRunningSeconds
+        txtTotalMinutes=binding.txtTotalMinutes
+        txtTotalSeconds=binding.txtTotalSeconds
         txtRunningMinutes.text = "0"
         txtRunningSeconds.text = "00"
 
         arcSeekbar = binding.arcSeekBar
         arcSeekbar.progress = 0
         arcSeekbar.onProgressChangedListener = null
-
         arcSeekbar.onStartTrackingTouch = ProgressListener {
             arcSeekbar.onProgressChangedListener = ProgressListener { p0 ->
                 applic.mediaPlayer.seekTo(p0)
@@ -81,7 +83,6 @@ class SongActivity : AppCompatActivity() {
         }
 
         back= binding.btnBackSong
-
         previous = binding.previous
         next = binding.next
         songName = binding.txtSongNameText!!
@@ -119,6 +120,14 @@ class SongActivity : AppCompatActivity() {
         pause= binding.pause
         pause.visibility = View.GONE
         progressbarSongLoading = binding.progressBarSongLoading
+
+        visualizer= binding.visualizer!!
+        val audioSessionId=applic.mediaPlayer.audioSessionId
+
+        if(audioSessionId != -1){
+            visualizer.setAudioSessionId(audioSessionId)
+        }
+
         if(intent.getBooleanExtra("isLoaded", false)){
             progressbarSongLoading.visibility = View.GONE
             if(applic.mediaPlayer.isPlaying){
@@ -180,6 +189,7 @@ class SongActivity : AppCompatActivity() {
                     applic.mainActivity?.txtSongName?.text = applic.onlineSongs[previousIndex].name
                     applic.currentMySongInfo = null
                     applic.currentOnlineSongsInfo = applic.onlineSongs[previousIndex]
+                    visualizer.release()
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
                     intent.putExtra("isLoaded", false)
                     startActivity(intent)
@@ -210,6 +220,7 @@ class SongActivity : AppCompatActivity() {
                     applic.mainActivity?.txtSongName?.text = applic.onlineSongs[nextIndex].name
                     applic.currentMySongInfo = null
                     applic.currentOnlineSongsInfo = applic.onlineSongs[nextIndex]
+                    visualizer.release()
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
                     intent.putExtra("isLoaded", false)
                     startActivity(intent)
@@ -262,6 +273,7 @@ class SongActivity : AppCompatActivity() {
                     applic.mainActivity?.txtSongName?.text = applic.mySongs[previousIndex].name
                     applic.currentMySongInfo = null
                     applic.currentMySongInfo = applic.mySongs[previousIndex]
+                    visualizer.release()
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
                     intent.putExtra("isLoaded", false)
                     startActivity(intent)
@@ -291,6 +303,7 @@ class SongActivity : AppCompatActivity() {
                     applic.mainActivity?.txtSongName?.text = applic.mySongs[nextIndex].name
                     applic.currentMySongInfo = null
                     applic.currentMySongInfo = applic.mySongs[nextIndex]
+                    visualizer.release()
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
                     intent.putExtra("isLoaded", false)
                     startActivity(intent)
@@ -310,6 +323,9 @@ class SongActivity : AppCompatActivity() {
             applic.mainActivity?.onlinePlay?.visibility = View.GONE
             applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
             applic.musicIsPlaying = false
+            if(visualizer != null){
+                visualizer.release()
+            }
             next.callOnClick()
         }
 
@@ -355,6 +371,13 @@ class SongActivity : AppCompatActivity() {
             play.visibility=View.VISIBLE
             applic.mediaPlayer.start()
             applic.musicIsPlaying = true
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(visualizer != null){
+            visualizer.release()
         }
     }
 

@@ -22,5 +22,4 @@ class MusicApplication: Application() {
     var onlineSongs = ArrayList<OnlineSongsInfo>()
     var mySongs = ArrayList<MySongInfo>()
 
-
 }

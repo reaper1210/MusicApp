@@ -117,7 +117,6 @@ class OnlineSongs : Fragment() {
                         intent.putExtra("isLoaded",false)
                         context?.startActivity(intent)
                     }
-
                 })
             }
         }

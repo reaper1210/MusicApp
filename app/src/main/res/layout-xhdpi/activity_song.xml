@@ -21,7 +21,7 @@
         android:layout_height="65dp"
         android:layout_below="@+id/txtSingerName"
         app:progress="50"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         app:progressBackgroundColor="@color/white"
         app:progressBackgroundWidth="10dp"
         app:progressColor="@color/pinkOp"
@@ -176,8 +176,15 @@
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
+    <LinearLayout
         android:id="@+id/txtSongName"
+        android:layout_below="@+id/imgSongCardview"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/txtSongNameText"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"
@@ -185,15 +192,15 @@
         android:focusableInTouchMode="true"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
-        android:padding="8dp"
         android:scrollHorizontally="true"
         android:textAlignment="center"
         android:layout_below="@+id/imgSongCardview"
         android:text="Song Name"
-        android:textSize="34sp"
+        android:textSize="30sp"
         android:textColor="@color/white"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_centerHorizontal="true" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txtSingerName"
@@ -203,18 +210,59 @@
         android:text="Singer Name"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
-        android:textSize="22sp"
+        android:textSize="18sp"
         android:layout_marginTop="5dp" />
 
-    <TextView
-        android:id="@+id/txtDuration"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="20sp"
-        android:layout_below="@+id/play"
-        android:textColor="@color/white"
-        android:text="2:50/5:00" />
+        android:layout_below="@+id/txtSingerName"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtRunningMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:textSize="12sp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"/>
+        <TextView
+            android:id="@+id/txtRunningSeconds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50"
+            android:textSize="12sp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/"/>
+        <TextView
+            android:id="@+id/txtTotalMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4"
+            android:textSize="12sp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"/>
+
+        <TextView
+            android:id="@+id/txtTotalSeconds"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="50"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 
 </RelativeLayout>
