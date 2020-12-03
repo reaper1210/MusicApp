@@ -158,6 +158,20 @@
         android:layout_marginBottom="200dp"
         android:layout_marginRight="20dp" />
 
+    <com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
+        android:id="@+id/visualizer"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:layout_width="768dp"
+        android:layout_height="768dp"
+        android:layout_marginTop="-154dp"
+        android:layout_marginRight="-128dp"
+        android:layout_centerHorizontal="true"
+        custom:avDensity="0.3"
+        custom:avType="outline"
+        custom:avWidth="0.75dp"
+        custom:avColor="@color/pinkOp"
+        custom:avSpeed="slow" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/imgSongCardview"
         android:layout_width="256dp"

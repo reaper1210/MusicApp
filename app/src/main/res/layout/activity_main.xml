@@ -66,25 +66,25 @@
         android:layout_height="wrap_content"
         android:src="@drawable/pathellipse1"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-5dp" />
+        android:layout_marginBottom="-10dp" />
 
     <ImageView
         android:id="@+id/onlinePlay"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:src="@drawable/pause"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="65dp" />
+        android:layout_marginBottom="62dp" />
 
     <ImageView
         android:id="@+id/onlinePause"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:src="@drawable/play"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="65dp" />
+        android:layout_marginBottom="62dp" />
 
     <ImageView
         android:id="@+id/dragDownButton"

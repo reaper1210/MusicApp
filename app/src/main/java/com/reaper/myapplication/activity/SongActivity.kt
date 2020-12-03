@@ -85,7 +85,7 @@ class SongActivity : AppCompatActivity() {
         back= binding.btnBackSong
         previous = binding.previous
         next = binding.next
-        songName = binding.txtSongNameText!!
+        songName = binding.txtSongNameText
         songArtist = binding.txtSingerName
         songImage = binding.imgSongImage
         favourites= binding.favourites
@@ -121,7 +121,7 @@ class SongActivity : AppCompatActivity() {
         pause.visibility = View.GONE
         progressbarSongLoading = binding.progressBarSongLoading
 
-        visualizer= binding.visualizer!!
+        visualizer= binding.visualizer
         val audioSessionId=applic.mediaPlayer.audioSessionId
 
         if(audioSessionId != -1){

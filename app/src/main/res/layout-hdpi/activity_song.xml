@@ -154,6 +154,20 @@
         android:layout_marginBottom="-350dp"
         android:layout_marginRight="20dp" />
 
+    <com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
+        android:id="@+id/visualizer"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:layout_width="264dp"
+        android:layout_height="264dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginRight="-100dp"
+        android:layout_centerHorizontal="true"
+        custom:avDensity="0.3"
+        custom:avType="outline"
+        custom:avWidth="0.75dp"
+        custom:avColor="@color/pinkOp"
+        custom:avSpeed="slow" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/imgSongCardview"
         android:layout_width="128dp"
@@ -211,7 +225,7 @@
         android:text="Singer Name"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
-        android:textSize="22sp"
+        android:textSize="18sp"
         android:layout_marginTop="5dp"/>
 
     <LinearLayout
@@ -228,7 +242,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/white"/>
         <TextView
             android:layout_width="wrap_content"
@@ -239,7 +253,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="50"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/white"/>
         <TextView
             android:layout_width="wrap_content"
@@ -250,7 +264,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/white"/>
         <TextView
             android:layout_width="wrap_content"
@@ -261,7 +275,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="50"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/white"/>
 
     </LinearLayout>
