@@ -102,6 +102,8 @@ class SongActivity : AppCompatActivity() {
         back= binding.btnBackSong
         previous = binding.previous
         next = binding.next
+        previous.isClickable = true
+        next.isClickable = true
         songName = binding.txtSongNameText
         songArtist = binding.txtSingerName
         songImage = binding.imgSongImage
@@ -184,6 +186,8 @@ class SongActivity : AppCompatActivity() {
                 updateSeekBar()
 
                 previous.setOnClickListener {
+                    previous.isClickable = false
+                    next.isClickable = false
                     play.visibility = View.INVISIBLE
                     pause.visibility = View.INVISIBLE
                     progressbarSongLoading.visibility = View.VISIBLE
@@ -214,6 +218,8 @@ class SongActivity : AppCompatActivity() {
                     finish()
                 }
                 next.setOnClickListener {
+                    next.isClickable = false
+                    previous.isClickable = false
                     play.visibility = View.INVISIBLE
                     pause.visibility = View.INVISIBLE
                     progressbarSongLoading.visibility = View.VISIBLE
@@ -270,6 +276,8 @@ class SongActivity : AppCompatActivity() {
                 updateSeekBar()
 
                 previous.setOnClickListener {
+                    previous.isClickable = false
+                    next.isClickable = false
                     play.visibility = View.INVISIBLE
                     pause.visibility = View.INVISIBLE
                     progressbarSongLoading.visibility = View.VISIBLE
@@ -300,6 +308,8 @@ class SongActivity : AppCompatActivity() {
                     finish()
                 }
                 next.setOnClickListener {
+                    next.isClickable = false
+                    previous.isClickable = false
                     play.visibility = View.INVISIBLE
                     pause.visibility = View.INVISIBLE
                     progressbarSongLoading.visibility = View.VISIBLE
@@ -398,12 +408,11 @@ class SongActivity : AppCompatActivity() {
     override fun onPause() {
         applic.pauseSeconds = txtRunningSeconds.text.toString()
         applic.pauseMinutes = txtRunningMinutes.text.toString()
-        applic.pauseProgress = arcSeekbar.progress
         super.onPause()
     }
 
     override fun onResume() {
-        arcSeekbar.progress = applic.pauseProgress
+        arcSeekbar.progress = applic.mediaPlayer.currentPosition
         txtRunningSeconds.text = applic.pauseSeconds
         txtRunningMinutes.text = applic.pauseMinutes
         super.onResume()

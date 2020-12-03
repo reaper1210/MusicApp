@@ -23,6 +23,5 @@ class MusicApplication: Application() {
     var mySongs = ArrayList<MySongInfo>()
     var pauseSeconds = "0"
     var pauseMinutes = "0"
-    var pauseProgress = 0
 
 }
