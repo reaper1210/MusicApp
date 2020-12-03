@@ -130,6 +130,7 @@ class MySongs : Fragment() {
                     applic.musicIsPlaying = true
                 }
                 act.txtSongName.text = songInfo.name
+                act.txtSongArtist.text = songInfo.artist
                 applic.currentOnlineSongsInfo = null
                 applic.currentMySongInfo = songInfo
                 val intent= Intent(context, SongActivity::class.java)

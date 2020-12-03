@@ -31,12 +31,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var onlinePlay:ImageView
     lateinit var onlinePause:ImageView
     lateinit var txtSongName:TextView
-    lateinit var txtDuration:TextView
+    lateinit var txtSongArtist:TextView
     lateinit var dragDownButton:ImageView
     lateinit var relativeGroup:RelativeLayout
     lateinit var title:TextView
-    private var currentOnlineSong: OnlineSongsInfo? = null
-    private var currentMySong: MySongInfo? = null
     lateinit var applic:MusicApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,9 +47,6 @@ class MainActivity : AppCompatActivity() {
         applic.mainActivity = this@MainActivity
 
         title=binding.titleMain
-
-        currentMySong = applic.currentMySongInfo
-        currentOnlineSong = applic.currentOnlineSongsInfo
 
         onlineEllipse=binding.onlineEllipse
         onlineEllipse.visibility=View.GONE
@@ -66,8 +61,8 @@ class MainActivity : AppCompatActivity() {
         txtSongName.isSelected
         txtSongName.visibility=View.INVISIBLE
 
-        txtDuration=binding.txtDuration
-        txtDuration.visibility=View.INVISIBLE
+        txtSongArtist=binding.txtArtist
+        txtSongArtist.visibility=View.INVISIBLE
 
         dragDownButton=binding.dragDownButton
         dragDownButton.visibility=View.INVISIBLE
@@ -83,17 +78,26 @@ class MainActivity : AppCompatActivity() {
         tablayout.setupWithViewPager(viewPager)
 
         when {
-            currentOnlineSong!=null -> {
-                txtSongName.text = currentOnlineSong?.name
+            applic.currentOnlineSongsInfo!=null -> {
+                txtSongName.text = applic.currentOnlineSongsInfo?.name
                 txtSongName.isSelected = true
+                txtSongArtist.text = applic.currentOnlineSongsInfo?.artist
             }
-            currentMySong!=null -> {
-                txtSongName.text = currentMySong?.name
+            applic.currentMySongInfo!=null -> {
+                txtSongName.text = applic.currentMySongInfo?.name
                 txtSongName.isSelected = true
+                val artist = applic.currentMySongInfo?.artist
+                if(artist=="<unknown>"){
+                    txtSongArtist.text = artist
+                }
+                else{
+                    txtSongArtist.visibility = View.GONE
+                }
             }
             else -> {
-                txtSongName.text = " "
-                txtDuration.text = "0:00/0:00"
+                txtSongName.text = "Mein hu Gian!!"
+                txtSongArtist.text = "Gian"
+                onlinePause.visibility = View.GONE
             }
         }
 
@@ -113,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                     dragUpButton.visibility=View.GONE
                     txtSongName.visibility = View.VISIBLE
                     txtSongName.isSelected = true
-                    txtDuration.visibility = View.VISIBLE
+                    txtSongArtist.visibility = View.VISIBLE
                     onlineEllipse.visibility = View.VISIBLE
                     if(applic.musicIsPlaying){
                         onlinePlay.visibility=View.VISIBLE
@@ -141,7 +145,7 @@ class MainActivity : AppCompatActivity() {
                 transition.addTarget(R.id.dragDownButton)
                 TransitionManager.beginDelayedTransition(relativeGroup, transition)
                 txtSongName.visibility=View.GONE
-                txtDuration.visibility=View.GONE
+                txtSongArtist.visibility=View.GONE
                 dragUpButton.visibility=View.VISIBLE
                 onlineEllipse.visibility=View.GONE
                 onlinePlay.visibility=View.GONE

@@ -117,13 +117,13 @@
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/txtDuration"
+        android:id="@+id/txtArtist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:textSize="16dp"
-        android:text="3:15/5:00"
+        android:text="Gian"
         android:textColor="@color/white"
         android:layout_marginBottom="5dp" />
 

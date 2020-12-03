@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.gauravk.audiovisualizer.visualizer.BlobVisualizer
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
 import com.marcinmoskala.arcseekbar.ArcSeekBar
 import com.marcinmoskala.arcseekbar.ProgressListener
@@ -17,7 +16,6 @@ import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.databinding.ActivitySongBinding
 import kotlinx.coroutines.Runnable
-import kotlinx.coroutines.delay
 
 class SongActivity : AppCompatActivity() {
 
@@ -39,14 +37,14 @@ class SongActivity : AppCompatActivity() {
     private lateinit var txtTotalSeconds: TextView
     private lateinit var progressbarSongLoading: ProgressBar
     private lateinit var volumeSeekbar:SeekBar
-    lateinit var arcSeekbar: ArcSeekBar
+    private lateinit var arcSeekbar: ArcSeekBar
     private lateinit var visualizer: CircleLineVisualizer
     private lateinit var binding: ActivitySongBinding
     private lateinit var applic: MusicApplication
     private lateinit var runnable: Runnable
     private var handler = Handler()
-    var seconds: Int = 0
-    var minutes: Int = 0
+    private var seconds: Int = 0
+    private var minutes: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +60,20 @@ class SongActivity : AppCompatActivity() {
         txtRunningMinutes.text = "0"
         txtRunningSeconds.text = "00"
 
+
         arcSeekbar = binding.arcSeekBar
         arcSeekbar.progress = 0
-        arcSeekbar.onProgressChangedListener = null
+        arcSeekbar.onProgressChangedListener = ProgressListener {
+            arcSeekbar.onProgressChangedListener = ProgressListener {
+                seconds = arcSeekbar.progress/1000
+                minutes = seconds/60
+                txtRunningMinutes.text = minutes.toString()
+                if(seconds>=60){
+                    seconds -= (minutes * 60)
+                }
+                txtRunningSeconds.text = seconds.toString()
+            }
+        }
         arcSeekbar.onStartTrackingTouch = ProgressListener {
             arcSeekbar.onProgressChangedListener = ProgressListener { p0 ->
                 applic.mediaPlayer.seekTo(p0)
@@ -79,7 +88,15 @@ class SongActivity : AppCompatActivity() {
 
         }
         arcSeekbar.onStopTrackingTouch = ProgressListener {
-            arcSeekbar.onProgressChangedListener = null
+            arcSeekbar.onProgressChangedListener = ProgressListener {
+                seconds = arcSeekbar.progress/1000
+                minutes = seconds/60
+                txtRunningMinutes.text = minutes.toString()
+                if(seconds>=60){
+                    seconds -= (minutes * 60)
+                }
+                txtRunningSeconds.text = seconds.toString()
+            }
         }
 
         back= binding.btnBackSong
@@ -187,6 +204,7 @@ class SongActivity : AppCompatActivity() {
                         next.callOnClick()
                     }
                     applic.mainActivity?.txtSongName?.text = applic.onlineSongs[previousIndex].name
+                    applic.mainActivity?.txtSongArtist?.text = applic.onlineSongs[previousIndex].artist
                     applic.currentMySongInfo = null
                     applic.currentOnlineSongsInfo = applic.onlineSongs[previousIndex]
                     visualizer.release()
@@ -218,6 +236,7 @@ class SongActivity : AppCompatActivity() {
 
                     }
                     applic.mainActivity?.txtSongName?.text = applic.onlineSongs[nextIndex].name
+                    applic.mainActivity?.txtSongArtist?.text = applic.onlineSongs[nextIndex].artist
                     applic.currentMySongInfo = null
                     applic.currentOnlineSongsInfo = applic.onlineSongs[nextIndex]
                     visualizer.release()
@@ -271,6 +290,7 @@ class SongActivity : AppCompatActivity() {
                         next.callOnClick()
                     }
                     applic.mainActivity?.txtSongName?.text = applic.mySongs[previousIndex].name
+                    applic.mainActivity?.txtSongArtist?.text = applic.mySongs[previousIndex].artist
                     applic.currentMySongInfo = null
                     applic.currentMySongInfo = applic.mySongs[previousIndex]
                     visualizer.release()
@@ -301,6 +321,7 @@ class SongActivity : AppCompatActivity() {
                         next.callOnClick()
                     }
                     applic.mainActivity?.txtSongName?.text = applic.mySongs[nextIndex].name
+                    applic.mainActivity?.txtSongArtist?.text = applic.mySongs[nextIndex].artist
                     applic.currentMySongInfo = null
                     applic.currentMySongInfo = applic.mySongs[nextIndex]
                     visualizer.release()
@@ -374,11 +395,23 @@ class SongActivity : AppCompatActivity() {
         }
     }
 
+    override fun onPause() {
+        applic.pauseSeconds = txtRunningSeconds.text.toString()
+        applic.pauseMinutes = txtRunningMinutes.text.toString()
+        applic.pauseProgress = arcSeekbar.progress
+        super.onPause()
+    }
+
+    override fun onResume() {
+        arcSeekbar.progress = applic.pauseProgress
+        txtRunningSeconds.text = applic.pauseSeconds
+        txtRunningMinutes.text = applic.pauseMinutes
+        super.onResume()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        if(visualizer != null){
-            visualizer.release()
-        }
+        visualizer.release()
     }
 
     private fun updateSeekBar(){
@@ -397,10 +430,10 @@ class SongActivity : AppCompatActivity() {
             }
             seconds++
         }
-            runnable = Runnable {
-                updateSeekBar()
-            }
-            handler.postDelayed(runnable,1000)
+        runnable = Runnable {
+            updateSeekBar()
+        }
+        handler.postDelayed(runnable,100)
 
     }
 

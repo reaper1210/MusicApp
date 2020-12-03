@@ -111,6 +111,7 @@ class OnlineSongs : Fragment() {
                         applic.mediaPlayer.setDataSource(songsInfo.url)
                         applic.mediaPlayer.prepareAsync()
                         act.txtSongName.text = songsInfo.name
+                        act.txtSongArtist.text = songsInfo.artist
                         applic.currentMySongInfo = null
                         applic.currentOnlineSongsInfo = songsInfo
                         val intent= Intent(context, SongActivity::class.java)
