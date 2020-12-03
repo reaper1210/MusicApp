@@ -138,7 +138,11 @@ class SongActivity : AppCompatActivity() {
         play=binding.play
         pause= binding.pause
         pause.visibility = View.GONE
+        play.visibility = View.INVISIBLE
+        play.isClickable = false
+        pause.isClickable = false
         progressbarSongLoading = binding.progressBarSongLoading
+        progressbarSongLoading.isClickable = false
 
         visualizer= binding.visualizer
         val audioSessionId=applic.mediaPlayer.audioSessionId
@@ -149,6 +153,7 @@ class SongActivity : AppCompatActivity() {
 
         if(intent.getBooleanExtra("isLoaded", false)){
             progressbarSongLoading.visibility = View.GONE
+            play.visibility=View.VISIBLE
             if(applic.mediaPlayer.isPlaying){
                 play.visibility = View.VISIBLE
                 pause.visibility = View.INVISIBLE
@@ -348,6 +353,7 @@ class SongActivity : AppCompatActivity() {
 
         if(applic.mediaPlayer.isPlaying){
             progressbarSongLoading.visibility = View.GONE
+            play.visibility=View.VISIBLE
         }
 
         applic.mediaPlayer.setOnCompletionListener {
@@ -364,6 +370,7 @@ class SongActivity : AppCompatActivity() {
             it.start()
             applic.musicIsPlaying = true
             progressbarSongLoading.visibility = View.GONE
+            play.visibility=View.VISIBLE
         }
 
         back.setOnClickListener {

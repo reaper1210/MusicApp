@@ -52,7 +52,10 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/play"
-        android:background="@color/black"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="#383838"
+        android:background="#E91E63"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="385dp" />
 
