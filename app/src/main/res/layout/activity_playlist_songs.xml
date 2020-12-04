@@ -1,10 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.PlaylistSongs"
-    android:background="@drawable/background2">
+    android:background="@drawable/mainactivitybackground">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/txtPlaylistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Playlist Name"
+        android:textSize="28sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp" />
+
+    <RelativeLayout
+        android:id="@+id/relative1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_below="@+id/txtPlaylistName">
+
+    <TextView
+        android:layout_centerVertical="true"
+        android:id="@+id/txtTotalSongs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        android:layout_centerInParent="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Songs"
+            android:layout_below="@+id/txtTotalSongs"
+            android:layout_marginTop="5dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/txtPlaylistName"
+        android:layout_toEndOf="@+id/relative1">
+
+        <LinearLayout
+            android:id="@+id/txtTotalDuration"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtTotalDurationHoursTens"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"/>
+
+            <TextView
+            android:id="@+id/txtTotalDurationHoursUnits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="22sp"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"/>
+
+            <TextView
+                android:id="@+id/txtTotalDurationMinutesTens"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"/>
+
+            <TextView
+                android:id="@+id/txtTotalDurationMinutesUnits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":" />
+
+            <TextView
+                android:id="@+id/txtRunningSeconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Duration"
+            android:layout_marginRight="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/txtTotalDuration" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relative1"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>

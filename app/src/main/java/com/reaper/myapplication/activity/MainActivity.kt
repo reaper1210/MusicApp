@@ -87,12 +87,7 @@ class MainActivity : AppCompatActivity() {
                 txtSongName.text = applic.currentMySongInfo?.name
                 txtSongName.isSelected = true
                 val artist = applic.currentMySongInfo?.artist
-                if(artist=="<unknown>"){
-                    txtSongArtist.text = artist
-                }
-                else{
-                    txtSongArtist.visibility = View.GONE
-                }
+                txtSongArtist.text = artist
             }
             else -> {
                 txtSongName.text = "Mein hu Gian!!"
