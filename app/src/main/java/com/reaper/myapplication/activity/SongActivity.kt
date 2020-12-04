@@ -23,7 +23,6 @@ class SongActivity : AppCompatActivity() {
     private lateinit var favourites_selected:ImageView
     private lateinit var addToPlaylists:ImageView
     private lateinit var addToPlaylistsSelected:ImageView
-    private lateinit var back:ImageView
     private lateinit var play:ImageView
     private lateinit var pause:ImageView
     private lateinit var songName: TextView
@@ -99,7 +98,6 @@ class SongActivity : AppCompatActivity() {
             }
         }
 
-        back= binding.btnBackSong
         previous = binding.previous
         next = binding.next
         previous.isClickable = true
@@ -371,10 +369,6 @@ class SongActivity : AppCompatActivity() {
             applic.musicIsPlaying = true
             progressbarSongLoading.visibility = View.GONE
             play.visibility=View.VISIBLE
-        }
-
-        back.setOnClickListener {
-            onBackPressed()
         }
 
         favourites.setOnClickListener {
