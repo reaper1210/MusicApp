@@ -7,78 +7,127 @@
     tools:context=".activity.SongActivity"
     android:background="@drawable/songactivitybackground">
 
-    <ImageView
-        android:id="@+id/btnBackSong"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:layout_alignParentStart="true"
-        android:src="@drawable/back"/>
+    <TextView
+        android:id="@+id/txtNowplaying"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Now Playing"
+        android:textSize="28sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp" />
 
-    <com.marcinmoskala.arcseekbar.ArcSeekBar
-        android:id="@+id/arcSeekBar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="90dp"
-        app:progress="50"
-        app:progressBackgroundColor="@color/white"
-        app:progressBackgroundWidth="10dp"
-        app:progressColor="@color/pinkOp"
-        app:progressWidth="8dp"
-        app:roundEdges="true"
-        app:thumb="@drawable/thumb" />
+        android:layout_height="156dp"
+        android:layout_above="@+id/volumeseekbar">
 
-    <ImageView
-        android:id="@+id/play"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/pause"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp" />
+        <com.marcinmoskala.arcseekbar.ArcSeekBar
+            android:id="@+id/arcSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            app:progress="50"
+            app:progressBackgroundColor="@color/white"
+            app:progressBackgroundWidth="10dp"
+            app:progressColor="@color/pinkOp"
+            app:progressWidth="8dp"
+            app:roundEdges="true"
+            app:thumb="@drawable/thumb" />
 
-    <ImageView
-        android:id="@+id/pause"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/play"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp" />
+        <RelativeLayout
+            android:id="@+id/songControllers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/arcSeekBar"
+            android:layout_marginTop="-10dp"
+            android:layout_centerHorizontal="true">
 
-    <ProgressBar
-        android:id="@+id/progressBarSongLoading"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:indeterminate="true"
-        android:indeterminateTintMode="src_atop"
-        android:indeterminateTint="#383838"
-        android:background="#E91E63"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp" />
+            <ImageView
+                android:id="@+id/play"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/pause"
+                android:layout_centerHorizontal="true"/>
 
-    <ImageView
-        android:id="@+id/previous"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_toLeftOf="@+id/play"
-        android:src="@drawable/previous"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp"
-        android:layout_marginRight="15dp" />
+            <ImageView
+                android:id="@+id/pause"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/play"
+                android:layout_centerHorizontal="true"/>
 
-    <ImageView
-        android:id="@+id/next"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/next"
-        android:layout_toRightOf="@id/play"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp"
-        android:layout_marginLeft="15dp" />
+            <ProgressBar
+                android:id="@+id/progressBarSongLoading"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:indeterminate="true"
+                android:indeterminateTintMode="src_atop"
+                android:indeterminateTint="#383838"
+                android:background="#E91E63"
+                android:layout_centerHorizontal="true"/>
+
+            <ImageView
+                android:id="@+id/previous"
+                android:layout_width="64dp"
+                android:layout_height="32dp"
+                android:layout_toStartOf="@+id/play"
+                android:src="@drawable/previous"
+                android:layout_marginEnd="15dp" />
+
+            <ImageView
+                android:id="@+id/next"
+                android:layout_width="64dp"
+                android:layout_height="32dp"
+                android:src="@drawable/next"
+                android:layout_toEndOf="@id/play"
+                android:layout_marginStart="15dp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/favourites"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/favourites"
+            android:layout_above="@id/arcSeekBar"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="-36dp"
+            android:layout_marginStart="20dp"/>
+
+        <ImageView
+            android:id="@+id/favourites_selected"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/favourites_selected"
+            android:layout_above="@id/arcSeekBar"
+            android:layout_marginBottom="-40dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"/>
+
+
+        <ImageView
+            android:id="@+id/addtoplaylists"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/addtoplaylist"
+            android:layout_above="@id/arcSeekBar"
+            android:layout_marginBottom="-36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp" />
+
+        <ImageView
+            android:id="@+id/addtoplaylistsselected"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/addtoplaylistsselected"
+            android:layout_above="@id/arcSeekBar"
+            android:layout_marginBottom="-40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp" />
+
+    </RelativeLayout>
 
     <SeekBar
         android:id="@+id/volumeseekbar"
@@ -110,72 +159,19 @@
         android:layout_toRightOf="@+id/volumeseekbar"
         android:layout_marginBottom="20dp"/>
 
-    <TextView
-        android:id="@+id/txtNowplaying"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Now Playing"
-        android:textSize="28sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp"
-        />
-
-    <ImageView
-        android:id="@+id/favourites"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:src="@drawable/favourites"
-        android:layout_above="@id/play"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginLeft="20dp"/>
-
-    <ImageView
-        android:id="@+id/favourites_selected"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/favourites_selected"
-        android:layout_above="@id/play"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginLeft="20dp"/>
-
-
-    <ImageView
-        android:id="@+id/addtoplaylists"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:src="@drawable/addtoplaylist"
-        android:layout_above="@id/play"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginRight="20dp" />
-
-    <ImageView
-        android:id="@+id/addtoplaylistsselected"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/addtoplaylistsselected"
-        android:layout_above="@id/play"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginRight="20dp" />
-
-
     <RelativeLayout
         android:layout_width="768dp"
         android:layout_height="768dp"
-        android:layout_below="@+id/txtNowplaying"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-220dp"
-        android:layout_marginRight="-128dp">
+        android:layout_marginTop="-240dp"
+        android:layout_below="@+id/txtNowplaying">
 
         <com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
             android:id="@+id/visualizer"
             xmlns:custom="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="768dp"
+            android:layout_height="768dp"
+            android:layout_marginTop="-145dp"
+            android:layout_marginEnd="-128dp"
             android:layout_centerInParent="true"
             custom:avDensity="0.3"
             custom:avType="outline"
@@ -183,22 +179,23 @@
             custom:avColor="@color/pinkOp"
             custom:avSpeed="slow" />
 
+
         <androidx.cardview.widget.CardView
             android:id="@+id/imgSongCardview"
             android:layout_width="256dp"
             android:layout_height="256dp"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
+            app:cardElevation="100dp"
             android:outlineSpotShadowColor="#FFED3675"
-            app:cardCornerRadius="128dp"
-            app:cardElevation="100dp">
+            android:layout_centerInParent="true"
+            app:cardCornerRadius="128dp">
 
             <ImageView
                 android:id="@+id/imgSongImage"
                 android:layout_width="256dp"
                 android:layout_height="256dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/music_image" />
+                android:src="@drawable/music_image"
+                android:scaleType="centerCrop" />
 
         </androidx.cardview.widget.CardView>
 
@@ -218,13 +215,13 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
                 android:padding="8dp"
                 android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:text="Song Name"
                 android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="32sp" />
+                android:text="Song Name"
+                android:textSize="32sp"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
@@ -233,11 +230,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtSongName"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
             android:text="Singer Name"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:layout_centerHorizontal="true"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -252,47 +249,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
+                android:textSize="14sp"
+                android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=":" />
-
+                android:text=":"/>
             <TextView
                 android:id="@+id/txtRunningSeconds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="50"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
+                android:textSize="14sp"
+                android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/" />
-
+                android:text="/"/>
             <TextView
                 android:id="@+id/txtTotalMinutes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
+                android:textSize="14sp"
+                android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=":" />
-
+                android:text=":"/>
             <TextView
                 android:id="@+id/txtTotalSeconds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="50"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
