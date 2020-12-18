@@ -59,7 +59,7 @@ class MySongs : Fragment() {
         progressBar=view.findViewById(R.id.progressBarOnlineSongs)
         progressLayout=view.findViewById(R.id.progressLayoutOnlineSongs)
         OnlinerecyclerView= view.findViewById(R.id.onlineRecyclerView)
-        OnlinerecyclerView.layoutManager=LinearLayoutManager(this.context)
+        OnlinerecyclerView.layoutManager=LinearLayoutManager(pontext)
 
         checkPermission()
 
@@ -110,7 +110,7 @@ class MySongs : Fragment() {
                 val artist: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
                 val mediaId = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID))
                 val uri = Uri.parse(uri.toString() + File.separator + mediaId)
-                val s = MySongInfo(name,artist,"",uri)
+                val s = MySongInfo(Integer.valueOf(mediaId),name,artist,"",uri.toString())
                 applic.mySongs.add(s)
 
             }while (cursor.moveToNext())
@@ -123,7 +123,7 @@ class MySongs : Fragment() {
             override fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int) {
                 applic.mediaPlayer.stop()
                 applic.mediaPlayer.reset()
-                applic.mediaPlayer.setDataSource(activity!!,songInfo.uri!!)
+                applic.mediaPlayer.setDataSource(activity!!, Uri.parse(songInfo.uri))
                 applic.mediaPlayer.prepareAsync()
                 applic.mediaPlayer.setOnPreparedListener {
                     it.start()

@@ -2,6 +2,7 @@ package com.reaper.myapplication.activity
 
 import android.content.Intent
 import android.media.AudioManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
@@ -14,6 +15,7 @@ import com.marcinmoskala.arcseekbar.ArcSeekBar
 import com.marcinmoskala.arcseekbar.ProgressListener
 import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
+import com.reaper.myapplication.database.DbCoroutine
 import com.reaper.myapplication.databinding.ActivitySongBinding
 import kotlinx.coroutines.Runnable
 
@@ -164,6 +166,12 @@ class SongActivity : AppCompatActivity() {
 
         when {
             applic.currentOnlineSongsInfo != null -> {
+
+                favourites.visibility = View.GONE
+                favourites_selected.visibility = View.GONE
+                addToPlaylists.visibility = View.GONE
+                addToPlaylistsSelected.visibility = View.GONE
+
                 songName.text = applic.currentOnlineSongsInfo?.name
                 songName.isSelected = true
                 songArtist.text = applic.currentOnlineSongsInfo?.artist
@@ -183,7 +191,6 @@ class SongActivity : AppCompatActivity() {
                     txtTotalSeconds.text = sec.toString()
                 }
                 txtTotalMinutes.text = min.toString()
-
 
                 arcSeekbar.maxProgress = applic.currentOnlineSongsInfo?.duration!!
                 updateSeekBar()
@@ -257,6 +264,17 @@ class SongActivity : AppCompatActivity() {
 
             }
             applic.currentMySongInfo != null -> {
+
+                val isFav = DbCoroutine(applicationContext,applic.currentMySongInfo!!,1).execute().get()
+                if(isFav){
+                    favourites.visibility = View.GONE
+                    favourites_selected.visibility = View.VISIBLE
+                }
+                else{
+                    favourites.visibility = View.VISIBLE
+                    favourites_selected.visibility = View.GONE
+                }
+
                 songName.text = applic.currentMySongInfo?.name
                 songName.isSelected = true
                 songArtist.text = applic.currentMySongInfo?.artist
@@ -292,7 +310,7 @@ class SongActivity : AppCompatActivity() {
                     }
                     applic.mediaPlayer.stop()
                     applic.mediaPlayer.reset()
-                    applic.mediaPlayer.setDataSource(this,applic.mySongs[previousIndex].uri!!)
+                    applic.mediaPlayer.setDataSource(this, Uri.parse(applic.mySongs[previousIndex].uri))
                     applic.mediaPlayer.prepareAsync()
                     applic.mediaPlayer.setOnCompletionListener {
                         applic.mainActivity?.onlinePlay?.visibility = View.GONE
@@ -325,7 +343,7 @@ class SongActivity : AppCompatActivity() {
                     }
                     applic.mediaPlayer.stop()
                     applic.mediaPlayer.reset()
-                    applic.mediaPlayer.setDataSource(this,applic.mySongs[nextIndex].uri!!)
+                    applic.mediaPlayer.setDataSource(this,Uri.parse(applic.mySongs[nextIndex].uri))
                     applic.mediaPlayer.prepareAsync()
                     applic.mediaPlayer.setOnCompletionListener {
                         applic.mainActivity?.onlinePlay?.visibility = View.GONE
@@ -372,15 +390,43 @@ class SongActivity : AppCompatActivity() {
         }
 
         favourites.setOnClickListener {
-            favourites.visibility=View.GONE
-            favourites_selected.visibility=View.VISIBLE
-            Toast.makeText(this@SongActivity, "Added To Favourites", Toast.LENGTH_SHORT).show()
+
+            if(!DbCoroutine(applicationContext,applic.currentMySongInfo!!,1).execute().get()){
+                val result = DbCoroutine(applicationContext,applic.currentMySongInfo!!,2).execute().get()
+                if(result){
+                    favourites.visibility=View.GONE
+                    favourites_selected.visibility=View.VISIBLE
+                    applic.favSongs.add(applic.currentMySongInfo!!)
+                    if(applic.favAdapter!=null){
+                        applic.favAdapter?.notifyDataSetChanged()
+                    }
+                    Toast.makeText(this@SongActivity, "Added To Favourites", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(this@SongActivity, "Failed to Add Song to Favourites", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         }
 
         favourites_selected.setOnClickListener {
-            favourites_selected.visibility=View.GONE
-            favourites.visibility=View.VISIBLE
-            Toast.makeText(this@SongActivity, "Removed From Favourites", Toast.LENGTH_SHORT).show()
+
+            if(DbCoroutine(applicationContext,applic.currentMySongInfo!!,1).execute().get()){
+                val result = DbCoroutine(applicationContext,applic.currentMySongInfo!!,3).execute().get()
+                if(result){
+                    favourites_selected.visibility=View.GONE
+                    favourites.visibility=View.VISIBLE
+                    applic.favSongs.remove(applic.currentMySongInfo!!)
+                    if(applic.favAdapter!=null){
+                        applic.favAdapter?.notifyDataSetChanged()
+                    }
+                    Toast.makeText(this@SongActivity, "Removed From Favourites", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(this@SongActivity, "Failed to Remove Song from Favourites", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         }
 
         addToPlaylists.setOnClickListener {

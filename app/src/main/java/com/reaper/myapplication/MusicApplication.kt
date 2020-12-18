@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import com.reaper.myapplication.activity.MainActivity
 import com.reaper.myapplication.activity.SongActivity
+import com.reaper.myapplication.adapter.MySongsAdapter
 import com.reaper.myapplication.databinding.ActivitySongBinding
 import com.reaper.myapplication.utils.MySongInfo
 import com.reaper.myapplication.utils.OnlineSongsInfo
@@ -21,6 +22,8 @@ class MusicApplication: Application() {
     var currentMySongInfo: MySongInfo? = null
     var onlineSongs = ArrayList<OnlineSongsInfo>()
     var mySongs = ArrayList<MySongInfo>()
+    var favSongs = ArrayList<MySongInfo>()
+    var favAdapter: MySongsAdapter? = null
     var pauseSeconds = "0"
     var pauseMinutes = "0"
 
