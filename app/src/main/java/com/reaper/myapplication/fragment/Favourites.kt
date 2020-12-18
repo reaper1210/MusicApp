@@ -98,21 +98,26 @@ class Favourites : Fragment() {
         applic.favAdapter?.SetOnItemClickListener(object : MySongsAdapter.OnItemClickListener {
 
             override fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int) {
-                applic.mediaPlayer.stop()
-                applic.mediaPlayer.reset()
-                applic.mediaPlayer.setDataSource(activity!!, Uri.parse(songInfo.uri))
-                applic.mediaPlayer.prepareAsync()
-                applic.mediaPlayer.setOnPreparedListener {
-                    it.start()
-                    applic.musicIsPlaying = true
+                if(songInfo == applic.currentMySongInfo){
+                    act.onlineEllipse.callOnClick()
                 }
-                act.txtSongName.text = songInfo.name
-                act.txtSongArtist.text = songInfo.artist
-                applic.currentOnlineSongsInfo = null
-                applic.currentMySongInfo = songInfo
-                val intent= Intent(context, SongActivity::class.java)
-                intent.putExtra("isLoaded",false)
-                context?.startActivity(intent)
+                else{
+                    applic.mediaPlayer.stop()
+                    applic.mediaPlayer.reset()
+                    applic.mediaPlayer.setDataSource(activity!!, Uri.parse(songInfo.uri))
+                    applic.mediaPlayer.prepareAsync()
+                    applic.mediaPlayer.setOnPreparedListener {
+                        it.start()
+                        applic.musicIsPlaying = true
+                    }
+                    act.txtSongName.text = songInfo.name
+                    act.txtSongArtist.text = songInfo.artist
+                    applic.currentOnlineSongsInfo = null
+                    applic.currentMySongInfo = songInfo
+                    val intent= Intent(context, SongActivity::class.java)
+                    intent.putExtra("isLoaded",false)
+                    context?.startActivity(intent)
+                }
             }
         })
     }

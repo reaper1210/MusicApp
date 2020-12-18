@@ -106,17 +106,22 @@ class OnlineSongs : Fragment() {
 
                 songAdapter.SetOnItemClickListener(object : OnlineSongsAdapter.OnItemClickListener {
                     override fun onItemClick(view: View, songsInfo: OnlineSongsInfo, position: Int) {
-                        applic.mediaPlayer.stop()
-                        applic.mediaPlayer.reset()
-                        applic.mediaPlayer.setDataSource(songsInfo.url)
-                        applic.mediaPlayer.prepareAsync()
-                        act.txtSongName.text = songsInfo.name
-                        act.txtSongArtist.text = songsInfo.artist
-                        applic.currentMySongInfo = null
-                        applic.currentOnlineSongsInfo = songsInfo
-                        val intent= Intent(context, SongActivity::class.java)
-                        intent.putExtra("isLoaded",false)
-                        context?.startActivity(intent)
+                        if(songsInfo == applic.currentOnlineSongsInfo){
+                            act.onlineEllipse.callOnClick()
+                        }
+                        else{
+                            applic.mediaPlayer.stop()
+                            applic.mediaPlayer.reset()
+                            applic.mediaPlayer.setDataSource(songsInfo.url)
+                            applic.mediaPlayer.prepareAsync()
+                            act.txtSongName.text = songsInfo.name
+                            act.txtSongArtist.text = songsInfo.artist
+                            applic.currentMySongInfo = null
+                            applic.currentOnlineSongsInfo = songsInfo
+                            val intent= Intent(context, SongActivity::class.java)
+                            intent.putExtra("isLoaded",false)
+                            context?.startActivity(intent)
+                        }
                     }
                 })
             }

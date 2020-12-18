@@ -67,13 +67,12 @@ class MySongs : Fragment() {
     }
     private fun checkPermission() {
         if(Build.VERSION.SDK_INT >= 23){
-            if(pontext?.let { ContextCompat.checkSelfPermission(it,android.Manifest.permission.READ_EXTERNAL_STORAGE) } !=
-                PackageManager.PERMISSION_GRANTED) {
-                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            if(pontext?.let { ContextCompat.checkSelfPermission(it,android.Manifest.permission.READ_EXTERNAL_STORAGE) } != PackageManager.PERMISSION_GRANTED) {
+                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,android.Manifest.permission.RECORD_AUDIO)
                 this.requestPermissions(permissions, 5)
             }
             else{
-                Toast.makeText(this.context,"Error bahenchod", Toast.LENGTH_LONG).show()
+                Toast.makeText(this.context,"Error", Toast.LENGTH_LONG).show()
             }
         }
         else{
@@ -83,17 +82,23 @@ class MySongs : Fragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if(requestCode==5){
-            if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                progressLayout.visibility=View.GONE
-                progressBar.visibility=View.GONE
-                loadSongs()
-            }
-            else{
-                Toast.makeText(this.context,"Permission Denied", Toast.LENGTH_LONG).show()
+            if(grantResults.isNotEmpty()){
+
+                val permissionToRead = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                val permissionToRecord = grantResults[1] == PackageManager.PERMISSION_GRANTED
+
+                if(permissionToRead && permissionToRecord){
+                    progressLayout.visibility=View.GONE
+                    progressBar.visibility=View.GONE
+                    loadSongs()
+                }
+                else{
+                    Toast.makeText(this.context,"Permission Denied", Toast.LENGTH_LONG).show()
+                }
             }
         }
         else{
-            Toast.makeText(this.context,"Permission Leni chahiye na", Toast.LENGTH_LONG).show()
+            Toast.makeText(this.context,"Permission ni li na", Toast.LENGTH_LONG).show()
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
@@ -121,21 +126,26 @@ class MySongs : Fragment() {
         songAdapter.SetOnItemClickListener(object : MySongsAdapter.OnItemClickListener {
 
             override fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int) {
-                applic.mediaPlayer.stop()
-                applic.mediaPlayer.reset()
-                applic.mediaPlayer.setDataSource(activity!!, Uri.parse(songInfo.uri))
-                applic.mediaPlayer.prepareAsync()
-                applic.mediaPlayer.setOnPreparedListener {
-                    it.start()
-                    applic.musicIsPlaying = true
+                if(songInfo==applic.currentMySongInfo){
+                    act.onlineEllipse.callOnClick()
                 }
-                act.txtSongName.text = songInfo.name
-                act.txtSongArtist.text = songInfo.artist
-                applic.currentOnlineSongsInfo = null
-                applic.currentMySongInfo = songInfo
-                val intent= Intent(context, SongActivity::class.java)
-                intent.putExtra("isLoaded",false)
-                context?.startActivity(intent)
+                else{
+                    applic.mediaPlayer.stop()
+                    applic.mediaPlayer.reset()
+                    applic.mediaPlayer.setDataSource(activity!!, Uri.parse(songInfo.uri))
+                    applic.mediaPlayer.prepareAsync()
+                    applic.mediaPlayer.setOnPreparedListener {
+                        it.start()
+                        applic.musicIsPlaying = true
+                    }
+                    act.txtSongName.text = songInfo.name
+                    act.txtSongArtist.text = songInfo.artist
+                    applic.currentOnlineSongsInfo = null
+                    applic.currentMySongInfo = songInfo
+                    val intent= Intent(context, SongActivity::class.java)
+                    intent.putExtra("isLoaded",false)
+                    context?.startActivity(intent)
+                }
             }
         })
     }
