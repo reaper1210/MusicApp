@@ -3,6 +3,7 @@ package com.reaper.myapplication.fragment
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -13,10 +14,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,12 +33,11 @@ import java.io.FileInputStream
 class MySongs : Fragment() {
 
     private lateinit var OnlinerecyclerView:RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var progressLayout:RelativeLayout
-    private lateinit var noInternetImage:ImageView
-    private lateinit var noInternetLayout:RelativeLayout
     private val pontext=this.context
     private lateinit var act: MainActivity
+    private lateinit var progressBar: ProgressBar
+    private lateinit var progressLayout: RelativeLayout
+    private lateinit var noMySongsLayout: RelativeLayout
     private lateinit var applic: MusicApplication
 
     override fun onCreateView(
@@ -48,17 +45,16 @@ class MySongs : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view=inflater.inflate(R.layout.fragment_online_songs, container, false)
+        val view=inflater.inflate(R.layout.fragment_my_songs, container, false)
 
         applic = activity?.application as MusicApplication
         act = activity as MainActivity
-        noInternetLayout= view.findViewById(R.id.noInternetLayout)
-        noInternetImage=view.findViewById(R.id.imgNoInternetImage)
-        noInternetLayout.visibility=View.GONE
-        noInternetImage.visibility=View.GONE
-        progressBar=view.findViewById(R.id.progressBarOnlineSongs)
-        progressLayout=view.findViewById(R.id.progressLayoutOnlineSongs)
-        OnlinerecyclerView= view.findViewById(R.id.onlineRecyclerView)
+        progressBar=view.findViewById(R.id.progressBarMySongs)
+        progressLayout=view.findViewById(R.id.progressLayoutMySongs)
+        OnlinerecyclerView= view.findViewById(R.id.mySongsRecyclerView)
+        noMySongsLayout = view.findViewById(R.id.noMySongsLayout)
+        noMySongsLayout.visibility = View.GONE
+
         OnlinerecyclerView.layoutManager=LinearLayoutManager(pontext)
 
         checkPermission()
@@ -88,8 +84,8 @@ class MySongs : Fragment() {
                 val permissionToRecord = grantResults[1] == PackageManager.PERMISSION_GRANTED
 
                 if(permissionToRead && permissionToRecord){
-                    progressLayout.visibility=View.GONE
-                    progressBar.visibility=View.GONE
+                    progressBar.visibility = View.GONE
+                    progressLayout.visibility = View.GONE
                     loadSongs()
                 }
                 else{
@@ -121,6 +117,9 @@ class MySongs : Fragment() {
             }while (cursor.moveToNext())
         }
         cursor.close()
+        if(applic.mySongs.isNullOrEmpty()){
+            noMySongsLayout.visibility = View.VISIBLE
+        }
         val songAdapter = MySongsAdapter(applic.mySongs,this.context)
         OnlinerecyclerView.adapter=songAdapter
         songAdapter.SetOnItemClickListener(object : MySongsAdapter.OnItemClickListener {

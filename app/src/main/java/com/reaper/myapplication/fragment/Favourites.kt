@@ -2,6 +2,7 @@ package com.reaper.myapplication.fragment
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -9,9 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,7 +45,10 @@ class Favourites : Fragment() {
         progressLayout = view.findViewById(R.id.favProgressLayout)
         progressBar = view.findViewById(R.id.favProgressBar)
 
+        applic.noFavLayout = view.findViewById(R.id.noFavLayout)
+
         checkPermission()
+
 
         return view
     }
@@ -88,6 +90,9 @@ class Favourites : Fragment() {
         applic.favSongs.clear()
 
         applic.favSongs = RetrieveFavourites(this.requireContext()).execute().get() as ArrayList<MySongInfo>
+        if(applic.favSongs.isNullOrEmpty()){
+            applic.noFavLayout?.visibility = View.VISIBLE
+        }
 
         applic.favAdapter = MySongsAdapter(applic.favSongs,this.requireContext())
         layoutManager = LinearLayoutManager(context)

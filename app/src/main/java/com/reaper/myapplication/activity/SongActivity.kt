@@ -400,6 +400,9 @@ class SongActivity : AppCompatActivity() {
                     if(applic.favAdapter!=null){
                         applic.favAdapter?.notifyDataSetChanged()
                     }
+                    if(applic.favSongs.size == 1){
+                        applic.noFavLayout?.visibility = View.GONE
+                    }
                     Toast.makeText(this@SongActivity, "Added To Favourites", Toast.LENGTH_SHORT).show()
                 }
                 else{
@@ -419,6 +422,9 @@ class SongActivity : AppCompatActivity() {
                     applic.favSongs.remove(applic.currentMySongInfo!!)
                     if(applic.favAdapter!=null){
                         applic.favAdapter?.notifyDataSetChanged()
+                    }
+                    if(applic.favSongs.isNullOrEmpty()){
+                        applic.noFavLayout?.visibility = View.VISIBLE
                     }
                     Toast.makeText(this@SongActivity, "Removed From Favourites", Toast.LENGTH_SHORT).show()
                 }

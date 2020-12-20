@@ -5,6 +5,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -51,5 +53,5 @@ class MySongsAdapter(val items: ArrayList<MySongInfo>, val context: Context?): R
 class MySongsViewHolder(view:View):RecyclerView.ViewHolder(view){
     val titleSongName:TextView=view.findViewById(R.id.txtSongName)
     val duration:TextView=view.findViewById(R.id.txtDuration)
-    val cardView=view.findViewById<CardView>(R.id.onlineCardView)
+    val cardView:CardView=view.findViewById(R.id.onlineCardView)
 }

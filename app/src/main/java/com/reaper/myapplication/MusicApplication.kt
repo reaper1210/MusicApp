@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Handler
 import android.view.LayoutInflater
+import android.widget.RelativeLayout
 import com.reaper.myapplication.activity.MainActivity
 import com.reaper.myapplication.activity.SongActivity
 import com.reaper.myapplication.adapter.MySongsAdapter
@@ -26,5 +27,6 @@ class MusicApplication: Application() {
     var favAdapter: MySongsAdapter? = null
     var pauseSeconds = "0"
     var pauseMinutes = "0"
+    var noFavLayout : RelativeLayout? = null
 
 }
