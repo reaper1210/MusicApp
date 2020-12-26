@@ -46,6 +46,7 @@ class Favourites : Fragment() {
         progressBar = view.findViewById(R.id.favProgressBar)
 
         applic.noFavLayout = view.findViewById(R.id.noFavLayout)
+        applic.noFavLayout?.visibility = View.GONE
 
         checkPermission()
 
@@ -90,7 +91,7 @@ class Favourites : Fragment() {
         applic.favSongs.clear()
 
         applic.favSongs = RetrieveFavourites(this.requireContext()).execute().get() as ArrayList<MySongInfo>
-        if(applic.favSongs.isNullOrEmpty()){
+        if(applic.favSongs.isEmpty()){
             applic.noFavLayout?.visibility = View.VISIBLE
         }
 

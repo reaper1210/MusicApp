@@ -19,18 +19,22 @@ class ViewPagerAdapter(fm: FragmentManager,val view:TextView): FragmentStatePage
         val pos = position+1
         val fragment: Fragment
 
-        fragment = when(pos){
+        fragment=when(pos){
 
             1->{
+                view.text = "OnlineSongs"
                 OnlineSongs()
             }
             2->{
+                view.text = "MySongs"
                 MySongs()
             }
             3->{
+                view.text = "Favourites"
                 Favourites()
             }
             else->{
+                view.text = "Playlists"
                 Playlists()
             }
         }

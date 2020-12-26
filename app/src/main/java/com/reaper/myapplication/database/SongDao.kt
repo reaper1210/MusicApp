@@ -16,7 +16,7 @@ interface SongDao {
     fun deleteSong(songInfo: MySongInfo)
 
     @Query("SELECT * FROM songs")
-    fun getAllBooks(): List<MySongInfo>
+    fun getAllSongs(): List<MySongInfo>
 
     @Query("SELECT * FROM songs WHERE id = :songId")
     fun getSongById(songId: Int): MySongInfo?

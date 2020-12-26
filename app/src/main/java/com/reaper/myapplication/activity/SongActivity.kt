@@ -15,7 +15,7 @@ import com.marcinmoskala.arcseekbar.ArcSeekBar
 import com.marcinmoskala.arcseekbar.ProgressListener
 import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
-import com.reaper.myapplication.database.DbCoroutine
+import com.reaper.myapplication.database.DbAsyncTask
 import com.reaper.myapplication.databinding.ActivitySongBinding
 import kotlinx.coroutines.Runnable
 
@@ -265,7 +265,7 @@ class SongActivity : AppCompatActivity() {
             }
             applic.currentMySongInfo != null -> {
 
-                val isFav = DbCoroutine(applicationContext,applic.currentMySongInfo!!,1).execute().get()
+                val isFav = DbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()
                 if(isFav){
                     favourites.visibility = View.GONE
                     favourites_selected.visibility = View.VISIBLE
@@ -391,8 +391,8 @@ class SongActivity : AppCompatActivity() {
 
         favourites.setOnClickListener {
 
-            if(!DbCoroutine(applicationContext,applic.currentMySongInfo!!,1).execute().get()){
-                val result = DbCoroutine(applicationContext,applic.currentMySongInfo!!,2).execute().get()
+            if(!DbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()){
+                val result = DbAsyncTask(applicationContext,applic.currentMySongInfo!!,2).execute().get()
                 if(result){
                     favourites.visibility=View.GONE
                     favourites_selected.visibility=View.VISIBLE
@@ -414,8 +414,8 @@ class SongActivity : AppCompatActivity() {
 
         favourites_selected.setOnClickListener {
 
-            if(DbCoroutine(applicationContext,applic.currentMySongInfo!!,1).execute().get()){
-                val result = DbCoroutine(applicationContext,applic.currentMySongInfo!!,3).execute().get()
+            if(DbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()){
+                val result = DbAsyncTask(applicationContext,applic.currentMySongInfo!!,3).execute().get()
                 if(result){
                     favourites_selected.visibility=View.GONE
                     favourites.visibility=View.VISIBLE
