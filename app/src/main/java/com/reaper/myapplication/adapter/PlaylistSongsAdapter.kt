@@ -14,7 +14,6 @@ class PlaylistSongsAdapter(val items:ArrayList<String>): RecyclerView.Adapter<Pl
         val cardView: CardView = itemView.findViewById(R.id.onlineCardView)
         val txtPlaylistSongName: TextView = itemView.findViewById(R.id.txtSongName)
         val txtPlaylistSongDuration: TextView = itemView.findViewById(R.id.txtDuration)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {

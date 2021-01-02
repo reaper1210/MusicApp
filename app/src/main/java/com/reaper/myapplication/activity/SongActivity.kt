@@ -1,22 +1,32 @@
 package com.reaper.myapplication.activity
 
+import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
 import com.marcinmoskala.arcseekbar.ArcSeekBar
 import com.marcinmoskala.arcseekbar.ProgressListener
 import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
-import com.reaper.myapplication.database.DbAsyncTask
+import com.reaper.myapplication.adapter.PlaylistFragmentAdapter
+import com.reaper.myapplication.adapter.PlaylistSongsAdapter
+import com.reaper.myapplication.database.*
 import com.reaper.myapplication.databinding.ActivitySongBinding
+import com.reaper.myapplication.utils.MySongInfo
+import com.reaper.myapplication.utils.PlaylistInfo
 import kotlinx.coroutines.Runnable
 
 class SongActivity : AppCompatActivity() {
@@ -265,7 +275,7 @@ class SongActivity : AppCompatActivity() {
             }
             applic.currentMySongInfo != null -> {
 
-                val isFav = DbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()
+                val isFav = FavDbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()
                 if(isFav){
                     favourites.visibility = View.GONE
                     favourites_selected.visibility = View.VISIBLE
@@ -273,6 +283,15 @@ class SongActivity : AppCompatActivity() {
                 else{
                     favourites.visibility = View.VISIBLE
                     favourites_selected.visibility = View.GONE
+                }
+
+                if(PlaylistDbAsyncTask(this,applic.currentMySongInfo!!.uri, PlaylistInfo(-1000,"aognoasidnfoa",ArrayList<String>().joinToString(",")),1).execute().get()){
+                    addToPlaylistsSelected.visibility = View.VISIBLE
+                    addToPlaylists.visibility = View.GONE
+                }
+                else{
+                    addToPlaylistsSelected.visibility = View.GONE
+                    addToPlaylists.visibility = View.VISIBLE
                 }
 
                 songName.text = applic.currentMySongInfo?.name
@@ -376,9 +395,7 @@ class SongActivity : AppCompatActivity() {
             applic.mainActivity?.onlinePlay?.visibility = View.GONE
             applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
             applic.musicIsPlaying = false
-            if(visualizer != null){
-                visualizer.release()
-            }
+            visualizer.release()
             next.callOnClick()
         }
 
@@ -391,8 +408,8 @@ class SongActivity : AppCompatActivity() {
 
         favourites.setOnClickListener {
 
-            if(!DbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()){
-                val result = DbAsyncTask(applicationContext,applic.currentMySongInfo!!,2).execute().get()
+            if(!FavDbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()){
+                val result = FavDbAsyncTask(applicationContext,applic.currentMySongInfo!!,2).execute().get()
                 if(result){
                     favourites.visibility=View.GONE
                     favourites_selected.visibility=View.VISIBLE
@@ -414,8 +431,8 @@ class SongActivity : AppCompatActivity() {
 
         favourites_selected.setOnClickListener {
 
-            if(DbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()){
-                val result = DbAsyncTask(applicationContext,applic.currentMySongInfo!!,3).execute().get()
+            if(FavDbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()){
+                val result = FavDbAsyncTask(applicationContext,applic.currentMySongInfo!!,3).execute().get()
                 if(result){
                     favourites_selected.visibility=View.GONE
                     favourites.visibility=View.VISIBLE
@@ -432,15 +449,59 @@ class SongActivity : AppCompatActivity() {
                     Toast.makeText(this@SongActivity, "Failed to Remove Song from Favourites", Toast.LENGTH_SHORT).show()
                 }
             }
-
         }
 
         addToPlaylists.setOnClickListener {
-            addToPlaylists.visibility=View.GONE
-            addToPlaylistsSelected.visibility=View.VISIBLE
-            Toast.makeText(this@SongActivity, "Added To playlist", Toast.LENGTH_SHORT).show()
-            val intent=Intent(this@SongActivity, PlaylistSongs::class.java)
-            startActivity(intent)
+
+            val allPlaylists = ArrayList<PlaylistInfo>()
+            allPlaylists.addAll(RetrievePlaylists(this).execute().get())
+
+            if(allPlaylists.isEmpty()){
+                val playlistInfo = PlaylistInfo(1,"Test 1",ArrayList<String>().joinToString(","))
+                PlaylistDbAsyncTask(this,applic.currentMySongInfo!!.uri,playlistInfo,4).execute()
+            }
+            else if(allPlaylists.size == 1){
+                val playlistInfo = PlaylistInfo(2,"Test 2",ArrayList<String>().joinToString(","))
+                PlaylistDbAsyncTask(this,applic.currentMySongInfo!!.uri,playlistInfo,4).execute()
+            }
+
+            val layoutInflater = LayoutInflater.from(this)
+            val view = layoutInflater.inflate(R.layout.layout_dialog_playlist,null)
+
+            val dialog = AlertDialog.Builder(this)
+                    .setView(view)
+                    .create()
+
+            val recyclerView = view.findViewById<RecyclerView>(R.id.playlistDialogRecycler)
+            recyclerView.layoutManager = LinearLayoutManager(this)
+
+            val playlistDialogAdapter = PlaylistFragmentAdapter(this,dialog,allPlaylists)
+            playlistDialogAdapter.SetOnItemClickListener(object: PlaylistFragmentAdapter.PlaylistDialogOnItemClickListener{
+                override fun onItemClick(dialog:AlertDialog?,context: Context, view: View, playlistInfo: PlaylistInfo, position: Int) {
+                    PlaylistDbAsyncTask(context,applic.currentMySongInfo!!.uri,playlistInfo,2).execute()
+                    addToPlaylists.visibility=View.GONE
+                    addToPlaylistsSelected.visibility=View.VISIBLE
+                    dialog?.cancel()
+                }
+            })
+            recyclerView.adapter = playlistDialogAdapter
+
+            val cancel = view.findViewById<Button>(R.id.playlistDialogCancel)
+            cancel.setOnClickListener {
+                dialog.cancel()
+            }
+
+            dialog.show()
+
+        }
+
+        addToPlaylistsSelected.setOnClickListener {
+
+            PlaylistDbAsyncTask(this,applic.currentMySongInfo!!.uri,PlaylistInfo(-1000,"oanoigoasrfg",""),3).execute()
+
+            addToPlaylists.visibility=View.VISIBLE
+            addToPlaylistsSelected.visibility=View.GONE
+
         }
 
         play.setOnClickListener {

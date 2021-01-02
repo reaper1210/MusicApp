@@ -16,7 +16,7 @@ interface PlaylistsDao {
     fun getPlaylists(): List<PlaylistInfo>
 
     @Query("SELECT * FROM playlists WHERE id= :playlistId")
-    fun getPlaylistById(playlistId:Int): PlaylistInfo
+    fun getPlaylistById(playlistId:Int): PlaylistInfo?
 
     @Update
     fun updatePlaylist(playlistInfo: PlaylistInfo)

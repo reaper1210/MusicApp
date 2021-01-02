@@ -7,7 +7,7 @@ import com.reaper.myapplication.utils.MySongInfo
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-class DbAsyncTask (val context: Context, private val songInfo: MySongInfo, private val mode: Int): AsyncTask<Void, Void, Boolean>() {
+class FavDbAsyncTask (val context: Context, private val songInfo: MySongInfo, private val mode: Int): AsyncTask<Void, Void, Boolean>() {
 
     private val db = Room.databaseBuilder(context,FavouriteDatabase::class.java,"fav-songs").fallbackToDestructiveMigration().build()
 

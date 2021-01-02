@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlistDialogRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/playlistDialogCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/playlistDialogRecycler"
+        android:layout_marginHorizontal="30dp"
+        android:text="Cancel"
+        android:textColor="@color/white"
+        android:backgroundTint="#99424242"/>
+
+</RelativeLayout>

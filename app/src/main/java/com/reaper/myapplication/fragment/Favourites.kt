@@ -56,10 +56,10 @@ class Favourites : Fragment() {
 
     private fun checkPermission() {
         if(Build.VERSION.SDK_INT >= 23){
-            if(pontext?.let { ContextCompat.checkSelfPermission(it,android.Manifest.permission.READ_EXTERNAL_STORAGE) } !=
-                    PackageManager.PERMISSION_GRANTED) {
-                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                this.requestPermissions(permissions, 5)
+            if(pontext?.let { ContextCompat.checkSelfPermission(it,android.Manifest.permission.READ_EXTERNAL_STORAGE) } != PackageManager.PERMISSION_GRANTED) {
+//                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+//                this.requestPermissions(permissions, 116)
+                loadSongs()
             }
             else{
                 Toast.makeText(this.context,"Error bahenchod", Toast.LENGTH_LONG).show()
@@ -71,19 +71,19 @@ class Favourites : Fragment() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if(requestCode==5){
-            if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                progressLayout.visibility=View.GONE
-                progressBar.visibility=View.GONE
-                loadSongs()
-            }
-            else{
-                Toast.makeText(this.context,"Permission Denied", Toast.LENGTH_LONG).show()
-            }
-        }
-        else{
-            Toast.makeText(this.context,"Permission Leni chahiye na", Toast.LENGTH_LONG).show()
-        }
+//        if(requestCode==116){
+//            if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+//                progressLayout.visibility=View.GONE
+//                progressBar.visibility=View.GONE
+//                loadSongs()
+//            }
+//            else{
+//                Toast.makeText(this.context,"Permission Denied", Toast.LENGTH_LONG).show()
+//            }
+//        }
+//        else{
+//            Toast.makeText(this.context,"Permission Leni chahiye na", Toast.LENGTH_LONG).show()
+//        }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 

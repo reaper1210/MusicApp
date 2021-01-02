@@ -101,7 +101,7 @@ class OnlineSongs : Fragment() {
                     applic.onlineSongs.add(songInfo)
 
                 }
-                val songAdapter=OnlineSongsAdapter(applic.onlineSongs, requireContext())
+                val songAdapter=OnlineSongsAdapter(applic.onlineSongs, act.applicationContext)
                 onlinerecyclerView.adapter=songAdapter
 
                 songAdapter.SetOnItemClickListener(object : OnlineSongsAdapter.OnItemClickListener {
