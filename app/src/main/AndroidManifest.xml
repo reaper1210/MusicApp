@@ -5,35 +5,40 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".MusicApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_music_app_icon"
-        android:label="@string/app_name"
+        android:label="Euphony"
         android:roundIcon="@mipmap/ic_music_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicApp"
         tools:replace="android:icon">
-        <activity android:name=".activity.PlaylistSongs"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize" />
-        <activity android:name=".activity.SongActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".activity.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.MusicApp.NoActionBar"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize" >
+        <activity android:name=".activity.SplashScreen"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.PlaylistSongs"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SongActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MusicApp.NoActionBar">
         </activity>
     </application>
 
