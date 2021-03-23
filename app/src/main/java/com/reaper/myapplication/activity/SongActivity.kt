@@ -476,7 +476,7 @@ class SongActivity : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this)
 
             val playlistDialogAdapter = PlaylistFragmentAdapter(this,dialog,allPlaylists)
-            playlistDialogAdapter.SetOnItemClickListener(object: PlaylistFragmentAdapter.PlaylistDialogOnItemClickListener{
+            playlistDialogAdapter.SetOnItemClickListener(object: PlaylistFragmentAdapter.PlaylistDialogOnItemClickListener {
                 override fun onItemClick(dialog:AlertDialog?,context: Context, view: View, playlistInfo: PlaylistInfo, position: Int) {
                     PlaylistDbAsyncTask(context,applic.currentMySongInfo!!.uri,playlistInfo,2).execute()
                     addToPlaylists.visibility=View.GONE

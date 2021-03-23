@@ -16,7 +16,6 @@ class PlaylistDbAsyncTask(val context: Context, val songUri: String, val playlis
             if(allPlaylists.isNotEmpty()){
                 for(element in allPlaylists){
                     val songList = element.songList.split(",").map{it.trim()}
-                    println("list $songList")
                     if(!songList.isNullOrEmpty()){
                         for(j in songList.indices){
                             if(uri == songList[j]){
