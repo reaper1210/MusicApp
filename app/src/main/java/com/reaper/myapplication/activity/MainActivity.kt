@@ -17,8 +17,6 @@ import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.adapter.ViewPagerAdapter
 import com.reaper.myapplication.databinding.ActivityMainBinding
-import com.reaper.myapplication.utils.MySongInfo
-import com.reaper.myapplication.utils.OnlineSongsInfo
 
 class MainActivity : AppCompatActivity() {
 

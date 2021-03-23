@@ -15,22 +15,25 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_toRightOf="@+id/txtCreatePlaylistName" />
+
+    <Button
+        android:id="@+id/btnCancelCreatingPlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editTxtPlaylistName"
+        android:layout_margin="30dp"
+        android:text="cancel"
+        android:textColor="@color/black" />
+
     <Button
         android:id="@+id/btnCreatePlaylist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="create"
         android:textColor="@color/black"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editTxtPlaylistName"
-        android:layout_margin="30dp" />
-    <Button
-        android:id="@+id/btnCancelCreatingPlaylist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/editTxtPlaylistName"
-        android:layout_margin="30dp"
-        android:text="cancel"
-        android:textColor="@color/black" />
+        android:layout_margin="30dp" />
+
 </RelativeLayout>

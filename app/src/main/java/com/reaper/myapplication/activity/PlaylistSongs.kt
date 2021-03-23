@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.reaper.myapplication.MusicApplication
@@ -39,16 +40,22 @@ class PlaylistSongs : AppCompatActivity() {
 
         val songInfoList = ArrayList<MySongInfo>()
 
-        for(i in 0..songUriList.size-1){
-            val songUri = Uri.parse(songUriList[i])
-            val cursor = this.contentResolver.query(songUri,null,null,null,null,null)!!
-            cursor.moveToFirst()
-            val name: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE))
-            val artist: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
-            val mediaId = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID))
-            val s = MySongInfo(Integer.valueOf(mediaId),name,artist,"",songUri.toString())
-            songInfoList.add(s)
+        if(songUriList[0]!=""){
+            for(i in 0..songUriList.size-1){
+                val songUri = Uri.parse(songUriList[i])
+                val cursor = this.contentResolver.query(songUri,null,null,null,null,null)!!
+                cursor.moveToFirst()
+                val name: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE))
+                val artist: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
+                val mediaId = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID))
+                val s = MySongInfo(Integer.valueOf(mediaId),name,artist,"",songUri.toString())
+                songInfoList.add(s)
+            }
         }
+        else{
+            Toast.makeText(this,"Playlist Empty", Toast.LENGTH_SHORT).show()
+        }
+
 
         val adapter = MySongsAdapter(songInfoList,this)
         adapter.SetOnItemClickListener(object : MySongsAdapter.OnItemClickListener {

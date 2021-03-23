@@ -450,9 +450,8 @@ class SongActivity : AppCompatActivity() {
 
         addToPlaylists.setOnClickListener {
 
-            val allPlaylists = ArrayList<PlaylistInfo>()
-            allPlaylists.addAll(RetrievePlaylists(this).execute().get())
-
+            applic.playlistInfo = ArrayList<PlaylistInfo>()
+            applic.playlistInfo?.addAll(RetrievePlaylists(this).execute().get())
 
             val layoutInflater = LayoutInflater.from(this)
             val view = layoutInflater.inflate(R.layout.layout_dialog_playlist,null)
@@ -464,8 +463,8 @@ class SongActivity : AppCompatActivity() {
             val recyclerView = view.findViewById<RecyclerView>(R.id.playlistDialogRecycler)
             recyclerView.layoutManager = LinearLayoutManager(this)
 
-            val playlistDialogAdapter = PlaylistFragmentAdapter(this,dialog1,allPlaylists)
-            playlistDialogAdapter.SetOnItemClickListener(object: PlaylistFragmentAdapter.PlaylistDialogOnItemClickListener {
+            applic.songActPlaylistAdapter = PlaylistFragmentAdapter(this,dialog1,applic.playlistInfo!!,applic)
+            applic.songActPlaylistAdapter?.SetOnItemClickListener(object: PlaylistFragmentAdapter.PlaylistDialogOnItemClickListener {
                 override fun onItemClick(dialog:AlertDialog?,context: Context, view: View, playlistInfo: PlaylistInfo, position: Int) {
                     PlaylistDbAsyncTask(context,applic.currentMySongInfo!!.uri,playlistInfo,2).execute()
                     addToPlaylists.visibility=View.GONE
@@ -473,7 +472,7 @@ class SongActivity : AppCompatActivity() {
                     dialog?.cancel()
                 }
             })
-            recyclerView.adapter = playlistDialogAdapter
+            recyclerView.adapter = applic.songActPlaylistAdapter
 
             val cancel = view.findViewById<Button>(R.id.playlistDialogCancel)
             cancel.setOnClickListener {
@@ -487,16 +486,23 @@ class SongActivity : AppCompatActivity() {
                     .setView(view)
                     .create()
 
-                val playlistName = view.findViewById<EditText>(R.id.editTxtPlaylistName)
-                val name=playlistName.text
+                val cancel = view.findViewById<Button>(R.id.btnCancelCreatingPlaylist)
+                cancel.setOnClickListener {
+                    dialog.cancel()
+                }
                 val create = view.findViewById<Button>(R.id.btnCreatePlaylist)
                 create.setOnClickListener {
                     val playlistName = view.findViewById<EditText>(R.id.editTxtPlaylistName)
                     val name=playlistName.text.toString()
-                    val playlistInfo = PlaylistInfo(1,name,ArrayList<String>().joinToString(","))
+                    val id = if(applic.playlistInfo?.isNullOrEmpty()!!){
+                        0
+                    } else{
+                        applic.playlistInfo!![applic.playlistInfo?.lastIndex!!].id + 1
+                    }
+                    val playlistInfo = PlaylistInfo(id,name,ArrayList<String>().joinToString(","))
                     PlaylistDbAsyncTask(this@SongActivity,applic.currentMySongInfo!!.uri,playlistInfo,4).execute()
                     PlaylistDbAsyncTask(this@SongActivity,applic.currentMySongInfo!!.uri,playlistInfo,2).execute()
-
+                    dialog.cancel()
                 }
                 dialog1.cancel()
                 dialog.show()

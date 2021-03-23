@@ -5,13 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
+import com.reaper.myapplication.database.PlaylistDbAsyncTask
 import com.reaper.myapplication.utils.PlaylistInfo
 
-class PlaylistFragmentAdapter(val context: Context,val dialog: AlertDialog?,private val items: ArrayList<PlaylistInfo>):RecyclerView.Adapter<PlaylistFragmentAdapter.PlaylistFragmentViewHolder>(){
+class PlaylistFragmentAdapter(val context: Context,val dialog: AlertDialog?,private val items: ArrayList<PlaylistInfo>,val applic:MusicApplication):RecyclerView.Adapter<PlaylistFragmentAdapter.PlaylistFragmentViewHolder>(){
 
     var onItemClickListener: PlaylistDialogOnItemClickListener? = null
 
@@ -44,8 +47,33 @@ class PlaylistFragmentAdapter(val context: Context,val dialog: AlertDialog?,priv
         }
         holder.cardView.setOnClickListener {
             if(onItemClickListener!=null){
-                onItemClickListener?.onItemClick(dialog,context,it,currentItem,position)
+                if(songList.isNotEmpty()){
+                    onItemClickListener?.onItemClick(dialog,context,it,currentItem,position)
+                }
+                else{
+                    Toast.makeText(context,"Playlist Empty",Toast.LENGTH_SHORT).show()
+                }
+
             }
+        }
+        holder.cardView.setOnLongClickListener {
+            val dialog = AlertDialog.Builder(context)
+                    .setMessage("Are you sure, you want to delete ${currentItem.name}")
+                    .setTitle("Delete Alert!!!")
+                    .setPositiveButton("Yes") { dialog, _ ->
+                        PlaylistDbAsyncTask(context,"", currentItem, 5).execute()
+                        applic.playlistInfo?.remove(currentItem)
+                        applic.songActPlaylistAdapter?.notifyDataSetChanged()
+                        applic.playlistFragPlaylistAdapter?.notifyDataSetChanged()
+                        dialog.cancel()
+                    }
+                    .setNegativeButton("No") { dialog, _ ->
+                        dialog.cancel()
+                    }
+                    .create()
+            dialog.show()
+
+            true
         }
     }
 

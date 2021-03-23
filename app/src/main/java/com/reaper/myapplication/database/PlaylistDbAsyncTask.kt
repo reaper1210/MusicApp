@@ -71,6 +71,13 @@ class PlaylistDbAsyncTask(val context: Context, val songUri: String, val playlis
             }
             4->{
                 db.PlaylistsDao().insertPlaylist(playlistInfo)
+                db.close()
+                return true
+            }
+            5->{
+                db.PlaylistsDao().deletePlaylist(playlistInfo)
+                db.close()
+                return true
             }
             else->{
                 db.close()
@@ -78,8 +85,6 @@ class PlaylistDbAsyncTask(val context: Context, val songUri: String, val playlis
             }
 
         }
-
-        return false
 
     }
 
