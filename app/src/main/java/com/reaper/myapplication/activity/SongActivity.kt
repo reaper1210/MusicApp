@@ -14,7 +14,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
 import com.marcinmoskala.arcseekbar.ArcSeekBar
@@ -22,10 +21,8 @@ import com.marcinmoskala.arcseekbar.ProgressListener
 import com.reaper.myapplication.MusicApplication
 import com.reaper.myapplication.R
 import com.reaper.myapplication.adapter.PlaylistFragmentAdapter
-import com.reaper.myapplication.adapter.PlaylistSongsAdapter
 import com.reaper.myapplication.database.*
 import com.reaper.myapplication.databinding.ActivitySongBinding
-import com.reaper.myapplication.utils.MySongInfo
 import com.reaper.myapplication.utils.PlaylistInfo
 import kotlinx.coroutines.Runnable
 
