@@ -11,12 +11,22 @@
 
     <Button
         android:id="@+id/playlistDialogCancel"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/playlistDialogRecycler"
+        android:layout_alignParentLeft="true"
         android:layout_marginHorizontal="30dp"
         android:text="Cancel"
-        android:textColor="@color/white"
-        android:backgroundTint="#99424242"/>
+        android:textColor="@color/black" />
+    <Button
+        android:id="@+id/playlistDialogCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/playlistDialogRecycler"
+        android:layout_alignParentRight="true"
+        android:layout_marginHorizontal="30dp"
+        android:text="CREATE"
+        android:textColor="@color/black" />
+
 
 </RelativeLayout>

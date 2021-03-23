@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/txtCreatePlaylistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name:"
+        android:textSize="20dp"
+        android:layout_margin="10dp"
+        android:layout_alignBaseline="@+id/editTxtPlaylistName"/>
+    <EditText
+        android:id="@+id/editTxtPlaylistName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@+id/txtCreatePlaylistName" />
+    <Button
+        android:id="@+id/btnCreatePlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="create"
+        android:textColor="@color/black"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editTxtPlaylistName"
+        android:layout_margin="30dp" />
+    <Button
+        android:id="@+id/btnCancelCreatingPlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/editTxtPlaylistName"
+        android:layout_margin="30dp"
+        android:text="cancel"
+        android:textColor="@color/black" />
+</RelativeLayout>
