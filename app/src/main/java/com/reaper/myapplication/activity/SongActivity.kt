@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
@@ -449,7 +450,7 @@ class SongActivity : AppCompatActivity() {
         }
 
         addToPlaylists.setOnClickListener {
-            applic.playlistInfo = ArrayList<PlaylistInfo>()
+            applic.playlistInfo = ArrayList()
             applic.playlistInfo?.addAll(RetrievePlaylists(this).execute().get())
 
             val layoutInflater = LayoutInflater.from(this)
@@ -466,6 +467,9 @@ class SongActivity : AppCompatActivity() {
             applic.songActPlaylistAdapter?.SetOnItemClickListener(object: PlaylistFragmentAdapter.PlaylistDialogOnItemClickListener {
                 override fun onItemClick(dialog:AlertDialog?,context: Context, view: View, playlistInfo: PlaylistInfo, position: Int) {
                     PlaylistDbAsyncTask(context,applic.currentMySongInfo!!.uri,playlistInfo,2).execute()
+
+                    applic.playlistFragment?.playlistReload()
+
                     addToPlaylists.visibility=View.GONE
                     addToPlaylistsSelected.visibility=View.VISIBLE
                     Toast.makeText(this@SongActivity,"Song Added to ${playlistInfo.name}",Toast.LENGTH_SHORT).show()
@@ -502,7 +506,10 @@ class SongActivity : AppCompatActivity() {
                     val playlistInfo = PlaylistInfo(id,name,ArrayList<String>().joinToString(","))
                     PlaylistDbAsyncTask(this@SongActivity,applic.currentMySongInfo!!.uri,playlistInfo,4).execute()
                     PlaylistDbAsyncTask(this@SongActivity,applic.currentMySongInfo!!.uri,playlistInfo,2).execute()
-                    addToPlaylists.visibility = View.INVISIBLE
+
+                    applic.playlistFragment?.playlistReload()
+
+                    addToPlaylists.visibility = View.GONE
                     addToPlaylistsSelected.visibility = View.VISIBLE
                     Toast.makeText(this@SongActivity,"Song Added to $name",Toast.LENGTH_SHORT).show()
                     dialog.cancel()
@@ -517,6 +524,7 @@ class SongActivity : AppCompatActivity() {
         addToPlaylistsSelected.setOnClickListener {
 
             PlaylistDbAsyncTask(this,applic.currentMySongInfo!!.uri,PlaylistInfo(-1000,"oanoigoasrfg",""),3).execute()
+            applic.playlistFragment?.playlistReload()
 
             addToPlaylists.visibility=View.VISIBLE
             addToPlaylistsSelected.visibility=View.GONE
@@ -580,6 +588,7 @@ class SongActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+
         applic.mainActivity?.dragUpButton?.callOnClick()
         super.onBackPressed()
     }

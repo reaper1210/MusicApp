@@ -28,6 +28,7 @@ class Playlists : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_playlists, container, false)
 
         val applic = activity?.application as MusicApplication
+        applic.playlistFragment = this
 
         recyclerView = view.findViewById(R.id.playlistFragmentRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this.context)
@@ -48,6 +49,15 @@ class Playlists : Fragment() {
         recyclerView.adapter = applic.playlistFragPlaylistAdapter
 
         return view
+    }
+
+    fun playlistReload(){
+
+        val currentFragment = activity?.supportFragmentManager?.findFragmentById(R.id.mainViewPager)
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
+
+        fragmentTransaction?.detach(currentFragment!!)?.attach(currentFragment)?.commitAllowingStateLoss()
+
     }
 
 }

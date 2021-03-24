@@ -57,7 +57,6 @@ class PlaylistDbAsyncTask(val context: Context, val songUri: String, val playlis
 
                 val playlist = getPlaylistOfSong(songUri)
                 if(playlist!=null){
-                    println("List ${playlist.songList}")
                     val songList = ArrayList<String>()
                     songList.addAll(playlist.songList.split(",").map{it.trim()})
                     songList.remove(songUri)

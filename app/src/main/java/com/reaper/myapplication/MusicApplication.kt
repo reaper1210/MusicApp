@@ -3,7 +3,10 @@ package com.reaper.myapplication
 import android.app.Application
 import android.media.MediaPlayer
 import android.widget.RelativeLayout
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.reaper.myapplication.activity.MainActivity
+import com.reaper.myapplication.activity.PlaylistSongs
 import com.reaper.myapplication.activity.SongActivity
 import com.reaper.myapplication.adapter.MySongsAdapter
 import com.reaper.myapplication.adapter.PlaylistFragmentAdapter
@@ -29,5 +32,6 @@ class MusicApplication: Application() {
     var playlistInfo: ArrayList<PlaylistInfo>? = null
     var songActPlaylistAdapter: PlaylistFragmentAdapter? = null
     var playlistFragPlaylistAdapter: PlaylistFragmentAdapter? = null
+    var playlistFragment: Playlists? = null
 
 }

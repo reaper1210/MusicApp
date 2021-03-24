@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,89 +17,25 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp" />
 
-    <RelativeLayout
-        android:id="@+id/relative1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/layoutRelative"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_below="@+id/txtPlaylistName">
+        android:layout_below="@id/txtPlaylistName"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-    <TextView
-        android:layout_centerVertical="true"
-        android:id="@+id/txtTotalSongs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="20"
-        android:textSize="22sp"
-        android:textColor="@color/white"
-        android:layout_centerInParent="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Songs"
-            android:layout_below="@+id/txtTotalSongs"
-            android:layout_marginTop="5dp" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/relative2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/txtPlaylistName"
-        android:layout_toEndOf="@+id/relative1">
-
-        <LinearLayout
-            android:id="@+id/txtTotalDuration"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="25dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal">
+            android:layout_weight="1">
 
             <TextView
-                android:id="@+id/txtTotalDurationHoursTens"
+                android:layout_centerVertical="true"
+                android:id="@+id/txtTotalSongs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="22sp"
-                android:textColor="@color/white"
-                android:layout_centerInParent="true"/>
-
-            <TextView
-            android:id="@+id/txtTotalDurationHoursUnits"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1"
-            android:textSize="22sp"
-            android:textColor="@color/white"
-            android:layout_centerInParent="true"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=":"
-                android:textSize="22sp"
-                android:textColor="@color/white"
-                android:layout_centerInParent="true"/>
-
-            <TextView
-                android:id="@+id/txtTotalDurationMinutesTens"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="22sp"
-                android:textColor="@color/white"
-                android:layout_centerInParent="true"/>
-
-            <TextView
-                android:id="@+id/txtTotalDurationMinutesUnits"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
+                android:text="20"
                 android:textSize="22sp"
                 android:textColor="@color/white"
                 android:layout_centerInParent="true"/>
@@ -107,34 +43,86 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=":" />
+                android:text="Songs"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtTotalSongs"
+                android:layout_marginTop="10dp" />
 
-            <TextView
-                android:id="@+id/txtRunningSeconds"
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/txtTotalDuration"
+                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="50"
-                android:textColor="@color/white"
-                android:textSize="22sp" />
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/txtTotalDurationHours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    android:layout_centerInParent="true"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Duration"
-            android:layout_marginRight="45dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="5dp"
-            android:layout_below="@+id/txtTotalDuration" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    android:layout_centerInParent="true"/>
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/txtTotalDurationMinutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    android:layout_centerInParent="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    android:layout_centerInParent="true"/>
+
+                <TextView
+                    android:id="@+id/txtTotalDurationSeconds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01"
+                    android:textColor="@color/white"
+                    android:textSize="22sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Duration"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/txtTotalDuration" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playlistRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/relative1"
+        android:layout_below="@id/layoutRelative"
         android:layout_marginTop="10dp"/>
 
 </RelativeLayout>

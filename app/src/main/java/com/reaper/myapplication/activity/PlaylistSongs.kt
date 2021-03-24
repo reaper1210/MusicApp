@@ -1,6 +1,7 @@
 package com.reaper.myapplication.activity
 
 import android.content.Intent
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,9 +20,15 @@ import java.time.Duration
 
 class PlaylistSongs : AppCompatActivity() {
     lateinit var playlistRecyclerView: RecyclerView
+    lateinit var playlistName: TextView
+    lateinit var totalSongs: TextView
+    lateinit var totalDurationHours: TextView
+    lateinit var totalDurationMinutes: TextView
+    lateinit var totalDurationSeconds: TextView
     lateinit var binding: ActivityPlaylistSongsBinding
     lateinit var applic: MusicApplication
     lateinit var act: MainActivity
+    var flag = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +41,15 @@ class PlaylistSongs : AppCompatActivity() {
         binding = ActivityPlaylistSongsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        var duration: Long = 0
+
         playlistRecyclerView = binding.playlistRecyclerView
         playlistRecyclerView.layoutManager = LinearLayoutManager(this@PlaylistSongs)
 
         val playlistInfo = PlayListById(this,playlistId).execute().get()
         val songUriList = playlistInfo.songList.split(",").map{it.trim()}
 
-        val songInfoList = ArrayList<MySongInfo>()
+        val songList = ArrayList<MySongInfo>()
 
         if(songUriList[0]!=""){
             for(i in 0..songUriList.size-1){
@@ -51,15 +60,20 @@ class PlaylistSongs : AppCompatActivity() {
                 val artist: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
                 val mediaId = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID))
                 val s = MySongInfo(Integer.valueOf(mediaId),name,artist,"",songUri.toString())
-                songInfoList.add(s)
+                songList.add(s)
+
+                val retriever = MediaMetadataRetriever()
+                retriever.setDataSource(applicationContext,songUri)
+                val stringDuration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                val intDuration = Integer.parseInt(stringDuration) / 1000
+                duration += intDuration
             }
         }
         else{
             Toast.makeText(this,"Playlist Empty", Toast.LENGTH_SHORT).show()
         }
 
-
-        val adapter = MySongsAdapter(songInfoList,this)
+        val adapter = MySongsAdapter(songList,this)
         adapter.SetOnItemClickListener(object : MySongsAdapter.OnItemClickListener {
 
             override fun onItemClick(view: MySongsAdapter, songInfo: MySongInfo, position: Int) {
@@ -85,10 +99,39 @@ class PlaylistSongs : AppCompatActivity() {
                 }
             }
         })
+
         playlistRecyclerView.adapter=adapter
-        val playlistName=findViewById<TextView>(R.id.txtPlaylistName)
+
+        playlistName = findViewById(R.id.txtPlaylistName)
         playlistName.text=playlistInfo.name
-        val totalSongs=findViewById<TextView>(R.id.txtTotalSongs)
-        totalSongs.text= songInfoList.size.toString()
+
+        totalSongs = findViewById(R.id.txtTotalSongs)
+        totalSongs.text= songList.size.toString()
+
+        var seconds = duration
+        var minutes = duration/60
+        val hours = duration/3600
+
+        minutes -= hours*60
+        seconds -= minutes*60
+
+        totalDurationHours = findViewById(R.id.txtTotalDurationHours)
+        totalDurationHours.text = hours.toString()
+
+        totalDurationMinutes = findViewById(R.id.txtTotalDurationMinutes)
+        totalDurationMinutes.text = minutes.toString()
+
+        totalDurationSeconds = findViewById(R.id.txtTotalDurationSeconds)
+        totalDurationSeconds.text = seconds.toString()
+
     }
+
+    override fun onResume() {
+        flag++
+        if(flag>1){
+            this.recreate()
+        }
+        super.onResume()
+    }
+
 }
