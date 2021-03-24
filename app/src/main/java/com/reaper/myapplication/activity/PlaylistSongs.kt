@@ -34,6 +34,8 @@ class PlaylistSongs : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playlist_songs)
 
+        flag = 0
+
         applic = this.application as MusicApplication
         act = applic.mainActivity!!
         val playlistId = intent.getIntExtra("playlist_id",-1)
