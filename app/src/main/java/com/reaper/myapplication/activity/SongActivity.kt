@@ -449,7 +449,6 @@ class SongActivity : AppCompatActivity() {
         }
 
         addToPlaylists.setOnClickListener {
-
             applic.playlistInfo = ArrayList<PlaylistInfo>()
             applic.playlistInfo?.addAll(RetrievePlaylists(this).execute().get())
 
@@ -469,6 +468,7 @@ class SongActivity : AppCompatActivity() {
                     PlaylistDbAsyncTask(context,applic.currentMySongInfo!!.uri,playlistInfo,2).execute()
                     addToPlaylists.visibility=View.GONE
                     addToPlaylistsSelected.visibility=View.VISIBLE
+                    Toast.makeText(this@SongActivity,"Song Added to ${playlistInfo.name}",Toast.LENGTH_SHORT).show()
                     dialog?.cancel()
                 }
             })
@@ -502,6 +502,9 @@ class SongActivity : AppCompatActivity() {
                     val playlistInfo = PlaylistInfo(id,name,ArrayList<String>().joinToString(","))
                     PlaylistDbAsyncTask(this@SongActivity,applic.currentMySongInfo!!.uri,playlistInfo,4).execute()
                     PlaylistDbAsyncTask(this@SongActivity,applic.currentMySongInfo!!.uri,playlistInfo,2).execute()
+                    addToPlaylists.visibility = View.INVISIBLE
+                    addToPlaylistsSelected.visibility = View.VISIBLE
+                    Toast.makeText(this@SongActivity,"Song Added to $name",Toast.LENGTH_SHORT).show()
                     dialog.cancel()
                 }
                 dialog1.cancel()

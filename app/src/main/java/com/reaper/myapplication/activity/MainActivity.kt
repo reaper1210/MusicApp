@@ -74,7 +74,6 @@ class MainActivity : AppCompatActivity() {
         relativeGroup=binding.relativeGroup
 
         tablayout.setupWithViewPager(viewPager)
-
         when {
             applic.currentOnlineSongsInfo!=null -> {
                 txtSongName.text = applic.currentOnlineSongsInfo?.name
@@ -88,8 +87,7 @@ class MainActivity : AppCompatActivity() {
                 txtSongArtist.text = artist
             }
             else -> {
-                txtSongName.text = "Mein hu Gian!!"
-                txtSongArtist.text = "Gian"
+                dragUpButton.visibility=View.GONE
                 onlinePause.visibility = View.GONE
             }
         }
@@ -170,6 +168,27 @@ class MainActivity : AppCompatActivity() {
 
         setUpTabIcons()
 
+        title.text="Online Songs"
+        viewPager?.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> {
+                        title.text = "Online Songs"
+                    }
+                    1 -> {
+                        title.text = "My Songs"
+                    }
+                    2 -> {
+                        title.text = "Favourites"
+                    }
+                    else-> {
+                        title.text = "Playlists"
+                    }
+
+                }
+            }
+        })
     }
 
     private fun setUpTabIcons(){
@@ -178,5 +197,6 @@ class MainActivity : AppCompatActivity() {
         tablayout.getTabAt(2)?.setIcon(R.drawable.favourites)
         tablayout.getTabAt(3)?.setIcon(R.drawable.addtoplaylist)
     }
+
 
 }

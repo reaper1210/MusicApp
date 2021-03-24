@@ -1,7 +1,10 @@
 package com.reaper.myapplication.adapter
 
+import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +51,7 @@ class MySongsAdapter(val items: ArrayList<MySongInfo>, val context: Context?): R
             }
         }
     }
+
 }
 
 class MySongsViewHolder(view:View):RecyclerView.ViewHolder(view){

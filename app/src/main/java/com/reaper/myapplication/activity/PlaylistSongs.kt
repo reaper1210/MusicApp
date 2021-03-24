@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import com.reaper.myapplication.adapter.MySongsAdapter
 import com.reaper.myapplication.database.PlayListById
 import com.reaper.myapplication.databinding.ActivityPlaylistSongsBinding
 import com.reaper.myapplication.utils.MySongInfo
+import java.time.Duration
 
 class PlaylistSongs : AppCompatActivity() {
     lateinit var playlistRecyclerView: RecyclerView
@@ -84,6 +86,9 @@ class PlaylistSongs : AppCompatActivity() {
             }
         })
         playlistRecyclerView.adapter=adapter
-
+        val playlistName=findViewById<TextView>(R.id.txtPlaylistName)
+        playlistName.text=playlistInfo.name
+        val totalSongs=findViewById<TextView>(R.id.txtTotalSongs)
+        totalSongs.text= songInfoList.size.toString()
     }
 }
