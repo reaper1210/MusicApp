@@ -18,6 +18,7 @@ import com.reaper.myapplication.utils.PlaylistInfo
 class MusicApplication: Application() {
 
     val mediaPlayer = MediaPlayer()
+    var isSongLoaded: Boolean = false
     var mainActivity: MainActivity? = null
     var musicIsPlaying = false
     var currentOnlineSongsInfo: OnlineSongsInfo? = null

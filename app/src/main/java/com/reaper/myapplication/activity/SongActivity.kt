@@ -69,153 +69,32 @@ class SongActivity : AppCompatActivity() {
         setContentView(binding.root)
         applic = application as MusicApplication
 
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            createChannel()
-            registerReceiver(broadcastReceiver, IntentFilter("notify_action"))
-            startService(Intent(baseContext,OnClearFromRecentService::class.java))
-        }
-
-        CreateNotification().createNotification(this,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
-
         txtRunningMinutes=binding.txtRunningMinutes
         txtRunningSeconds=binding.txtRunningSeconds
         txtTotalMinutes=binding.txtTotalMinutes
         txtTotalSeconds=binding.txtTotalSeconds
-        txtRunningMinutes.text = "0"
-        txtRunningSeconds.text = "00"
-
         arcSeekbar = binding.arcSeekBar
-        arcSeekbar.progress = 0
-        arcSeekbar.onProgressChangedListener = ProgressListener {
-            arcSeekbar.onProgressChangedListener = ProgressListener {
-                seconds = arcSeekbar.progress/1000
-                minutes = seconds/60
-                txtRunningMinutes.text = minutes.toString()
-                if(seconds>=60){
-                    seconds -= (minutes * 60)
-                }
-                txtRunningSeconds.text = seconds.toString()
-            }
-        }
-        arcSeekbar.onStartTrackingTouch = ProgressListener {
-            arcSeekbar.onProgressChangedListener = ProgressListener { p0 ->
-                applic.mediaPlayer.seekTo(p0)
-                seconds = arcSeekbar.progress/1000
-                minutes = seconds/60
-                txtRunningMinutes.text = minutes.toString()
-                if(seconds>=60){
-                    seconds -= (minutes * 60)
-                }
-                txtRunningSeconds.text = seconds.toString()
-            }
-
-        }
-        arcSeekbar.onStopTrackingTouch = ProgressListener {
-            arcSeekbar.onProgressChangedListener = ProgressListener {
-                seconds = arcSeekbar.progress/1000
-                minutes = seconds/60
-                txtRunningMinutes.text = minutes.toString()
-                if(seconds>=60){
-                    seconds -= (minutes * 60)
-                }
-                txtRunningSeconds.text = seconds.toString()
-            }
-        }
-
         previous = binding.previous
         next = binding.next
-        previous.isClickable = true
-        next.isClickable = true
         songName = binding.txtSongNameText
         songArtist = binding.txtSingerName
         songImage = binding.imgSongImage
         favourites= binding.favourites
         favourites_selected=binding.favouritesSelected
-        favourites_selected.visibility=View.GONE
         addToPlaylists=binding.addtoplaylists
         addToPlaylistsSelected=binding.addtoplaylistsselected
-        addToPlaylistsSelected.visibility=View.GONE
-
-        val audioManager:AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        val maxVolume=audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-        val currentVolume=audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-
         volumeSeekbar=binding.volumeseekbar
-        volumeSeekbar.max=maxVolume
-        volumeSeekbar.progress = currentVolume
-
-        volumeSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,p1,0)
-            }
-
-            override fun onStartTrackingTouch(p0: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(p0: SeekBar?) {
-            }
-
-        })
-
         play=binding.play
         pause= binding.pause
-        pause.visibility = View.GONE
-        play.visibility = View.INVISIBLE
-        play.isClickable = false
-        pause.isClickable = false
         progressbarSongLoading = binding.progressBarSongLoading
-        progressbarSongLoading.isClickable = false
-
         visualizer= binding.visualizer
-        val audioSessionId=applic.mediaPlayer.audioSessionId
 
-        if(audioSessionId != -1){
-            visualizer.setAudioSessionId(audioSessionId)
-        }
 
-        if(intent.getBooleanExtra("isLoaded", false)){
-            progressbarSongLoading.visibility = View.GONE
-            play.visibility=View.VISIBLE
-            if(applic.mediaPlayer.isPlaying){
-                play.visibility = View.VISIBLE
-                pause.visibility = View.INVISIBLE
-            }
-            else{
-                play.visibility = View.INVISIBLE
-                pause.visibility = View.VISIBLE
-            }
-        }
 
         when {
             applic.currentOnlineSongsInfo != null -> {
 
-                favourites.visibility = View.GONE
-                favourites_selected.visibility = View.GONE
-                addToPlaylists.visibility = View.GONE
-                addToPlaylistsSelected.visibility = View.GONE
-
-                songName.text = applic.currentOnlineSongsInfo?.name
-                songName.isSelected = true
-                songArtist.text = applic.currentOnlineSongsInfo?.artist
-                if(songArtist.text=="<unknown>"){
-                    songArtist.visibility = View.INVISIBLE
-                }
-                val imageUrl = applic.currentOnlineSongsInfo?.image
-                Glide.with(this@SongActivity).load(imageUrl).error(R.drawable.music_image).into(songImage)
-
-                var sec = applic.currentOnlineSongsInfo?.duration!! / 1000
-                val min = sec / 60
-                sec -= min*60
-                if(sec/10==0){
-                    txtTotalSeconds.text = "0$sec"
-                }
-                else{
-                    txtTotalSeconds.text = sec.toString()
-                }
-                txtTotalMinutes.text = min.toString()
-
-                arcSeekbar.maxProgress = applic.currentOnlineSongsInfo?.duration!!
-                updateSeekBar()
+                LoadOnlineSongData()
 
                 previous.setOnClickListener {
                     previous.isClickable = false
@@ -245,10 +124,37 @@ class SongActivity : AppCompatActivity() {
                     applic.currentOnlineSongsInfo = applic.onlineSongs[previousIndex]
                     visualizer.release()
                     CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
-                    val intent= Intent(this@SongActivity, SongActivity::class.java)
-                    intent.putExtra("isLoaded", false)
-                    startActivity(intent)
-                    finish()
+                    applic.isSongLoaded = false
+                    LoadOnlineSongData()
+
+//                    favourites.visibility = View.GONE
+//                    favourites_selected.visibility = View.GONE
+//                    addToPlaylists.visibility = View.GONE
+//                    addToPlaylistsSelected.visibility = View.GONE
+//
+//                    songName.text = applic.currentOnlineSongsInfo?.name
+//                    songName.isSelected = true
+//                    songArtist.text = applic.currentOnlineSongsInfo?.artist
+//                    if(songArtist.text=="<unknown>"){
+//                        songArtist.visibility = View.INVISIBLE
+//                    }
+//                    val imageUrl = applic.currentOnlineSongsInfo?.image
+//                    Glide.with(this@SongActivity).load(imageUrl).error(R.drawable.music_image).into(songImage)
+//
+//                    var sec = applic.currentOnlineSongsInfo?.duration!! / 1000
+//                    val min = sec / 60
+//                    sec -= min*60
+//                    if(sec/10==0){
+//                        txtTotalSeconds.text = "0$sec"
+//                    }
+//                    else{
+//                        txtTotalSeconds.text = sec.toString()
+//                    }
+//                    txtTotalMinutes.text = min.toString()
+//
+//                    arcSeekbar.maxProgress = applic.currentOnlineSongsInfo?.duration!!
+//                    updateSeekBar()
+
                 }
                 next.setOnClickListener {
                     next.isClickable = false
@@ -280,54 +186,15 @@ class SongActivity : AppCompatActivity() {
                     applic.currentOnlineSongsInfo = applic.onlineSongs[nextIndex]
                     visualizer.release()
                     CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
-                    val intent= Intent(this@SongActivity, SongActivity::class.java)
-                    intent.putExtra("isLoaded", false)
-                    startActivity(intent)
-                    finish()
+                    applic.isSongLoaded = false
+                    LoadOnlineSongData()
+
                 }
 
             }
             applic.currentMySongInfo != null -> {
 
-                val isFav = FavDbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()
-                if(isFav){
-                    favourites.visibility = View.GONE
-                    favourites_selected.visibility = View.VISIBLE
-                }
-                else{
-                    favourites.visibility = View.VISIBLE
-                    favourites_selected.visibility = View.GONE
-                }
-
-                if(PlaylistDbAsyncTask(this,applic.currentMySongInfo!!.uri, PlaylistInfo(-1000,"aognoasidnfoa",ArrayList<String>().joinToString(",")),1).execute().get()){
-                    addToPlaylistsSelected.visibility = View.VISIBLE
-                    addToPlaylists.visibility = View.GONE
-                }
-                else{
-                    addToPlaylistsSelected.visibility = View.GONE
-                    addToPlaylists.visibility = View.VISIBLE
-                }
-
-                songName.text = applic.currentMySongInfo?.name
-                songName.isSelected = true
-                songArtist.text = applic.currentMySongInfo?.artist
-                if(songArtist.text=="<unknown>"){
-                    songArtist.visibility = View.INVISIBLE
-                }
-
-                var sec = applic.mediaPlayer.duration / 1000
-                val min = sec / 60
-                sec -= min*60
-                if(sec/10==0){
-                    txtTotalSeconds.text = "0$sec"
-                }
-                else{
-                    txtTotalSeconds.text = sec.toString()
-                }
-                txtTotalMinutes.text = min.toString()
-
-                arcSeekbar.maxProgress = applic.mediaPlayer.duration
-                updateSeekBar()
+                LoadMySongData()
 
                 previous.setOnClickListener {
                     previous.isClickable = false
@@ -357,10 +224,49 @@ class SongActivity : AppCompatActivity() {
                     applic.currentMySongInfo = applic.mySongs[previousIndex]
                     visualizer.release()
                     CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
-                    val intent= Intent(this@SongActivity, SongActivity::class.java)
-                    intent.putExtra("isLoaded", false)
-                    startActivity(intent)
-                    finish()
+                    applic.isSongLoaded = false
+                    LoadMySongData()
+
+//                    val isFav = FavDbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()
+//                    if(isFav){
+//                        favourites.visibility = View.GONE
+//                        favourites_selected.visibility = View.VISIBLE
+//                    }
+//                    else{
+//                        favourites.visibility = View.VISIBLE
+//                        favourites_selected.visibility = View.GONE
+//                    }
+//
+//                    if(PlaylistDbAsyncTask(this,applic.currentMySongInfo!!.uri, PlaylistInfo(-1000,"aognoasidnfoa",ArrayList<String>().joinToString(",")),1).execute().get()){
+//                        addToPlaylistsSelected.visibility = View.VISIBLE
+//                        addToPlaylists.visibility = View.GONE
+//                    }
+//                    else{
+//                        addToPlaylistsSelected.visibility = View.GONE
+//                        addToPlaylists.visibility = View.VISIBLE
+//                    }
+//
+//                    songName.text = applic.currentMySongInfo?.name
+//                    songName.isSelected = true
+//                    songArtist.text = applic.currentMySongInfo?.artist
+//                    if(songArtist.text=="<unknown>"){
+//                        songArtist.visibility = View.INVISIBLE
+//                    }
+//
+//                    var sec = applic.mediaPlayer.duration / 1000
+//                    val min = sec / 60
+//                    sec -= min*60
+//                    if(sec/10==0){
+//                        txtTotalSeconds.text = "0$sec"
+//                    }
+//                    else{
+//                        txtTotalSeconds.text = sec.toString()
+//                    }
+//                    txtTotalMinutes.text = min.toString()
+//
+//                    arcSeekbar.maxProgress = applic.mediaPlayer.duration
+//                    updateSeekBar()
+
                 }
                 next.setOnClickListener {
                     next.isClickable = false
@@ -385,41 +291,26 @@ class SongActivity : AppCompatActivity() {
                         applic.musicIsPlaying = false
                         next.callOnClick()
                     }
+                    applic.mediaPlayer.setOnPreparedListener {
+                        it.start()
+                        applic.musicIsPlaying = true
+                        progressbarSongLoading.visibility = View.GONE
+                        play.visibility=View.VISIBLE
+                    }
                     applic.mainActivity?.txtSongName?.text = applic.mySongs[nextIndex].name
                     applic.mainActivity?.txtSongArtist?.text = applic.mySongs[nextIndex].artist
                     applic.currentMySongInfo = null
                     applic.currentMySongInfo = applic.mySongs[nextIndex]
                     visualizer.release()
                     CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
-                    val intent= Intent(this@SongActivity, SongActivity::class.java)
-                    intent.putExtra("isLoaded", false)
-                    startActivity(intent)
-                    finish()
+                    applic.isSongLoaded = false
+                    LoadMySongData()
+
                 }
             }
             else -> {
                 this.finish()
             }
-        }
-
-        if(applic.mediaPlayer.isPlaying){
-            progressbarSongLoading.visibility = View.GONE
-            play.visibility=View.VISIBLE
-        }
-
-        applic.mediaPlayer.setOnCompletionListener {
-            applic.mainActivity?.onlinePlay?.visibility = View.GONE
-            applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
-            applic.musicIsPlaying = false
-            visualizer.release()
-            next.callOnClick()
-        }
-
-        applic.mediaPlayer.setOnPreparedListener {
-            it.start()
-            applic.musicIsPlaying = true
-            progressbarSongLoading.visibility = View.GONE
-            play.visibility=View.VISIBLE
         }
 
         favourites.setOnClickListener {
@@ -566,6 +457,359 @@ class SongActivity : AppCompatActivity() {
         }
     }
 
+    private fun LoadMySongData(){
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            createChannel()
+            registerReceiver(broadcastReceiver, IntentFilter("notify_action"))
+            startService(Intent(baseContext,OnClearFromRecentService::class.java))
+        }
+
+        CreateNotification().createNotification(this,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
+
+        //txtRunningMinutes=binding.txtRunningMinutes
+        //txtRunningSeconds=binding.txtRunningSeconds
+        //txtTotalMinutes=binding.txtTotalMinutes
+        //txtTotalSeconds=binding.txtTotalSeconds
+        txtRunningMinutes.text = "0"
+        txtRunningSeconds.text = "00"
+
+        //arcSeekbar = binding.arcSeekBar
+        arcSeekbar.progress = 0
+        arcSeekbar.onProgressChangedListener = ProgressListener {
+            arcSeekbar.onProgressChangedListener = ProgressListener {
+                seconds = arcSeekbar.progress/1000
+                minutes = seconds/60
+                txtRunningMinutes.text = minutes.toString()
+                if(seconds>=60){
+                    seconds -= (minutes * 60)
+                }
+                txtRunningSeconds.text = seconds.toString()
+            }
+        }
+        arcSeekbar.onStartTrackingTouch = ProgressListener {
+            arcSeekbar.onProgressChangedListener = ProgressListener { p0 ->
+                applic.mediaPlayer.seekTo(p0)
+                seconds = arcSeekbar.progress/1000
+                minutes = seconds/60
+                txtRunningMinutes.text = minutes.toString()
+                if(seconds>=60){
+                    seconds -= (minutes * 60)
+                }
+                txtRunningSeconds.text = seconds.toString()
+            }
+
+        }
+        arcSeekbar.onStopTrackingTouch = ProgressListener {
+            arcSeekbar.onProgressChangedListener = ProgressListener {
+                seconds = arcSeekbar.progress/1000
+                minutes = seconds/60
+                txtRunningMinutes.text = minutes.toString()
+                if(seconds>=60){
+                    seconds -= (minutes * 60)
+                }
+                txtRunningSeconds.text = seconds.toString()
+            }
+        }
+
+        //previous = binding.previous
+        //next = binding.next
+        previous.isClickable = true
+        next.isClickable = true
+        //songName = binding.txtSongNameText
+        //songArtist = binding.txtSingerName
+        //songImage = binding.imgSongImage
+        //favourites= binding.favourites
+        //favourites_selected=binding.favouritesSelected
+        favourites_selected.visibility=View.GONE
+        //addToPlaylists=binding.addtoplaylists
+        //addToPlaylistsSelected=binding.addtoplaylistsselected
+        addToPlaylistsSelected.visibility=View.GONE
+
+        val audioManager:AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        val maxVolume=audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        val currentVolume=audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+
+        //volumeSeekbar=binding.volumeseekbar
+        volumeSeekbar.max= maxVolume
+        volumeSeekbar.progress = currentVolume
+
+        volumeSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,p1,0)
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+
+        })
+
+//        play=binding.play
+//        pause= binding.pause
+        pause.visibility = View.GONE
+        play.visibility = View.INVISIBLE
+        play.isClickable = false
+        pause.isClickable = false
+        //progressbarSongLoading = binding.progressBarSongLoading
+        progressbarSongLoading.isClickable = false
+
+        //visualizer= binding.visualizer
+        val audioSessionId=applic.mediaPlayer.audioSessionId
+
+        if(audioSessionId != -1){
+            visualizer.setAudioSessionId(audioSessionId)
+        }
+
+        if(applic.isSongLoaded){
+            progressbarSongLoading.visibility = View.GONE
+            play.visibility=View.VISIBLE
+            if(applic.mediaPlayer.isPlaying){
+                play.visibility = View.VISIBLE
+                pause.visibility = View.INVISIBLE
+            }
+            else{
+                play.visibility = View.INVISIBLE
+                pause.visibility = View.VISIBLE
+            }
+        }
+
+        if(applic.mediaPlayer.isPlaying){
+            progressbarSongLoading.visibility = View.GONE
+            play.visibility=View.VISIBLE
+        }
+
+        applic.mediaPlayer.setOnCompletionListener {
+            applic.mainActivity?.onlinePlay?.visibility = View.GONE
+            applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
+            applic.musicIsPlaying = false
+            visualizer.release()
+            next.callOnClick()
+        }
+
+        if(!applic.musicIsPlaying){
+            applic.mediaPlayer.setOnPreparedListener {
+                it.start()
+                applic.musicIsPlaying = true
+                progressbarSongLoading.visibility = View.GONE
+                play.visibility=View.VISIBLE
+            }
+        }
+
+        val isFav = FavDbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()
+        if(isFav){
+            favourites.visibility = View.GONE
+            favourites_selected.visibility = View.VISIBLE
+        }
+        else{
+            favourites.visibility = View.VISIBLE
+            favourites_selected.visibility = View.GONE
+        }
+
+        if(PlaylistDbAsyncTask(this,applic.currentMySongInfo!!.uri, PlaylistInfo(-1000,"aognoasidnfoa",ArrayList<String>().joinToString(",")),1).execute().get()){
+            addToPlaylistsSelected.visibility = View.VISIBLE
+            addToPlaylists.visibility = View.GONE
+        }
+        else{
+            addToPlaylistsSelected.visibility = View.GONE
+            addToPlaylists.visibility = View.VISIBLE
+        }
+
+        songName.text = applic.currentMySongInfo?.name
+        songName.isSelected = true
+        songArtist.text = applic.currentMySongInfo?.artist
+        if(songArtist.text=="<unknown>"){
+            songArtist.visibility = View.INVISIBLE
+        }
+
+        var sec = applic.mediaPlayer.duration / 1000
+        val min = sec / 60
+        sec -= min*60
+        if(sec/10==0){
+            txtTotalSeconds.text = "0$sec"
+        }
+        else{
+            txtTotalSeconds.text = sec.toString()
+        }
+        txtTotalMinutes.text = min.toString()
+
+        arcSeekbar.maxProgress = applic.mediaPlayer.duration
+        updateSeekBar()
+
+    }
+
+    private fun LoadOnlineSongData(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            createChannel()
+            registerReceiver(broadcastReceiver, IntentFilter("notify_action"))
+            startService(Intent(baseContext,OnClearFromRecentService::class.java))
+        }
+
+        CreateNotification().createNotification(this,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
+
+        //txtRunningMinutes=binding.txtRunningMinutes
+        //txtRunningSeconds=binding.txtRunningSeconds
+        //txtTotalMinutes=binding.txtTotalMinutes
+        //txtTotalSeconds=binding.txtTotalSeconds
+        txtRunningMinutes.text = "0"
+        txtRunningSeconds.text = "00"
+
+        //arcSeekbar = binding.arcSeekBar
+        arcSeekbar.progress = 0
+        arcSeekbar.onProgressChangedListener = ProgressListener {
+            arcSeekbar.onProgressChangedListener = ProgressListener {
+                seconds = arcSeekbar.progress/1000
+                minutes = seconds/60
+                txtRunningMinutes.text = minutes.toString()
+                if(seconds>=60){
+                    seconds -= (minutes * 60)
+                }
+                txtRunningSeconds.text = seconds.toString()
+            }
+        }
+        arcSeekbar.onStartTrackingTouch = ProgressListener {
+            arcSeekbar.onProgressChangedListener = ProgressListener { p0 ->
+                applic.mediaPlayer.seekTo(p0)
+                seconds = arcSeekbar.progress/1000
+                minutes = seconds/60
+                txtRunningMinutes.text = minutes.toString()
+                if(seconds>=60){
+                    seconds -= (minutes * 60)
+                }
+                txtRunningSeconds.text = seconds.toString()
+            }
+
+        }
+        arcSeekbar.onStopTrackingTouch = ProgressListener {
+            arcSeekbar.onProgressChangedListener = ProgressListener {
+                seconds = arcSeekbar.progress/1000
+                minutes = seconds/60
+                txtRunningMinutes.text = minutes.toString()
+                if(seconds>=60){
+                    seconds -= (minutes * 60)
+                }
+                txtRunningSeconds.text = seconds.toString()
+            }
+        }
+
+        //previous = binding.previous
+        //next = binding.next
+        previous.isClickable = true
+        next.isClickable = true
+        //songName = binding.txtSongNameText
+        //songArtist = binding.txtSingerName
+        //songImage = binding.imgSongImage
+        //favourites= binding.favourites
+        //favourites_selected=binding.favouritesSelected
+        favourites_selected.visibility=View.GONE
+        //addToPlaylists=binding.addtoplaylists
+        //addToPlaylistsSelected=binding.addtoplaylistsselected
+        addToPlaylistsSelected.visibility=View.GONE
+
+        val audioManager:AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        val maxVolume=audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        val currentVolume=audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+
+        //volumeSeekbar=binding.volumeseekbar
+        volumeSeekbar.max= maxVolume
+        volumeSeekbar.progress = currentVolume
+
+        volumeSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,p1,0)
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+
+        })
+
+//        play=binding.play
+//        pause= binding.pause
+        pause.visibility = View.GONE
+        play.visibility = View.INVISIBLE
+        play.isClickable = false
+        pause.isClickable = false
+        //progressbarSongLoading = binding.progressBarSongLoading
+        progressbarSongLoading.isClickable = false
+
+        //visualizer= binding.visualizer
+        val audioSessionId=applic.mediaPlayer.audioSessionId
+
+        if(audioSessionId != -1){
+            visualizer.setAudioSessionId(audioSessionId)
+        }
+
+        if(applic.isSongLoaded){
+            progressbarSongLoading.visibility = View.GONE
+            play.visibility=View.VISIBLE
+            if(applic.mediaPlayer.isPlaying){
+                play.visibility = View.VISIBLE
+                pause.visibility = View.INVISIBLE
+            }
+            else{
+                play.visibility = View.INVISIBLE
+                pause.visibility = View.VISIBLE
+            }
+        }
+
+        if(applic.mediaPlayer.isPlaying){
+            progressbarSongLoading.visibility = View.GONE
+            play.visibility=View.VISIBLE
+        }
+
+        applic.mediaPlayer.setOnCompletionListener {
+            applic.mainActivity?.onlinePlay?.visibility = View.GONE
+            applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
+            applic.musicIsPlaying = false
+            visualizer.release()
+            next.callOnClick()
+        }
+
+        if(!applic.musicIsPlaying){
+            applic.mediaPlayer.setOnPreparedListener {
+                it.start()
+                applic.musicIsPlaying = true
+                progressbarSongLoading.visibility = View.GONE
+                play.visibility=View.VISIBLE
+            }
+        }
+
+        favourites.visibility = View.GONE
+        favourites_selected.visibility = View.GONE
+        addToPlaylists.visibility = View.GONE
+        addToPlaylistsSelected.visibility = View.GONE
+
+        songName.text = applic.currentOnlineSongsInfo?.name
+        songName.isSelected = true
+        songArtist.text = applic.currentOnlineSongsInfo?.artist
+        if(songArtist.text=="<unknown>"){
+            songArtist.visibility = View.INVISIBLE
+        }
+        val imageUrl = applic.currentOnlineSongsInfo?.image
+        Glide.with(this@SongActivity).load(imageUrl).error(R.drawable.music_image).into(songImage)
+
+        var sec = applic.currentOnlineSongsInfo?.duration!! / 1000
+        val min = sec / 60
+        sec -= min*60
+        if(sec/10==0){
+            txtTotalSeconds.text = "0$sec"
+        }
+        else{
+            txtTotalSeconds.text = sec.toString()
+        }
+        txtTotalMinutes.text = min.toString()
+
+        arcSeekbar.maxProgress = applic.currentOnlineSongsInfo?.duration!!
+        updateSeekBar()
+
+    }
+
     val broadcastReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -628,6 +872,9 @@ class SongActivity : AppCompatActivity() {
         super.onDestroy()
         visualizer.release()
         unregisterReceiver(broadcastReceiver)
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            notificationManager.cancelAll()
+        }
     }
 
     private fun updateSeekBar(){
