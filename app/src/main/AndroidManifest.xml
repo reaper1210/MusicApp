@@ -39,6 +39,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MusicApp.NoActionBar">
         </activity>
+
+        <receiver android:name=".notification.NotificationActionService"/>
+        <service android:name=".notification.OnClearFromRecentService"/>
+
     </application>
 
 </manifest>

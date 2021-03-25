@@ -1,7 +1,11 @@
 package com.reaper.myapplication.activity
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
@@ -24,6 +28,8 @@ import com.reaper.myapplication.R
 import com.reaper.myapplication.adapter.PlaylistFragmentAdapter
 import com.reaper.myapplication.database.*
 import com.reaper.myapplication.databinding.ActivitySongBinding
+import com.reaper.myapplication.notification.CreateNotification
+import com.reaper.myapplication.notification.OnClearFromRecentService
 import com.reaper.myapplication.utils.PlaylistInfo
 import kotlinx.coroutines.Runnable
 
@@ -51,6 +57,7 @@ class SongActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySongBinding
     private lateinit var applic: MusicApplication
     private lateinit var runnable: Runnable
+    private lateinit var notificationManager: NotificationManager
     private var handler = Handler()
     private var seconds: Int = 0
     private var minutes: Int = 0
@@ -62,13 +69,20 @@ class SongActivity : AppCompatActivity() {
         setContentView(binding.root)
         applic = application as MusicApplication
 
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            createChannel()
+            registerReceiver(broadcastReceiver, IntentFilter("notify_action"))
+            startService(Intent(baseContext,OnClearFromRecentService::class.java))
+        }
+
+        CreateNotification().createNotification(this,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
+
         txtRunningMinutes=binding.txtRunningMinutes
         txtRunningSeconds=binding.txtRunningSeconds
         txtTotalMinutes=binding.txtTotalMinutes
         txtTotalSeconds=binding.txtTotalSeconds
         txtRunningMinutes.text = "0"
         txtRunningSeconds.text = "00"
-
 
         arcSeekbar = binding.arcSeekBar
         arcSeekbar.progress = 0
@@ -230,6 +244,7 @@ class SongActivity : AppCompatActivity() {
                     applic.currentMySongInfo = null
                     applic.currentOnlineSongsInfo = applic.onlineSongs[previousIndex]
                     visualizer.release()
+                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
                     intent.putExtra("isLoaded", false)
                     startActivity(intent)
@@ -264,6 +279,7 @@ class SongActivity : AppCompatActivity() {
                     applic.currentMySongInfo = null
                     applic.currentOnlineSongsInfo = applic.onlineSongs[nextIndex]
                     visualizer.release()
+                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
                     intent.putExtra("isLoaded", false)
                     startActivity(intent)
@@ -340,6 +356,7 @@ class SongActivity : AppCompatActivity() {
                     applic.currentMySongInfo = null
                     applic.currentMySongInfo = applic.mySongs[previousIndex]
                     visualizer.release()
+                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
                     intent.putExtra("isLoaded", false)
                     startActivity(intent)
@@ -373,6 +390,7 @@ class SongActivity : AppCompatActivity() {
                     applic.currentMySongInfo = null
                     applic.currentMySongInfo = applic.mySongs[nextIndex]
                     visualizer.release()
+                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
                     val intent= Intent(this@SongActivity, SongActivity::class.java)
                     intent.putExtra("isLoaded", false)
                     startActivity(intent)
@@ -536,6 +554,7 @@ class SongActivity : AppCompatActivity() {
             pause.visibility=View.VISIBLE
             applic.mediaPlayer.pause()
             applic.musicIsPlaying = false
+            CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.play)
         }
 
         pause.setOnClickListener {
@@ -543,6 +562,52 @@ class SongActivity : AppCompatActivity() {
             play.visibility=View.VISIBLE
             applic.mediaPlayer.start()
             applic.musicIsPlaying = true
+            CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
+        }
+    }
+
+    val broadcastReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(context: Context?, intent: Intent?) {
+
+            val action = intent?.extras?.getString("notify_action_name")
+
+            when(action){
+
+                CreateNotification().ACTION_PREVIOUS->{
+                    previous.callOnClick()
+                }
+                CreateNotification().ACTION_PLAY->{
+                    if(applic.musicIsPlaying){
+                        play.callOnClick()
+                    }
+                    else{
+                        pause.callOnClick()
+                    }
+                }
+                CreateNotification().ACTION_NEXT->{
+                    next.callOnClick()
+                }
+                else->{
+                    Toast.makeText(this@SongActivity,"Some Error Occurred :( ",Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+        }
+
+    }
+
+    private fun createChannel() {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            val notificationChannel = NotificationChannel(CreateNotification().CHANNEL_ID,"music_op",NotificationManager.IMPORTANCE_LOW)
+            notificationManager = getSystemService(NotificationManager::class.java)
+
+            if(notificationManager!=null){
+
+                notificationManager.createNotificationChannel(notificationChannel)
+
+            }
         }
     }
 
@@ -562,6 +627,7 @@ class SongActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         visualizer.release()
+        unregisterReceiver(broadcastReceiver)
     }
 
     private fun updateSeekBar(){
