@@ -89,8 +89,6 @@ class SongActivity : AppCompatActivity() {
         progressbarSongLoading = binding.progressBarSongLoading
         visualizer= binding.visualizer
 
-
-
         when {
             applic.currentOnlineSongsInfo != null -> {
 
@@ -126,34 +124,6 @@ class SongActivity : AppCompatActivity() {
                     CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
                     applic.isSongLoaded = false
                     LoadOnlineSongData()
-
-//                    favourites.visibility = View.GONE
-//                    favourites_selected.visibility = View.GONE
-//                    addToPlaylists.visibility = View.GONE
-//                    addToPlaylistsSelected.visibility = View.GONE
-//
-//                    songName.text = applic.currentOnlineSongsInfo?.name
-//                    songName.isSelected = true
-//                    songArtist.text = applic.currentOnlineSongsInfo?.artist
-//                    if(songArtist.text=="<unknown>"){
-//                        songArtist.visibility = View.INVISIBLE
-//                    }
-//                    val imageUrl = applic.currentOnlineSongsInfo?.image
-//                    Glide.with(this@SongActivity).load(imageUrl).error(R.drawable.music_image).into(songImage)
-//
-//                    var sec = applic.currentOnlineSongsInfo?.duration!! / 1000
-//                    val min = sec / 60
-//                    sec -= min*60
-//                    if(sec/10==0){
-//                        txtTotalSeconds.text = "0$sec"
-//                    }
-//                    else{
-//                        txtTotalSeconds.text = sec.toString()
-//                    }
-//                    txtTotalMinutes.text = min.toString()
-//
-//                    arcSeekbar.maxProgress = applic.currentOnlineSongsInfo?.duration!!
-//                    updateSeekBar()
 
                 }
                 next.setOnClickListener {
@@ -226,46 +196,6 @@ class SongActivity : AppCompatActivity() {
                     CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
                     applic.isSongLoaded = false
                     LoadMySongData()
-
-//                    val isFav = FavDbAsyncTask(applicationContext,applic.currentMySongInfo!!,1).execute().get()
-//                    if(isFav){
-//                        favourites.visibility = View.GONE
-//                        favourites_selected.visibility = View.VISIBLE
-//                    }
-//                    else{
-//                        favourites.visibility = View.VISIBLE
-//                        favourites_selected.visibility = View.GONE
-//                    }
-//
-//                    if(PlaylistDbAsyncTask(this,applic.currentMySongInfo!!.uri, PlaylistInfo(-1000,"aognoasidnfoa",ArrayList<String>().joinToString(",")),1).execute().get()){
-//                        addToPlaylistsSelected.visibility = View.VISIBLE
-//                        addToPlaylists.visibility = View.GONE
-//                    }
-//                    else{
-//                        addToPlaylistsSelected.visibility = View.GONE
-//                        addToPlaylists.visibility = View.VISIBLE
-//                    }
-//
-//                    songName.text = applic.currentMySongInfo?.name
-//                    songName.isSelected = true
-//                    songArtist.text = applic.currentMySongInfo?.artist
-//                    if(songArtist.text=="<unknown>"){
-//                        songArtist.visibility = View.INVISIBLE
-//                    }
-//
-//                    var sec = applic.mediaPlayer.duration / 1000
-//                    val min = sec / 60
-//                    sec -= min*60
-//                    if(sec/10==0){
-//                        txtTotalSeconds.text = "0$sec"
-//                    }
-//                    else{
-//                        txtTotalSeconds.text = sec.toString()
-//                    }
-//                    txtTotalMinutes.text = min.toString()
-//
-//                    arcSeekbar.maxProgress = applic.mediaPlayer.duration
-//                    updateSeekBar()
 
                 }
                 next.setOnClickListener {
@@ -467,14 +397,9 @@ class SongActivity : AppCompatActivity() {
 
         CreateNotification().createNotification(this,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
 
-        //txtRunningMinutes=binding.txtRunningMinutes
-        //txtRunningSeconds=binding.txtRunningSeconds
-        //txtTotalMinutes=binding.txtTotalMinutes
-        //txtTotalSeconds=binding.txtTotalSeconds
         txtRunningMinutes.text = "0"
         txtRunningSeconds.text = "00"
 
-        //arcSeekbar = binding.arcSeekBar
         arcSeekbar.progress = 0
         arcSeekbar.onProgressChangedListener = ProgressListener {
             arcSeekbar.onProgressChangedListener = ProgressListener {
@@ -512,25 +437,15 @@ class SongActivity : AppCompatActivity() {
             }
         }
 
-        //previous = binding.previous
-        //next = binding.next
         previous.isClickable = true
         next.isClickable = true
-        //songName = binding.txtSongNameText
-        //songArtist = binding.txtSingerName
-        //songImage = binding.imgSongImage
-        //favourites= binding.favourites
-        //favourites_selected=binding.favouritesSelected
         favourites_selected.visibility=View.GONE
-        //addToPlaylists=binding.addtoplaylists
-        //addToPlaylistsSelected=binding.addtoplaylistsselected
         addToPlaylistsSelected.visibility=View.GONE
 
         val audioManager:AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
         val maxVolume=audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         val currentVolume=audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
 
-        //volumeSeekbar=binding.volumeseekbar
         volumeSeekbar.max= maxVolume
         volumeSeekbar.progress = currentVolume
 
@@ -547,16 +462,10 @@ class SongActivity : AppCompatActivity() {
 
         })
 
-//        play=binding.play
-//        pause= binding.pause
         pause.visibility = View.GONE
         play.visibility = View.INVISIBLE
-        play.isClickable = false
-        pause.isClickable = false
-        //progressbarSongLoading = binding.progressBarSongLoading
         progressbarSongLoading.isClickable = false
 
-        //visualizer= binding.visualizer
         val audioSessionId=applic.mediaPlayer.audioSessionId
 
         if(audioSessionId != -1){
@@ -649,14 +558,9 @@ class SongActivity : AppCompatActivity() {
 
         CreateNotification().createNotification(this,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
 
-        //txtRunningMinutes=binding.txtRunningMinutes
-        //txtRunningSeconds=binding.txtRunningSeconds
-        //txtTotalMinutes=binding.txtTotalMinutes
-        //txtTotalSeconds=binding.txtTotalSeconds
         txtRunningMinutes.text = "0"
         txtRunningSeconds.text = "00"
 
-        //arcSeekbar = binding.arcSeekBar
         arcSeekbar.progress = 0
         arcSeekbar.onProgressChangedListener = ProgressListener {
             arcSeekbar.onProgressChangedListener = ProgressListener {
@@ -694,25 +598,15 @@ class SongActivity : AppCompatActivity() {
             }
         }
 
-        //previous = binding.previous
-        //next = binding.next
         previous.isClickable = true
         next.isClickable = true
-        //songName = binding.txtSongNameText
-        //songArtist = binding.txtSingerName
-        //songImage = binding.imgSongImage
-        //favourites= binding.favourites
-        //favourites_selected=binding.favouritesSelected
         favourites_selected.visibility=View.GONE
-        //addToPlaylists=binding.addtoplaylists
-        //addToPlaylistsSelected=binding.addtoplaylistsselected
         addToPlaylistsSelected.visibility=View.GONE
 
         val audioManager:AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
         val maxVolume=audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         val currentVolume=audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
 
-        //volumeSeekbar=binding.volumeseekbar
         volumeSeekbar.max= maxVolume
         volumeSeekbar.progress = currentVolume
 
@@ -729,16 +623,10 @@ class SongActivity : AppCompatActivity() {
 
         })
 
-//        play=binding.play
-//        pause= binding.pause
         pause.visibility = View.GONE
         play.visibility = View.INVISIBLE
-        play.isClickable = false
-        pause.isClickable = false
-        //progressbarSongLoading = binding.progressBarSongLoading
         progressbarSongLoading.isClickable = false
 
-        //visualizer= binding.visualizer
         val audioSessionId=applic.mediaPlayer.audioSessionId
 
         if(audioSessionId != -1){
@@ -901,9 +789,10 @@ class SongActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
         applic.mainActivity?.dragUpButton?.callOnClick()
-        super.onBackPressed()
+        val intent = Intent(this@SongActivity,MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        startActivity(intent)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
