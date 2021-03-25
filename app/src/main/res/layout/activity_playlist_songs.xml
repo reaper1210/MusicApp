@@ -125,4 +125,88 @@
         android:layout_below="@id/layoutRelative"
         android:layout_marginTop="10dp"/>
 
+    <RelativeLayout
+        android:id="@+id/relativeGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/dragUpButtonPlaylist"
+        android:layout_width="50dp"
+        android:layout_height="65dp"
+        android:baselineAlignBottom="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:padding="5dp"
+        android:src="@drawable/dragupbutton" />
+
+    <ImageView
+        android:id="@+id/ellipsePlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pathellipse1"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-10dp" />
+
+    <ImageView
+        android:id="@+id/playPlaylist"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/pause"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="62dp" />
+
+    <ImageView
+        android:id="@+id/pausePlaylist"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/play"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="62dp" />
+
+    <ImageView
+        android:id="@+id/dragDownButtonPlaylist"
+        android:layout_width="50dp"
+        android:layout_height="65dp"
+        android:src="@drawable/dragdownbutton"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/txtSongNamePlaylist"
+        android:layout_marginRight="10dp"
+        android:padding="5dp"
+        android:layout_margin="5dp" />
+
+
+    <TextView
+        android:id="@+id/txtSongNamePlaylist"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:text="song name"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/txtArtistPlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textSize="16dp"
+        android:text="Gian"
+        android:textColor="@color/white"
+        android:layout_marginBottom="5dp" />
+
+    </RelativeLayout>
+
 </RelativeLayout>
