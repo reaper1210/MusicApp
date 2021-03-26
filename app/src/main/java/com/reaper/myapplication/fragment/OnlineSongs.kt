@@ -119,7 +119,8 @@ class OnlineSongs : Fragment() {
                             applic.currentMySongInfo = null
                             applic.currentOnlineSongsInfo = songsInfo
                             val intent= Intent(context, SongActivity::class.java)
-                            intent.putExtra("isLoaded",false)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                            applic.isSongLoaded = false
                             context?.startActivity(intent)
                         }
                     }

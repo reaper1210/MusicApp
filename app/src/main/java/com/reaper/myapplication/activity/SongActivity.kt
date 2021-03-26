@@ -35,32 +35,32 @@ import kotlinx.coroutines.Runnable
 
 class SongActivity : AppCompatActivity() {
 
-    private lateinit var favourites:ImageView
-    private lateinit var favourites_selected:ImageView
-    private lateinit var addToPlaylists:ImageView
-    private lateinit var addToPlaylistsSelected:ImageView
-    private lateinit var play:ImageView
-    private lateinit var pause:ImageView
-    private lateinit var songName: TextView
-    private lateinit var songArtist: TextView
-    private lateinit var songImage: ImageView
-    private lateinit var previous: ImageView
-    private lateinit var next: ImageView
-    private lateinit var txtRunningMinutes: TextView
-    private lateinit var txtRunningSeconds: TextView
-    private lateinit var txtTotalMinutes: TextView
-    private lateinit var txtTotalSeconds: TextView
-    private lateinit var progressbarSongLoading: ProgressBar
-    private lateinit var volumeSeekbar:SeekBar
-    private lateinit var arcSeekbar: ArcSeekBar
-    private lateinit var visualizer: CircleLineVisualizer
-    private lateinit var binding: ActivitySongBinding
-    private lateinit var applic: MusicApplication
-    private lateinit var runnable: Runnable
-    private lateinit var notificationManager: NotificationManager
-    private var handler = Handler()
-    private var seconds: Int = 0
-    private var minutes: Int = 0
+     lateinit var favourites:ImageView
+     lateinit var favourites_selected:ImageView
+     lateinit var addToPlaylists:ImageView
+     lateinit var addToPlaylistsSelected:ImageView
+     lateinit var play:ImageView
+     lateinit var pause:ImageView
+     lateinit var songName: TextView
+     lateinit var songArtist: TextView
+     lateinit var songImage: ImageView
+     lateinit var previous: ImageView
+     lateinit var next: ImageView
+     lateinit var txtRunningMinutes: TextView
+     lateinit var txtRunningSeconds: TextView
+     lateinit var txtTotalMinutes: TextView
+     lateinit var txtTotalSeconds: TextView
+     lateinit var progressbarSongLoading: ProgressBar
+     lateinit var volumeSeekbar:SeekBar
+     lateinit var arcSeekbar: ArcSeekBar
+     lateinit var visualizer: CircleLineVisualizer
+     lateinit var binding: ActivitySongBinding
+     lateinit var applic: MusicApplication
+     lateinit var runnable: Runnable
+     lateinit var notificationManager: NotificationManager
+     var handler = Handler()
+     var seconds: Int = 0
+     var minutes: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +68,7 @@ class SongActivity : AppCompatActivity() {
         binding = ActivitySongBinding.inflate(layoutInflater)
         setContentView(binding.root)
         applic = application as MusicApplication
+        applic.songActivity = this
 
         txtRunningMinutes=binding.txtRunningMinutes
         txtRunningSeconds=binding.txtRunningSeconds
@@ -89,159 +90,7 @@ class SongActivity : AppCompatActivity() {
         progressbarSongLoading = binding.progressBarSongLoading
         visualizer= binding.visualizer
 
-        when {
-            applic.currentOnlineSongsInfo != null -> {
-
-                LoadOnlineSongData()
-
-                previous.setOnClickListener {
-                    previous.isClickable = false
-                    next.isClickable = false
-                    play.visibility = View.INVISIBLE
-                    pause.visibility = View.INVISIBLE
-                    progressbarSongLoading.visibility = View.VISIBLE
-                    val currentIndex = applic.onlineSongs.indexOf(applic.currentOnlineSongsInfo)
-                    val previousIndex = if(currentIndex==0){
-                        applic.onlineSongs.size - 1
-                    } else{
-                        currentIndex - 1
-                    }
-                    applic.mediaPlayer.stop()
-                    applic.mediaPlayer.reset()
-                    applic.mediaPlayer.setDataSource(applic.onlineSongs[previousIndex].url)
-                    applic.mediaPlayer.prepareAsync()
-                    applic.mediaPlayer.setOnCompletionListener {
-                        applic.mainActivity?.onlinePlay?.visibility = View.GONE
-                        applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
-                        applic.musicIsPlaying = false
-                        next.callOnClick()
-                    }
-                    applic.mainActivity?.txtSongName?.text = applic.onlineSongs[previousIndex].name
-                    applic.mainActivity?.txtSongArtist?.text = applic.onlineSongs[previousIndex].artist
-                    applic.currentMySongInfo = null
-                    applic.currentOnlineSongsInfo = applic.onlineSongs[previousIndex]
-                    visualizer.release()
-                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
-                    applic.isSongLoaded = false
-                    LoadOnlineSongData()
-
-                }
-                next.setOnClickListener {
-                    next.isClickable = false
-                    previous.isClickable = false
-                    play.visibility = View.INVISIBLE
-                    pause.visibility = View.INVISIBLE
-                    progressbarSongLoading.visibility = View.VISIBLE
-                    val currentIndex = applic.onlineSongs.indexOf(applic.currentOnlineSongsInfo)
-                    val nextIndex = if(currentIndex==applic.onlineSongs.size - 1){
-                        0
-                    }
-                    else{
-                        currentIndex + 1
-                    }
-                    applic.mediaPlayer.stop()
-                    applic.mediaPlayer.reset()
-                    applic.mediaPlayer.setDataSource(applic.onlineSongs[nextIndex].url)
-                    applic.mediaPlayer.prepareAsync()
-                    applic.mediaPlayer.setOnCompletionListener {
-                        applic.mainActivity?.onlinePlay?.visibility = View.GONE
-                        applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
-                        applic.musicIsPlaying = false
-                        next.callOnClick()
-
-                    }
-                    applic.mainActivity?.txtSongName?.text = applic.onlineSongs[nextIndex].name
-                    applic.mainActivity?.txtSongArtist?.text = applic.onlineSongs[nextIndex].artist
-                    applic.currentMySongInfo = null
-                    applic.currentOnlineSongsInfo = applic.onlineSongs[nextIndex]
-                    visualizer.release()
-                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
-                    applic.isSongLoaded = false
-                    LoadOnlineSongData()
-
-                }
-
-            }
-            applic.currentMySongInfo != null -> {
-
-                LoadMySongData()
-
-                previous.setOnClickListener {
-                    previous.isClickable = false
-                    next.isClickable = false
-                    play.visibility = View.INVISIBLE
-                    pause.visibility = View.INVISIBLE
-                    progressbarSongLoading.visibility = View.VISIBLE
-                    val currentIndex = applic.mySongs.indexOf(applic.currentMySongInfo)
-                    val previousIndex = if(currentIndex==0){
-                        applic.mySongs.size - 1
-                    } else{
-                        currentIndex - 1
-                    }
-                    applic.mediaPlayer.stop()
-                    applic.mediaPlayer.reset()
-                    applic.mediaPlayer.setDataSource(this, Uri.parse(applic.mySongs[previousIndex].uri))
-                    applic.mediaPlayer.prepareAsync()
-                    applic.mediaPlayer.setOnCompletionListener {
-                        applic.mainActivity?.onlinePlay?.visibility = View.GONE
-                        applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
-                        applic.musicIsPlaying = false
-                        next.callOnClick()
-                    }
-                    applic.mainActivity?.txtSongName?.text = applic.mySongs[previousIndex].name
-                    applic.mainActivity?.txtSongArtist?.text = applic.mySongs[previousIndex].artist
-                    applic.currentMySongInfo = null
-                    applic.currentMySongInfo = applic.mySongs[previousIndex]
-                    visualizer.release()
-                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
-                    applic.isSongLoaded = false
-                    LoadMySongData()
-
-                }
-                next.setOnClickListener {
-                    next.isClickable = false
-                    previous.isClickable = false
-                    play.visibility = View.INVISIBLE
-                    pause.visibility = View.INVISIBLE
-                    progressbarSongLoading.visibility = View.VISIBLE
-                    val currentIndex = applic.mySongs.indexOf(applic.currentMySongInfo)
-                    val nextIndex = if(currentIndex==applic.mySongs.size - 1){
-                        0
-                    }
-                    else{
-                        currentIndex + 1
-                    }
-                    applic.mediaPlayer.stop()
-                    applic.mediaPlayer.reset()
-                    applic.mediaPlayer.setDataSource(this,Uri.parse(applic.mySongs[nextIndex].uri))
-                    applic.mediaPlayer.prepareAsync()
-                    applic.mediaPlayer.setOnCompletionListener {
-                        applic.mainActivity?.onlinePlay?.visibility = View.GONE
-                        applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
-                        applic.musicIsPlaying = false
-                        next.callOnClick()
-                    }
-                    applic.mediaPlayer.setOnPreparedListener {
-                        it.start()
-                        applic.musicIsPlaying = true
-                        progressbarSongLoading.visibility = View.GONE
-                        play.visibility=View.VISIBLE
-                    }
-                    applic.mainActivity?.txtSongName?.text = applic.mySongs[nextIndex].name
-                    applic.mainActivity?.txtSongArtist?.text = applic.mySongs[nextIndex].artist
-                    applic.currentMySongInfo = null
-                    applic.currentMySongInfo = applic.mySongs[nextIndex]
-                    visualizer.release()
-                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
-                    applic.isSongLoaded = false
-                    LoadMySongData()
-
-                }
-            }
-            else -> {
-                this.finish()
-            }
-        }
+        startSong()
 
         favourites.setOnClickListener {
 
@@ -375,6 +224,8 @@ class SongActivity : AppCompatActivity() {
             pause.visibility=View.VISIBLE
             applic.mediaPlayer.pause()
             applic.musicIsPlaying = false
+            applic.mainActivity?.onlinePlay?.visibility = View.INVISIBLE
+            applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
             CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.play)
         }
 
@@ -383,7 +234,184 @@ class SongActivity : AppCompatActivity() {
             play.visibility=View.VISIBLE
             applic.mediaPlayer.start()
             applic.musicIsPlaying = true
+            applic.mainActivity?.onlinePause?.visibility = View.INVISIBLE
+            applic.mainActivity?.onlinePlay?.visibility = View.VISIBLE
             CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
+        }
+    }
+    private fun startSong(){
+        when {
+            applic.currentOnlineSongsInfo != null -> {
+
+                LoadOnlineSongData()
+                if(applic.isSongLoaded){
+                    progressbarSongLoading.visibility = View.GONE
+                    play.visibility=View.VISIBLE
+                    if(applic.mediaPlayer.isPlaying){
+                        play.visibility = View.VISIBLE
+                        pause.visibility = View.INVISIBLE
+                    }
+                    else{
+                        play.visibility = View.INVISIBLE
+                        pause.visibility = View.VISIBLE
+                    }
+                }
+
+                previous.setOnClickListener {
+                    previous.isClickable = false
+                    next.isClickable = false
+                    play.visibility = View.INVISIBLE
+                    pause.visibility = View.INVISIBLE
+                    progressbarSongLoading.visibility = View.VISIBLE
+                    val currentIndex = applic.onlineSongs.indexOf(applic.currentOnlineSongsInfo)
+                    val previousIndex = if(currentIndex==0){
+                        applic.onlineSongs.size - 1
+                    } else{
+                        currentIndex - 1
+                    }
+                    applic.mediaPlayer.stop()
+                    applic.mediaPlayer.reset()
+                    applic.mediaPlayer.setDataSource(applic.onlineSongs[previousIndex].url)
+                    applic.mediaPlayer.prepareAsync()
+                    applic.mediaPlayer.setOnCompletionListener {
+                        applic.mainActivity?.onlinePlay?.visibility = View.GONE
+                        applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
+                        applic.musicIsPlaying = false
+                        applic.mainActivity?.dragDownButton?.callOnClick()
+                        applic.mainActivity?.dragUpButton?.callOnClick()
+                        next.callOnClick()
+                    }
+                    applic.mainActivity?.txtSongName?.text = applic.onlineSongs[previousIndex].name
+                    applic.mainActivity?.txtSongArtist?.text = applic.onlineSongs[previousIndex].artist
+                    applic.currentMySongInfo = null
+                    applic.currentOnlineSongsInfo = applic.onlineSongs[previousIndex]
+                    visualizer.release()
+                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
+                    applic.isSongLoaded = false
+                    LoadOnlineSongData()
+
+                }
+                next.setOnClickListener {
+                    next.isClickable = false
+                    previous.isClickable = false
+                    play.visibility = View.INVISIBLE
+                    pause.visibility = View.INVISIBLE
+                    progressbarSongLoading.visibility = View.VISIBLE
+                    val currentIndex = applic.onlineSongs.indexOf(applic.currentOnlineSongsInfo)
+                    val nextIndex = if(currentIndex==applic.onlineSongs.size - 1){
+                        0
+                    }
+                    else{
+                        currentIndex + 1
+                    }
+                    applic.mediaPlayer.stop()
+                    applic.mediaPlayer.reset()
+                    applic.mediaPlayer.setDataSource(applic.onlineSongs[nextIndex].url)
+                    applic.mediaPlayer.prepareAsync()
+                    applic.mediaPlayer.setOnCompletionListener {
+                        applic.mainActivity?.onlinePlay?.visibility = View.GONE
+                        applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
+                        applic.musicIsPlaying = false
+                        applic.mainActivity?.dragDownButton?.callOnClick()
+                        applic.mainActivity?.dragUpButton?.callOnClick()
+                        next.callOnClick()
+
+                    }
+                    applic.mainActivity?.txtSongName?.text = applic.onlineSongs[nextIndex].name
+                    applic.mainActivity?.txtSongArtist?.text = applic.onlineSongs[nextIndex].artist
+                    applic.currentMySongInfo = null
+                    applic.currentOnlineSongsInfo = applic.onlineSongs[nextIndex]
+                    visualizer.release()
+                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
+                    applic.isSongLoaded = false
+                    LoadOnlineSongData()
+
+                }
+
+            }
+            applic.currentMySongInfo != null -> {
+
+                LoadMySongData()
+
+                previous.setOnClickListener {
+                    previous.isClickable = false
+                    next.isClickable = false
+                    play.visibility = View.INVISIBLE
+                    pause.visibility = View.INVISIBLE
+                    progressbarSongLoading.visibility = View.VISIBLE
+                    val currentIndex = applic.mySongs.indexOf(applic.currentMySongInfo)
+                    val previousIndex = if(currentIndex==0){
+                        applic.mySongs.size - 1
+                    } else{
+                        currentIndex - 1
+                    }
+                    applic.mediaPlayer.stop()
+                    applic.mediaPlayer.reset()
+                    applic.mediaPlayer.setDataSource(this, Uri.parse(applic.mySongs[previousIndex].uri))
+                    applic.mediaPlayer.prepareAsync()
+                    applic.mediaPlayer.setOnCompletionListener {
+                        applic.mainActivity?.onlinePlay?.visibility = View.GONE
+                        applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
+                        applic.musicIsPlaying = false
+                        applic.mainActivity?.dragDownButton?.callOnClick()
+                        applic.mainActivity?.dragUpButton?.callOnClick()
+                        next.callOnClick()
+                    }
+                    applic.mainActivity?.txtSongName?.text = applic.mySongs[previousIndex].name
+                    applic.mainActivity?.txtSongArtist?.text = applic.mySongs[previousIndex].artist
+                    applic.currentMySongInfo = null
+                    applic.currentMySongInfo = applic.mySongs[previousIndex]
+                    visualizer.release()
+                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
+                    applic.isSongLoaded = false
+                    LoadMySongData()
+
+                }
+                next.setOnClickListener {
+                    next.isClickable = false
+                    previous.isClickable = false
+                    play.visibility = View.INVISIBLE
+                    pause.visibility = View.INVISIBLE
+                    progressbarSongLoading.visibility = View.VISIBLE
+                    val currentIndex = applic.mySongs.indexOf(applic.currentMySongInfo)
+                    val nextIndex = if(currentIndex==applic.mySongs.size - 1){
+                        0
+                    }
+                    else{
+                        currentIndex + 1
+                    }
+                    applic.mediaPlayer.stop()
+                    applic.mediaPlayer.reset()
+                    applic.mediaPlayer.setDataSource(this,Uri.parse(applic.mySongs[nextIndex].uri))
+                    applic.mediaPlayer.prepareAsync()
+                    applic.mediaPlayer.setOnCompletionListener {
+                        applic.mainActivity?.onlinePlay?.visibility = View.GONE
+                        applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
+                        applic.musicIsPlaying = false
+                        applic.mainActivity?.dragDownButton?.callOnClick()
+                        applic.mainActivity?.dragUpButton?.callOnClick()
+                        next.callOnClick()
+                    }
+                    applic.mediaPlayer.setOnPreparedListener {
+                        it.start()
+                        applic.musicIsPlaying = true
+                        progressbarSongLoading.visibility = View.GONE
+                        play.visibility=View.VISIBLE
+                    }
+                    applic.mainActivity?.txtSongName?.text = applic.mySongs[nextIndex].name
+                    applic.mainActivity?.txtSongArtist?.text = applic.mySongs[nextIndex].artist
+                    applic.currentMySongInfo = null
+                    applic.currentMySongInfo = applic.mySongs[nextIndex]
+                    visualizer.release()
+                    CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
+                    applic.isSongLoaded = false
+                    LoadMySongData()
+
+                }
+            }
+            else -> {
+                this.finish()
+            }
         }
     }
 
@@ -495,6 +523,8 @@ class SongActivity : AppCompatActivity() {
             applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
             applic.musicIsPlaying = false
             visualizer.release()
+            applic.mainActivity?.dragDownButton?.callOnClick()
+            applic.mainActivity?.dragUpButton?.callOnClick()
             next.callOnClick()
         }
 
@@ -529,6 +559,7 @@ class SongActivity : AppCompatActivity() {
         songName.text = applic.currentMySongInfo?.name
         songName.isSelected = true
         songArtist.text = applic.currentMySongInfo?.artist
+        songImage.setImageResource(R.drawable.music_image)
         if(songArtist.text=="<unknown>"){
             songArtist.visibility = View.INVISIBLE
         }
@@ -626,6 +657,7 @@ class SongActivity : AppCompatActivity() {
         pause.visibility = View.GONE
         play.visibility = View.INVISIBLE
         progressbarSongLoading.isClickable = false
+        progressbarSongLoading.visibility = View.VISIBLE
 
         val audioSessionId=applic.mediaPlayer.audioSessionId
 
@@ -656,10 +688,12 @@ class SongActivity : AppCompatActivity() {
             applic.mainActivity?.onlinePause?.visibility = View.VISIBLE
             applic.musicIsPlaying = false
             visualizer.release()
+            applic.mainActivity?.dragDownButton?.callOnClick()
+            applic.mainActivity?.dragUpButton?.callOnClick()
             next.callOnClick()
         }
 
-        if(!applic.musicIsPlaying){
+        if(applic.musicIsPlaying == false){
             applic.mediaPlayer.setOnPreparedListener {
                 it.start()
                 applic.musicIsPlaying = true
@@ -754,6 +788,7 @@ class SongActivity : AppCompatActivity() {
         txtRunningSeconds.text = applic.pauseSeconds
         txtRunningMinutes.text = applic.pauseMinutes
         super.onResume()
+        startSong()
     }
 
     override fun onDestroy() {

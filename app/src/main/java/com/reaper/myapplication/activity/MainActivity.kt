@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var dragUpButton:ImageView
     lateinit var onlinePlay:ImageView
     lateinit var onlinePause:ImageView
-    lateinit var txtSongName:TextView
+    lateinit var txtSongName:TextView 
     lateinit var txtSongArtist:TextView
     lateinit var dragDownButton:ImageView
     lateinit var relativeGroup:RelativeLayout
@@ -148,6 +148,7 @@ class MainActivity : AppCompatActivity() {
         onlinePlay.setOnClickListener {
             onlinePlay.visibility=View.GONE
             onlinePause.visibility=View.VISIBLE
+            applic.songActivity?.play?.callOnClick()
             applic.mediaPlayer.pause()
             applic.musicIsPlaying = false
         }
@@ -155,6 +156,7 @@ class MainActivity : AppCompatActivity() {
         onlinePause.setOnClickListener {
             onlinePause.visibility=View.GONE
             onlinePlay.visibility= View.VISIBLE
+            applic.songActivity?.pause?.callOnClick()
             applic.mediaPlayer.start()
             applic.musicIsPlaying = true
         }
@@ -163,6 +165,7 @@ class MainActivity : AppCompatActivity() {
             dragDownButton.callOnClick()
             applic.isSongLoaded = true
             val intent = Intent(this@MainActivity, SongActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             startActivity(intent)
         }
 
@@ -196,6 +199,10 @@ class MainActivity : AppCompatActivity() {
         tablayout.getTabAt(1)?.setIcon(R.drawable.allsongs)
         tablayout.getTabAt(2)?.setIcon(R.drawable.favourites)
         tablayout.getTabAt(3)?.setIcon(R.drawable.addtoplaylist)
+    }
+
+    override fun onBackPressed() {
+        moveTaskToBack(true)
     }
 
 
