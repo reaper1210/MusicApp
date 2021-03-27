@@ -37,4 +37,5 @@ class MusicApplication: Application() {
     var playlistFragPlaylistAdapter: PlaylistFragmentAdapter? = null
     var playlistFragment: Playlists? = null
 
+
 }

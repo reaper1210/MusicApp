@@ -172,8 +172,7 @@ class SongActivity : AppCompatActivity() {
             }
             val create = view.findViewById<Button>(R.id.playlistDialogCreate)
             create.setOnClickListener {
-                val layoutInflater = LayoutInflater.from(this)
-                val view = layoutInflater.inflate(R.layout.layout_create_playlist,null)
+                val view = LayoutInflater.from(this).inflate(R.layout.layout_create_playlist,null)
                 val dialog = AlertDialog.Builder(this)
                     .setView(view)
                     .create()
@@ -239,11 +238,19 @@ class SongActivity : AppCompatActivity() {
             CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
         }
     }
+
     private fun startSong(){
         when {
             applic.currentOnlineSongsInfo != null -> {
 
-                LoadOnlineSongData()
+                applic.mediaPlayer.setOnPreparedListener {
+                    it.start()
+                    applic.musicIsPlaying = true
+                    progressbarSongLoading.visibility = View.GONE
+                    play.visibility=View.VISIBLE
+                }
+
+                loadOnlineSongData()
                 if(applic.isSongLoaded){
                     progressbarSongLoading.visibility = View.GONE
                     play.visibility=View.VISIBLE
@@ -288,7 +295,7 @@ class SongActivity : AppCompatActivity() {
                     visualizer.release()
                     CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
                     applic.isSongLoaded = false
-                    LoadOnlineSongData()
+                    loadOnlineSongData()
 
                 }
                 next.setOnClickListener {
@@ -324,14 +331,14 @@ class SongActivity : AppCompatActivity() {
                     visualizer.release()
                     CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
                     applic.isSongLoaded = false
-                    LoadOnlineSongData()
+                    loadOnlineSongData()
 
                 }
 
             }
             applic.currentMySongInfo != null -> {
 
-                LoadMySongData()
+                loadMySongData()
 
                 previous.setOnClickListener {
                     previous.isClickable = false
@@ -364,7 +371,7 @@ class SongActivity : AppCompatActivity() {
                     visualizer.release()
                     CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
                     applic.isSongLoaded = false
-                    LoadMySongData()
+                    loadMySongData()
 
                 }
                 next.setOnClickListener {
@@ -405,7 +412,7 @@ class SongActivity : AppCompatActivity() {
                     visualizer.release()
                     CreateNotification().createNotification(this@SongActivity,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
                     applic.isSongLoaded = false
-                    LoadMySongData()
+                    loadMySongData()
 
                 }
             }
@@ -415,13 +422,16 @@ class SongActivity : AppCompatActivity() {
         }
     }
 
-    private fun LoadMySongData(){
+    private fun loadMySongData(){
+
+        notificationManager = getSystemService(NotificationManager::class.java)
 
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             createChannel()
-            registerReceiver(broadcastReceiver, IntentFilter("notify_action"))
-            startService(Intent(baseContext,OnClearFromRecentService::class.java))
         }
+
+        registerReceiver(broadcastReceiver, IntentFilter("notify_action"))
+        startService(Intent(baseContext,OnClearFromRecentService::class.java))
 
         CreateNotification().createNotification(this,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
 
@@ -580,12 +590,16 @@ class SongActivity : AppCompatActivity() {
 
     }
 
-    private fun LoadOnlineSongData(){
+    private fun loadOnlineSongData(){
+
+        notificationManager = getSystemService(NotificationManager::class.java)
+
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             createChannel()
-            registerReceiver(broadcastReceiver, IntentFilter("notify_action"))
-            startService(Intent(baseContext,OnClearFromRecentService::class.java))
         }
+
+        registerReceiver(broadcastReceiver, IntentFilter("notify_action"))
+        startService(Intent(baseContext,OnClearFromRecentService::class.java))
 
         CreateNotification().createNotification(this,applic.currentMySongInfo,applic.currentOnlineSongsInfo,R.drawable.pause)
 
@@ -693,7 +707,7 @@ class SongActivity : AppCompatActivity() {
             next.callOnClick()
         }
 
-        if(applic.musicIsPlaying == false){
+        if(!applic.musicIsPlaying){
             applic.mediaPlayer.setOnPreparedListener {
                 it.start()
                 applic.musicIsPlaying = true
@@ -732,7 +746,7 @@ class SongActivity : AppCompatActivity() {
 
     }
 
-    val broadcastReceiver = object : BroadcastReceiver() {
+    private val broadcastReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context?, intent: Intent?) {
 
@@ -767,13 +781,7 @@ class SongActivity : AppCompatActivity() {
     private fun createChannel() {
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             val notificationChannel = NotificationChannel(CreateNotification().CHANNEL_ID,"music_op",NotificationManager.IMPORTANCE_LOW)
-            notificationManager = getSystemService(NotificationManager::class.java)
-
-            if(notificationManager!=null){
-
-                notificationManager.createNotificationChannel(notificationChannel)
-
-            }
+            notificationManager.createNotificationChannel(notificationChannel)
         }
     }
 
@@ -792,12 +800,10 @@ class SongActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         visualizer.release()
         unregisterReceiver(broadcastReceiver)
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            notificationManager.cancelAll()
-        }
+        notificationManager.cancelAll()
+        super.onDestroy()
     }
 
     private fun updateSeekBar(){

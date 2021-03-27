@@ -41,6 +41,7 @@
         </activity>
 
         <receiver android:name=".notification.NotificationActionService"/>
+
         <service android:name=".notification.OnClearFromRecentService"/>
 
     </application>
